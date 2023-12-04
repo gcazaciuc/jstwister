@@ -1,0 +1,183 @@
+---
+layout: layouts/post.njk
+hero: /images/posts/chromeextensions.png
+thumb: /images/posts/chromeextensions_tn.png
+title: "React Stateless Functional Components - Best Practices"
+date: 2017-07-04T12:25:20+03:00
+tags: ["React"]
+summary: "React provides 3 major APIs for creating re-usable components. In this article
+we show you why you should prefer stateless functional components over the other ones and some best practices around using them efficiently"
+---
+
+React offers multiple way of creating re-usable components, but which one to use, when and why depends on a number of factors.
+
+I would say that, these days, you should limit yourself, to either `Stateless functional components`(SFC) or `React ES6 classes`.
+
+### When to use ES6 classes ?
+
+- You need to have `state` within a component: holding the value within an input, holding the open/close state of something etc
+- You need lifecycle methods( eg when manipulating the DOM in an imperative way, using JQuery etc )
+- You need to assign `refs` for the component
+
+### When to use SFCs and why ?
+
+If the above 3 points don't apply to your use case then you can safely use a stateless functional component.
+
+A SFC is just that, a function:
+
+```js
+function Hello(props) {
+  return <div>{props.greeting}</div>;
+}
+```
+
+## Why use it, you might ask ?
+
+#### Stateless functional components are simpler.
+
+No members, no state, no lifecycle hooks, no multiple moving parts. This means they're simpler to understand and less prone to bugs.
+
+#### They're more predictable and simpler to test
+
+Stateless functional components take the paradigm 'props in' => 'VDOM out' to it's finest level.
+Most of them are pure functions, meaning that the output depends entirely on the input.
+
+In turn this makes them more predictable and easier to test(give them input and just assert output)
+
+#### They open up possibilities for further performance optimizations than classes
+
+According to React team , in the future, various performance optimizations will be performed, in regard to memory allocations and speed for components written as stateless functional components.
+
+#### You can use all of the functional approaches & techniques and apply them to the UI
+
+Because they're just functions, you can use the usual "suspects":
+
+##### Memoization
+
+You can memoize the results of the these functions and optimize the React reconciliation just like with any other function.
+
+Suppose that you have a mostly static piece of content, that is re-rendered every few seconds:
+
+```js
+import React from "react";
+import memoize from "lodash.memoize";
+import logo from "./logo.svg";
+
+const Heading = memoize(
+  props => {
+    console.log("Rendering heading...");
+
+    return (
+      <div className="heading">
+        <div className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          <h2>{props.title}</h2>
+        </div>
+        <p className="App-intro">
+          To get started, edit <code>src/App.js</code> and save to reload.
+        </p>
+      </div>
+    );
+  },
+  props => {
+    return props.title;
+  }
+);
+
+export default Heading;
+```
+
+And then, suppose that we have an App component that uses this `Heading` component and it re-renders
+every second:
+
+```js
+import React, { Component } from "react";
+import Heading from "./Heading.js";
+import "./App.css";
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      counter: 0
+    };
+  }
+  componentWillMount() {
+    setInterval(() => {
+      this.setState({
+        counter: this.state.counter + 1
+      });
+    }, 1000);
+  }
+  render() {
+    return (
+      <div className="App">
+        <Heading title="Welcome to React" />
+        Counter: {this.state.counter}
+      </div>
+    );
+  }
+}
+
+export default App;
+```
+
+If you run this code you'll notice that the `Heading` component will only be rendered once.
+It will re-render again only when `title` prop changes.
+
+If you're not familiar with memoization you can checkout [Lodash docs](https://lodash.com/docs/4.17.4#memoize) .
+
+Also stay tuned, by [subscribing](#newsletter) to our newsletter, and I'll write an article on memoization, showing off some interesting uses of it.
+
+##### Composition
+
+I love using functional composition, in order to create really complex components starting from simple building blocks.
+
+In fact, composition is heavily used in the [Presentational components/Container components](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0) pattern as beautifully explained by Dan Abramov.
+
+There are also libraries that provide all sorts of useful and interesting functions that can be composed together.
+
+One, that I really appreciate it [Recompose](https://github.com/acdlite/recompose);
+
+##### Currying and partial application
+
+You can also apply the usual currying and partial application techniques when working with functional stateless components.
+
+This allows you to take an already built component, and pre-fill arguments with values so that you obtain a new component.
+
+```js
+import Heading from "./Heading.js";
+import curry from "lodash.curry";
+
+const HeadingWithDefaultTitle = curry(
+  Heading,
+  2
+)({
+  title: "Default title"
+});
+export default HeadingWithDefaultTitle;
+```
+
+Here, we are taking the `Heading` component we've previously built, pre-fill the props and obtain a new component that renders a default title.
+You use them like this(side by this for comparison):
+
+```js
+ <Heading title='Welcome to React' />
+ <HeadingWithDefaultTitle />
+```
+
+You can read up more about 'curry' [here](https://lodash.com/docs/4.17.4#curry).
+
+### Key take-aways
+
+> Use SFC whenever possible over ES6 classes
+
+> Destructure the `props` given to the SFC so that their interface is clearer:
+
+> Use them together with the functional techniques to achieve maximum modularity: compose, memoize and curry.
+
+For a deeper dive into this topic, but also React, Redux and React-Router I cannot recommend enought the course of Andrew Mead from Udemy: [The Complete React Web Developer Course (with Redux)](https://click.linksynergy.com/deeplink?id=x*motn0wjQQ&mid=39197&murl=https%3A%2F%2Fwww.udemy.com%2Freact-2nd-edition%2F)
+
+Hope you've enjoyed!
+
+As usual, let me know in the comments, what are best practices I might have missed and stay tuned!

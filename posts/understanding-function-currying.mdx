@@ -1,0 +1,173 @@
+---
+layout: layouts/post.njk
+hero: /images/posts/chromeextensions.png
+thumb: /images/posts/chromeextensions_tn.png
+title: "Understanding function currying"
+tags: ["Functional programming"]
+date: 2020-03-06T12:03:52+03:00
+summary: "Is it a dish? Is it a spice ? It may be, but when it comes to programming it's a very usefull and widespread technique found in functional programming.
+Let's see what it is and what it can do for you.
+"
+---
+
+**Function currying** is best explained by using a simple example: a 2 arguments function adding some numbers together:
+
+```javascript
+const add = (a, b) => a + b;
+
+console.log(add(2, 3)); // 5
+```
+
+Nothing fancy so far. Before reading further try to answer yourself the following question:
+
+> What happens if I call the function with just 1 argument ? Eg `console.log(add(2));`
+
+You may not be surprised that a beautiful `NaN` is being logged. But why is that ?
+
+Well it turns out that when an argument is missing to a function an `undefined` is being passed in instead. So adding up undefined to whatever other number isn't going to end up well.
+
+A way smarter behavior in my opinion would be for the function to detect that arguments are missing and _wait_ for the remaining ones to be supplied, before acting on them.
+
+```javascript
+const add = (a, b) => {
+  if (typeof b === "undefined") {
+    // b param is missing, return another FUNCTION that accepts the missing param
+    return function(missingB) {
+      return a + missingB;
+    };
+  }
+  // We have also b, add them up
+  return a + b;
+};
+
+const sum = add(5); // b is undefined, a Function is return accepting the missing b
+console.log(sum(6)); // sum accepts the rest of the arguments(b=6) => console prints 11(5+6);
+```
+
+So now it's safe to call the function with less arguments and it **will keep returning another function until all of the arguments have been passed**.
+
+So, problem solved ? Yes, sort off.
+
+Imagine now that you have many other functions: divide, subtract etc and possibly many more arguments.
+
+Coding these kind of checks into each and every one is not only tedious but also very error prone.
+
+### What if we could pack these checks into another function and generalize them a bit ?
+
+Look at both versions of the `add` function above... You can think about them almost like 2 **different** functions that **do the same thing** in terms of computation but they're behavior is very different when the last argument is missing.
+
+One of them crashes gloriously, the other one gracefully handles the missing argument and gives the consumer the chance the supply that missing argument later on.
+
+> The key idea to generalize these checks is to have a function, let's call it <u>curry</u> that is able in taking in the initial `add` function as argument and return a new and improved `add` function(the second version above) that has these checks built in.
+
+All without us having to code the checks again and again.
+
+### A general curry function
+
+First, it's really import to understand how this curry function actually looks like.
+
+We said it takes in the initial `add` function and return a new shinny `add` function with some extra checks built in. So it's signature must probably look like this:
+
+```javascript
+curry = (fn: Function): Function
+```
+
+And it's implementation outline like this:
+
+```javascript
+const curry = fn => {
+  // fn is a Function
+  return function curriedFn() {
+    // Returns another function that does the same as fn
+    // Does the same computations as the fn function
+    // But with some added checks
+  };
+};
+```
+
+Expanding on the implementation above there are a couple of requirements we need to address:
+
+1.  The returned function(`curriedFn`) should do _the same computations_ as the passed in `fn` function
+2.  The returned function(`curriedFn`) should _ensure that all arguments are passed in_ before doing any computations
+
+### Implementing the first requirement
+
+We are required that **the curried function and the original function should do the same computations**:
+
+```javascript
+const curry = fn => {
+  // fn is a Function
+  return function curriedFn(...args) {
+    // Returns another function that does the same as fn
+    return fn(...args); // There you go, curriedFn does the same computation is fn when called
+    // But with some added checks
+  };
+};
+```
+
+That was easy. We're just collecting all the arguments `curriedFn` received and calling `fn` with all of them.
+
+In case you're confused about the above `curriedFn(...args)` is the **ES6** way of collecting all the arguments a function received into an array.
+
+Finally `fn(...args);` is calling out the `fn` function and is _spreading_ the arguments from the array, effectively the same as passing the array arguments individually, one by one, to the `fn` function:
+
+```javascript
+fn(args[0], args[1], ....., args[n]);
+```
+
+### Implementing the second requirement
+
+Second requirement of currying is just a bit more elaborate. The plan is:
+
+a. Find out how may parameters `fn` is expecting
+
+b. Find out how may arguments there were passed in
+
+c. If all the arguments were passed in call the original function passing along the arguments
+
+d. Otherwise, return another function taking in the next argument
+
+e. Repeat
+
+Let's address them one by one.
+
+### How can we know how many parameters a function is expecting ?
+
+It turns out **all** functions have a property called _length_ that represents the number of formal parameters declared.
+
+```javascript
+const add = (a,b, c) => ....
+const sub = (x) => ...
+console.log(add.length); // Prints 3 because there are 3 parameters declared: a,b,c
+console.log(sub.length); // Prints 1 because there is 1 parameter declared: x
+```
+
+### How can we know how many arguments a function has received ?
+
+Like shown when we've addressed the first requirement, it is really easy to collect **<u>into an array</u>** the number of arguments passed in to a function.
+
+Once we have them into an array it's just a matter of accessing the `length` property of the array in order to get it's size:
+
+```javascript
+function foo(...args) {
+  console.log("I was called with the following num of arguments:", args.length);
+}
+foo(25); // I was called with the following num of arguments: 1
+foo(1, 3); // I was called with the following num of arguments: 2
+```
+
+### Putting it all together
+
+```javascript
+const curry = (fn, remaingArgs = fn.length) => {
+  // fn is a Function
+  return function curriedFn(...args) {
+    // Returns another function that does the same as fn
+    if (args.length >= remaingArgs) {
+      return fn(...args);
+    }
+    // Not all arguments were passed in, return a function accepting the rest
+    return curry(curriedFn, remainingArgs - args.length);
+  };
+};
+```

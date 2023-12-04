@@ -1,0 +1,83 @@
+---
+layout: layouts/post.njk
+hero: /images/posts/chromeextensions.png
+thumb: /images/posts/chromeextensions_tn.png
+title: "Jest - Snapshot testing React components with Enzyme"
+date: 2017-06-26T18:39:35+03:00
+tags: ["Jest", "Snapshot tests", "Enzyme"]
+summary: "Most people who use snapshot testing believe it is somehow incompatible with Enzyme. This post will show you that it's not Snapshots vs Enzyme but Snapshots & Enzyme"
+---
+
+I love using Jest Snapshot testing for it's simplicity when it comes to updating the unit tests.
+However, with great power come great responsibilities.
+One essential aspect of it is that you need to _review the snapshots generated_ really thorough.
+Otherwise, your unit tests could be recording bugs as snapshots.
+
+So, really, snapshot testing only makes it easier to update the expected outcome of the tests, it doesn't validate the their correctness.
+
+When it comes to snapshot test React components a key aspect is to render the component into a serializable form.
+And it turns out you can do that using mainly 2 techniques:
+
+## Snapshot testing with [react-test-renderer](https://www.npmjs.com/package/react-test-renderer)
+
+This is a special React components renderer, created by the React team, that allows one to get
+a JSON representation of a React component.
+This JSON representation can later be saved as a component snapshot.
+
+```js
+import * as React from "react";
+import * as renderer from "react-test-renderer";
+import { CountDown } from "./CountDown";
+
+test("should render correctly", () => {
+  const tree = renderer.create(<CountDown startTime={30} />).toJSON();
+  expect(tree).toMatchSnapshot();
+});
+```
+
+All it's fine using it, if all you need to unit test are simple rendering tests or very simple
+interaction tests.
+The provided `react-test-renderer` doesn't have an elegant, built in way of rendering and _interacting_ with a component(clicking items, changing text);
+
+As such I prefer in using [Enzyme](http://airbnb.io/enzyme/) for all the React unit testing needs.
+
+I've been using it before and after snapshot testing came in and with and without Jest framework and
+it was awesome
+
+## Using snapshot testing with [Enzyme](http://airbnb.io/enzyme/) and [Enzyme-to-JSON](https://github.com/adriantoine/enzyme-to-json)
+
+The same test reads pretty much the same, but now the rendering is done by Enzyme.
+
+This means you have the full power of the Enzyme API, including the ability to query
+elements, get props, set state and interact with various elements in the page.
+
+```js
+import * as React from "react";
+import { shallow } from "enzyme";
+import toJson from "enzyme-to-json";
+import { CountDown } from "./CountDown";
+
+test("should render correctly", () => {
+  const wrapper = shallow(<CountDown startTime={30} />).toJSON();
+  expect(toJson(wrapper)).toMatchSnapshot();
+});
+```
+
+At this point, you may ask, why `enzyme-to-json` ?
+
+Fair question. You can go testing even without it, but it turns that the snapshot test
+will serialize the _whole_ Enzyme wrapper, which is a ton of gibberish that is not relevant
+to your test.
+
+Using `enzyme-to-json` ensures that you get more focused tests: only the component own markup
+gets serialized into the snapshot.
+That also means when the test fails you get a much more focused context to what exactly was the
+failure.
+
+An added benefit is that besides shallow rendering you can use `mount` and then serialize the component with `enzyme-to-json`.
+
+Hope you enjoyed and I've managed to convince you that is not a matter of `Jest snapshots vs Enzyme`, but a matter of `Jest snapshots & Enzyme` .
+
+How do you go about unit testing your React components ? Let me know in the comments.
+
+Till next time, stay tuned!

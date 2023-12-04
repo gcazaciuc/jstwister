@@ -1,0 +1,105 @@
+---
+layout: layouts/post.njk
+hero: /images/posts/chromeextensions.png
+thumb: /images/posts/chromeextensions_tn.png
+date: 2020-04-09T12:03:52+03:00
+title: "Part 4 - ReactJS clone reconciliation - Detecting changed tags"
+tags: ["Learning React from inside out", "react series"]
+summary: "Now it's time to step it up a little bit and add some intelligence to the rendering algoritm. Instead of blindly re-creating the DOM each time, it will become smarter and apply only the changes that are different"
+---
+
+Welcome back folks! If you didn't yet followed the series, as a reminder we are building a ReactJS clone library for the purpose of **deeply understanding React from the ground up**.
+
+Make sure you've read the [intro to the series](/post/learning-react-from-inside-out-course-intro) and the previous post on [ReactJS clone reconciliation algorithm](/post/react-dom-tree-reconciliation-algorithm)
+
+### What kind of tag changes do we detect
+
+There are a few cases to consider here:
+
+1. If the current virtual DOM is null, create everything from scratch
+2. If the next virtual DOM is null, then delete the associated DOM node.
+3. If the tag has changed re-create and replace the whole DOM sub-tree from scratch
+4. If the Node is a text node and it's contents has changed, re-create it and replace it from scratch
+
+Let's define a function dedicated to figuring out tag changes.
+
+**File: dom-reconciliation.js**
+
+```js
+const detectTagChanges = (
+  currentVirtualDOM,
+  nextVirtualDOM,
+  node,
+  childIdx = 0
+) => {
+  const differences = [];
+  // CASE 1 - If a new node was added, ie it was not present in the
+  // old virtual DOM but is specified in the new one
+  if (!currentVirtualDOM && nextVirtualDOM) {
+    differences.push({
+      type: "create-node",
+      vdom: nextVirtualDOM,
+      domContextNode: node,
+    });
+  }
+  // CASE 2 - If the node was removed in the new virtual DOM but //  was present in the old one
+  if (!nextVirtualDOM && currentVirtualDOM) {
+    differences.push({
+      type: "remove-node",
+      vdom: nextVirtualDOM,
+      domContextNode: node.childNodes[childIdx],
+    });
+  }
+
+  // If both nodes are present but the tag has changed or the text node
+  // contents has changed
+  if (currentVirtualDOM && nextVirtualDOM) {
+    // CASE 3 - Tag type changed
+    const areDifferentTypes =
+      typeof currentVirtualDOM === "object" &&
+      typeof nextVirtualDOM === "object" &&
+      currentVirtualDOM.type !== nextVirtualDOM.type;
+
+    // CASE 4 - text node strings changed
+    const areDifferentStrings =
+      typeof currentVirtualDOM === "string" &&
+      typeof nextVirtualDOM === "string" &&
+      currentVirtualDOM !== nextVirtualDOM;
+
+    if (areDifferentTypes || areDifferentStrings) {
+      differences.push({
+        type: "replace-node",
+        domContextNode: node.childNodes[childIdx],
+        vdom: nextVirtualDOM,
+      });
+    }
+  }
+
+  return differences;
+};
+```
+
+With that in place it's time to update our `virtualDOMDiff` method:
+
+```js
+export const virtualDOMDiff = (
+  currentVirtualDOM,
+  nextVirtualDOM,
+  node,
+  childIdx
+) => {
+  const differences = [];
+
+  differences.push(
+    ...detectTagChanges(currentVirtualDOM, nextVirtualDOM, node, childIdx)
+  );
+
+  return differences;
+};
+```
+
+### Next steps
+
+Next will be adding code to support detecting both added/changed attributes(props) and deleted ones.
+
+Stay tunned by [following me on Twitter](https://twitter.com/jstweetster)!

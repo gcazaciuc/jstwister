@@ -1,0 +1,64 @@
+---
+layout: layouts/post.njk
+hero: /images/posts/chromeextensions.png
+thumb: /images/posts/chromeextensions_tn.png
+title: "Debugging Jest With Vscode"
+date: 2017-06-26T13:12:47+03:00
+tags: ["Jest"]
+summary: "Sometimes tests fail. And sometimes you don't have any clue as to why they do... 
+Follow along to see how you can setup VSCode debugging together with Jest to get breakpoints,
+step through and all the other goodies you would expect when debugging a piece of code."
+---
+
+Lately I've been using a lot [Jest](http://facebook.github.io/jest/) as a unit testing runner. It's great because it allows me to do:
+
+- snapshot testing which makes updating unit tests a breeze
+- runs tests in parallel so it's super fast
+- has a nice command line app allowing me to filter the tests i want to run
+- built-in code coverage reports
+
+In general i can manage debugging failing tests using just the built in test report
+in Jest and occasionaly sprinkle some `console.log` statements for the expressions I want to inspect.
+
+But there are situations in which a full fledged debugging environment is needed in order to figure
+out what happens with my Jest tests.
+
+If you are a fan of VSCode , like I'm, you can set it up very simple:
+
+- Open up `launch.json` file ( CTRL + SHIFT+P -> type `launch.json` )
+- Create a new configuration
+
+```js
+"configurations": [
+        {
+            "name": "Jest", // This is the configuration name you will see in debug sidebar
+            "type": "node",
+            "request": "launch",
+            "port": 5858,
+            "address": "localhost",
+            "stopOnEntry": false,
+            "runtimeExecutable": null,
+            "env": {
+                "NODE_ENV": "production" // You can setup here any env vars you
+            },
+            "runtimeArgs": [
+                "--debug-brk",
+                "./node_modules/.bin/jest", // Path to Jest
+                "-i"
+            ],
+            "cwd": "${workspaceRoot}"
+        }
+    ]
+```
+
+Please not that this config will work if you're using **Node 6.x**.
+
+For **Node 7.x** , **8.x** you will need to use `--inspect-brk` instead of `debug-brk` .
+
+Also , if you transpile your unit tests, eg using `Babel` or `TypeScript` you will need to ensure VSCode finds the source maps for the transformation, otherwise it will not react to breakpoints.
+
+You can do that by defining `"sourceMaps": true` to the above configuration.
+
+Even if it doesn't, and you can't setup source maps, you can still use a `debugger` statement in code to trigger the breakpoint you want and then step throught as usual.
+
+To run the debugger just hit `F5` . Enjoy!

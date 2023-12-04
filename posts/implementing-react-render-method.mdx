@@ -1,0 +1,253 @@
+---
+layout: layouts/post.njk
+hero: /images/posts/chromeextensions.png
+thumb: /images/posts/chromeextensions_tn.png
+date: 2020-04-08T12:03:52+03:00
+title: "Part 2 - ReactJS clone - Creating DOM elements"
+tags: ["Learning React from inside out", "react series"]
+summary: "It's time to start implementing the React render method"
+---
+
+Make sure you've read [part 1](/post/react-and-virtual-dom/) before tackling this one. It's really important that it's clear to you how the virtual DOM data structure looks like.
+
+#### Want to edit the code live and follow along with video ? Checkout my [Scrimba recording](https://scrimba.com/c/cNDyBRtr)!
+
+### Sketching up react-dom file
+
+Open up `react-dom.js` file and you should have the following contents:
+
+```js
+export const render = (virtualDOM, node) => {};
+```
+
+The goal of the render is to alter the contents of the `node` DOM container and make sure it accurately reflects the `virtualDOM` description.
+
+Let's see how we would alter the contents of the `node`:
+
+```js
+export const render = (virtualDOM, node) => {
+  node.innerHTML = "Hello world";
+};
+```
+
+Awesome! It's just we haven't used `virtualDOM` yet :)
+
+As a reminder this is how the `virtualDOM` looks like so far:
+
+```js
+const element = {
+  type: "div",
+  props: { id: "abc", class: "awesome" },
+  children: [
+    {
+      // This is the secondDiv object from above
+      type: "div",
+      props: { id: "column-1", class: "column" },
+      children: ["Hi"],
+    },
+  ],
+};
+```
+
+### Create REAL DOM elements from virtual DOM
+
+Let's define, in `react-dom.js` file an internal, private function, for turning a virtual DOM element into a DOM node.
+
+Let's call it `createDOMElement`.
+
+It will accept a JSON object that looks like:
+
+```js
+{ type: 'div', props: { .... }, children: [... ]}
+```
+
+It will output 1(one) single a real DOM node.
+
+So this is what we'll currently have in `react-dom.js` file.
+
+```js
+const createDOMElement = (virtualDOMElement) => {};
+
+export const render = (virtualDOM, node) => {
+  node.appendChild(createDOMElement(virtualDOM));
+};
+```
+
+As you can see `render` just defers the creation of the real DOM from virtual DOM to the `createDOMElement` method.
+
+Then it takes the real DOM node returned by `createDOMElement` and appends it to the container as a child.
+
+Don't worry about the implementation details of `createDOMElement` , we'll begin implementing it very soon!
+
+### Implementing createDOMElement
+
+For brevity all the code examples in the section refer to the `react-dom.js` file and more specifically the `createDOMElement` function.
+I'll be omitting for now the `render` function from the code listing.
+
+The first thing we need to be able is to be able to create a tag node programatically.
+
+### Creating an element for a certain tag
+
+It turns out there is a handy DOM method for creating elements programatically, in the form of `document.createElement`:
+
+```js
+const createDOMElement = (virtualDOMElement) => {
+  const element = document.createElement(virtualDOMElement.type);
+
+  return element;
+};
+```
+
+### Setting tag attributes
+
+Surprinsingly, there is another DOM API for that `element.setAttribute(name, value)`:
+
+```js
+const createDOMElement = (virtualDOMElement) => {
+  const element = document.createElement(virtualDOMElement.type);
+  Object.keys(virtualDOMElement.props).forEach((attrName) => {
+    element.setAttribute(attrName, virtualDOMElement.props[attrName]);
+  });
+
+  return element;
+};
+```
+
+We are just iterating over the keys in `virtualDOMElement.props`. The jey names is the name of the DOM element attribute while the value is... the value of that attribute.
+
+### Setting up children
+
+The plan is simple: for each child in the virtual DOM children create a real DOM child and append it to the current element.
+
+This is how it looks like:
+
+```js
+const createDOMElement = (virtualDOMElement) => {
+  const element = document.createElement(virtualDOMElement.type);
+  Object.keys(virtualDOMElement.props).forEach((attrName) => {
+    element.setAttribute(attrName, virtualDOMElement.props[attrName]);
+  });
+  virtualDOMElement.children.forEach((virtualDOMElem) => {
+    element.appendChild(createDOMElement(virtualDOMElem));
+  });
+  return element;
+};
+```
+
+### Handling text nodes
+
+The above code is fine but it has a glitch. Given our initial virtual DOM:
+
+```js
+const virtualDOM = {
+  type: "div",
+  props: { id: "abc", class: "awesome" },
+  children: [
+    {
+      type: "div",
+      props: { id: "abc", class: "awesome" },
+      children: ["Hi"],
+    },
+  ],
+};
+```
+
+**Notice the part `children: ["Hi"]`**.
+
+Trying to call `createDOMElement("Hi")` isn't going to end up well.
+
+And we get there because of the way we are building the child nodes:
+
+```js
+virtualDOMElement.children.forEach((virtualDOMElem) => {
+  element.appendChild(createDOMElement(virtualDOMElem));
+});
+```
+
+When one of the `children` is a string, like in the case above, we need to properly handle that.
+
+The DOM API offers us a way to create text nodes by using `document.createTextNode(string)`.
+
+This is the revised code:
+
+```js
+const createDOMElement = (virtualDOMElement) => {
+  if (typeof virtualDOMElement === "string") {
+    return document.createTextNode(virtualDOMElement);
+  }
+  const element = document.createElement(virtualDOMElement.type);
+  Object.keys(virtualDOMElement.props).forEach((attrName) => {
+    element.setAttribute(attrName, virtualDOMElement.props[attrName]);
+  });
+  virtualDOMElement.children.forEach((virtualDOMElem) => {
+    element.appendChild(createDOMElement(virtualDOMElem));
+  });
+  return element;
+};
+```
+
+So if `virtualDOMElement` is a string we just call the `document.createTextNode` API and return the created node.
+
+Otherwise, if it's a child tag, we follow the normal flow and recursively create the tag, set the attributes and process the children of the node.
+
+### Putting it all together
+
+In `react-dom.js` you should have the following:
+
+```js
+const createDOMElement = (virtualDOMElement) => {
+  if (typeof virtualDOMElement === "string") {
+    return document.createTextNode(virtualDOMElement);
+  }
+  const element = document.createElement(virtualDOMElement.type);
+  Object.keys(virtualDOMElement.props).forEach((attrName) => {
+    element.setAttribute(attrName, virtualDOMElement.props[attrName]);
+  });
+  virtualDOMElement.children.forEach((virtualDOMElem) => {
+    element.appendChild(createDOMElement(virtualDOMElem));
+  });
+  return element;
+};
+
+export const render = (virtualDOM, node) => {
+  node.appendChild(createDOMElement(virtualDOM));
+};
+```
+
+In `index.js` , where we actually kick things off, let's say we have the following code:
+
+```js
+import { render } from "./react-dom";
+const virtualDOM = {
+  type: "div",
+  props: { id: "abc", class: "awesome" },
+  children: [
+    {
+      type: "div",
+      props: { id: "abc", class: "awesome" },
+      children: ["Hi"],
+    },
+  ],
+};
+
+render(virtualDOM, document.getElementById("app"));
+```
+
+By running the code above in the browser you should see the full DOM structure by inspecting the page and the text `Hi` on the screen.
+
+### Next steps
+
+As you've probably figured out, this is concerned just with creating the DOM structure.
+
+The next thing we wanna tackle it to support diffing between 2 virtual DOM structures.
+
+So basically let's make the following code work properly:
+
+```js
+render(virtualDOM, document.getElementById("app"));
+render(anotherVirtualDOM, document.getElementById("app"));
+```
+
+By rendering 2 virtual DOMs into the same container, ideally we would like to avoid re-rendering the whole thing and just do a diff between the virtual DOMs and update with that.
+
+Stay tunned for when the next part comes along by following me on [Twitter](https://twitter.com/jstweetster)!

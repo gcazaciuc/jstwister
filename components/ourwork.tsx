@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Heading, Container } from "@chakra-ui/react";
+import { Box, Heading, Container, Text, Stack } from "@chakra-ui/react";
 
 // Define the type for the work items
 interface WorkItem {
@@ -22,11 +22,13 @@ const workItems: WorkItem[] = [
 
 const OurWorkSection: React.FC = () => {
   return (
-    <Box id="our-work" py={{ base: 8, md: 16 }} px={{ base: 4, md: 8 }}>
+    <Box id="our-work" py={{ base: 8, md: 16 }} px={{ base: 4, md: 8 }} bg="white">
       <Container maxW="container.xl">
         <Heading as="h2" mb={5} textAlign="center">
           Our Work
         </Heading>
+        <Stack></Stack>
+        <Text>ABC amet consectetur adipisicing elit. Eum provident consequuntur repudiandae voluptatum,d quas molestiae dolores! Nam voluptatum veritatis accusamus qui adipisci?</Text>
       </Container>
     </Box>
   );

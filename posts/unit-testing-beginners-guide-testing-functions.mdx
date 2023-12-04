@@ -1,0 +1,393 @@
+---
+layout: layouts/post.njk
+hero: /images/posts/chromeextensions.png
+thumb: /images/posts/chromeextensions_tn.png
+title: "Unit Testing Beginner's Guide - Part 1 - Testing Functions"
+date: 2017-06-27T13:44:40+03:00
+tags: [ "Jest" ]
+summary: "Testing should be simple. But if you're just starting out it can be a bit overwhelming
+deciding which test framework you should use, how to set it up, what are the techniques
+of testing the various components you will be developing."
+---
+
+So, you've decided to start unit testing your code but don't know where to start
+or what are the best practices around that.
+
+In this series I'm planning in walking you through in unit testing land,
+starting with the basic principles and finishing up with advanced techniques that you might did not
+know up until now
+
+Buckle up and let's get going!
+
+For this series you'll need a few things installed in order to follow along:
+
+- [NodeJS](https://nodejs.org/en/download/) - You'll probably have this installed already
+- [Jest](http://facebook.github.io/jest/) - It's the unit testing runner we will be using
+
+To get us off the ground:
+
+1. Ensure that you have NodeJS installed: `node -v`. Ensure the version reported is >= 6.x. If not please install [it](https://nodejs.org/en/download/)
+2. Create a directory somewhere on disk named `unit-testing-functions`
+3. Switch to it `cd unit-testing-functions` and initialize a Javascript project in it: `npm init --yes`
+4. Now you should have a `package.json` file that folder
+5. Install Jest: `npm i jest --save-dev`
+6. You can verify that Jest was installed successfully by running: `./node_modules/.bin/jest -v`.
+
+Ok, with the setup out of the way, into the actual unit testing.
+
+We will be starting up with simple functions, and, as we progress in the series of unit testing Javascript, we will move on to more complicated data structures and setups.
+
+### The code we will be testing
+
+Let's begin by defining the simplest function possible:
+
+Create a file `sum.js` in the `unit-testing-functions` folder: `touch sum.js` or create it manually.
+
+Define in it the following function:
+
+```js
+module.exports = function sum(a, b) {
+  return a + b;
+};
+```
+
+This will be the function we want to test.
+The idea behind unit testing it is to feed as many input types as possible in order to cover
+all conditional branches.
+
+Right now, there aren't any conditional branches, but we should variate our inputs to the function
+to ensure it continues to run correctly even if the code is changed in the future.
+
+### Understanding the test file
+
+Each code file that you write should have a corresponding `Spec` file, which usually resides next
+to the code file. As such: `touch sum.spec.js` or create the file manually.
+
+In the spec file we will be putting our tests.
+
+Jest and also other testing frameworks organize the tests, for easier management and reporting,
+into test suites, each suite consisting of multiple individual tests.
+
+Let's add our very first test (in `sum.spec.js` ):
+
+```js
+const sum = require("./sum.js");
+
+describe("sum suite", function() {
+  test("Should add 2 positive numbers together and return the result", function() {
+    expect(sum(1, 2)).toBe(3);
+  });
+});
+```
+
+If this seems intimidating or unclear, don't worry, it will make sense in a few.
+
+So, what's going on here ?
+
+```js
+const sum = require("./sum.js");
+```
+
+We are importing the function we want to test. We are using for now `module.exports` for exporting a
+function from a module and `require` to import it in other file.
+This works because Jest runs our test on NodeJS which recognizes these constructs.
+
+This code does NOT run in a browser as it is, without using a module bundler like [Webpack](https://webpack.js.org/) , but this is the scope of another article.
+
+Next, we define the test suite, which will hold all of our tests related to the `sum` function:
+
+```js
+describe("sum suite", function() {
+  // Define here the individual tests
+});
+```
+
+And finally we add our very first test( we will be adding more tests in this suite next):
+
+```js
+test("Should add 2 positive numbers together and return the result", function() {
+  expect(sum(1, 2)).toBe(3);
+});
+```
+
+The part that might still be unclear is:
+
+```js
+expect(sum(1, 2)).toBe(3);
+```
+
+This is the building block of any unit test, and it's called an _assertion_.
+An assertion is basically a way of expressing expectations on how something should behave. In our
+case we expect that calling `sum(1,2)` should return a result of `3` .
+
+Also, `toBe` is called a _matcher_ . There are multiple matchers in Jest, each aiding with a specific aspect of verification: some test if objects are equal etc.
+
+So, where did `expect` come from ? We didn't import it or pulled it from anywhere.
+
+As it turns out Jest makes available, as global variables, the `describe`, `test`, `expect` and a few other functions so you don't need to import them. You can checkout the full list [here](https://facebook.github.io/jest/docs/api.html).
+
+### Time to run our first unit test
+
+You can run the unit tests by invoking Jest directly in the folder we are working in(`unit-testing-functions`): `./node_modules/.bin/jest`.
+
+A better, more cross-platform way, is to define a NPM script to run the tests. As such, open up `package.json` file and edit the following section:
+
+```js
+ "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+```
+
+Make it read like:
+
+```js
+ "scripts": {
+    "test": "jest"
+  }
+```
+
+Observe that we didn't had to specify the full Jest path as before, since NPM knows how to look up
+binary dependencies and it searches also in `./node_modules/.bin/` .
+
+Now, run the NPM script: `npm run test`;
+
+You should see a successful output like:
+
+```js
+ PASS  ./sum.spec.js
+  sum suite
+    ✓ Should add 2 positive numbers together and return the result (6ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   0 total
+Time:        1.089s
+Ran all test suites.
+```
+
+Awesome, your first test is passing!
+
+Now, fast forward a few weeks/months, and assume that a fellow developer is working on the `sum` function and decides to change it's implementation as follows:
+
+```js
+module.exports = function sum(a, b) {
+  return a - b;
+};
+```
+
+Please change it also, just for the sake of demonstration.
+Now, this fellow developer, tries to run the unit tests before commiting the changes: `npm run test`.
+
+And the output would be around the following line:
+
+```js
+ FAIL  ./sum.spec.js
+  ● sum suite › Should add 2 positive numbers together and return the result
+
+    expect(received).toBe(expected)
+
+    Expected value to be (using ===):
+      3
+    Received:
+      -1
+
+      at Object.<anonymous> (sum.spec.js:5:27)
+      at Promise.resolve.then.el (node_modules/p-map/index.js:42:16)
+      at process._tickCallback (internal/process/next_tick.js:103:7)
+
+  sum suite
+    ✕ Should add 2 positive numbers together and return the result (9ms)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 1 total
+Snapshots:   0 total
+Time:        1.148s
+Ran all test suites.
+
+```
+
+By examining the above output, one can very easily conclude:
+
+- Something is failing at _line 5_, in `sum.spec.js file` , as indicated by the first line in the stack trace: `at Object.<anonymous> (sum.spec.js:5:27)` .
+- By examining the mentioned line one can conclude that `expect(sum(1,2)).toBe(3);` is the failing line.
+- By examining the console output we can see that the _expected_ value is '3' while the _received_ value is '-1'.
+
+As such, unit tests are both a way to prevent regressions and act as living documentation.
+
+At this point , please change back `a-b` to `a+b` .
+
+### Expanding the unit testing coverage
+
+We have our first test and altought it covers all of the branches in the sum function, there are lots
+of scenarios that we haven't tested.
+
+Think about the function under tests, not only in terms of today's implementation, but also how it might evolve over time. We would like to catch cases when the function stops working , even if someone
+modifies it's implementation down the road and adds additional checks and branching.
+
+As such, let's expand the testing coverage by creating additional unit tests.
+
+Add the following code in `sum.spec.js`:
+
+```js
+const sum = require("./sum.js");
+
+describe("sum suite", function() {
+  test("Should add 2 positive numbers together and return the result", function() {
+    expect(sum(1, 2)).toBe(3);
+  });
+
+  test("Should add 2 negative numbers together and return the result", function() {
+    expect(sum(-1, -2)).toBe(-3);
+  });
+
+  test("Should add 1 positive and 1 negative numbers together and return the result", function() {
+    expect(sum(-1, 2)).toBe(1);
+  });
+
+  test("Should add 1 positive and 0 together and return the result", function() {
+    expect(sum(0, 2)).toBe(2);
+  });
+
+  test("Should add 1 negative and 0 together and return the result", function() {
+    expect(sum(0, -2)).toBe(-2);
+  });
+});
+```
+
+We just added 4 additional test cases besides the initial one. Note how we are varying the inputs to
+the function and how we are trying to hit edge cases also(eg by adding with 0).
+
+Run the unit tests again: `npm run test` . You should see something like:
+
+```js
+PASS  ./sum.spec.js
+  sum suite
+    ✓ Should add 2 positive numbers together and return the result (6ms)
+    ✓ Should add 2 negative numbers together and return the result (1ms)
+    ✓ Should add 1 positive and 1 negative numbers together and return the result (1ms)
+    ✓ Should add 1 positive and 0 together and return the result (1ms)
+    ✓ Should add 1 negative and 0 together and return the result
+
+Test Suites: 1 passed, 1 total
+Tests:       5 passed, 5 total
+Snapshots:   0 total
+Time:        0.842s, estimated 1s
+Ran all test suites.
+```
+
+### Dealing with exceptions in unit tested functions
+
+While we did a nice job at expanding the unit testing coverage, but tests could do so much more for us.
+
+If we think really good about additional scenarios we haven't covered yet, can you come up with a few
+that aren't properly handled currently by the code ?
+
+How about passing inputs other than numbers ?
+
+Edit `sum.spec.js` and add the following new test in the suite:
+
+```js
+test("Should raise an error if one of the inputs is not a number", function() {
+  expect(() => sum("0", -2)).toThrowError("Both arguments must be numbers");
+});
+```
+
+So what's going on here ?
+
+First of all, we are wrapping the code under test, within an anonymous function:
+`() => sum("0",-2)` .
+
+This is needed, because any uncaught exception that is being thrown while testing a piece of code triggers the a test failure.
+
+In our case we expect that `sum` is throwing an exception when the arguments are not numbers, but we
+don't want this to be considered a test failure: on the contrary this is expected behavior and should be considered a passing test.
+
+As such, we wrap it up in an anonymous function, and introduce a new _matcher_ : `toThrowError`( https://facebook.github.io/jest/docs/expect.html#tothrowerror ).
+
+Run the unit tests( `npm run test` ) and observe the following failure:
+
+```js
+ FAIL  ./sum.spec.js
+  ● sum suite › Should raise an error if one of the inputs is not a number
+
+    expect(function).toThrowError(string)
+
+    Expected the function to throw an error matching:
+      "Both arguments must be numbers"
+    But it didn't throw anything.
+
+      at Object.<anonymous> (sum.spec.js:25:36)
+      at Promise.resolve.then.el (node_modules/p-map/index.js:42:16)
+      at process._tickCallback (internal/process/next_tick.js:103:7)
+
+```
+
+_Resist_ the temptation to modify the code under test at this point.
+
+The test is saying pretty clearly what is wrong with the implementation:
+
+- It had expected that the function 'to throw an error matching:"Both arguments must be numbers"' . What it actually happened is that 'it didn't throw anything'.
+- To see which function it is talking about and which arguments were using for invoking it follow the stack trace: `at Object.<anonymous> (sum.spec.js:25:36)` . At the indicated line and column you should
+  see the assertion `expect(() => sum("0",-2)).toThrowError('Both arguments must be numbers')`.
+
+Ok, so our unit test just uncovered a bug. It is time to fix it up!
+
+Modify the code under test(in `sum.js` ) to account for wrong input types, and throw an appropriate
+exception in this case:
+
+```js
+module.exports = function sum(a, b) {
+  if (typeof a !== "number" || typeof b !== "number") {
+    throw new Error("Both arguments must be numbers");
+  }
+  return a + b;
+};
+```
+
+Run the unit tests again ( `npm run test` ) and observe that all tests are passing. Good job!
+
+Please note: we added a unit tests first, _before_ jumping in and adding code, that showed the `sum` function not operating correctly under some conditions.
+
+We saw the test FAILING, we added code to fix the bug and watched the test PASSING.
+
+You should always follow this process when developing new code/fixing the existing one!
+
+### Adding some productivity into the mix
+
+By this time you might have noticed that we constantly have to re-run our unit tests
+each time we add code or update the unit tests themselves.
+
+This can quickly become annoying and hinder the actual development workflow. Fortunately, most test runners, allow to setup the file watch mode, which re-runs the unit tests when files on disk change.
+
+To set that up modify `package.json` , the 'scripts' section to read as:
+
+```js
+ "scripts": {
+    "test": "jest --watch"
+  }
+```
+
+Run the unit tests: `npm run test` .
+
+Observe that now the test runner doesn't exit and instead waits for commands.
+
+Modify either the `sum.js` or `sum.spec.js` files and watch the tests being re-run!
+
+### Unit testing functions - best practices summary
+
+- Install testing dependencies locally within the project, not globally(eg we installed Jest in ./node_modules not globally). This allows us to work on multiple projects at the same time and have separate upgrade cycles for each project. Also it makes sharing our project settings with others a breeze.
+- Define a NPM script for running the unit tests and you don't have to remember anymore the exact test command. Also it abstracts away the actual unit testing runner used for running the tests.
+- Each code file should have a corresponding `.spec` file, usually living along side the code file. This enables someone to quickly glance at the tests associated with a component and get an understanding about how it works.
+- The text descriptions in `test` clauses are incredibly important: make sure they're super clear, readable and that they pinpoint what is the expected behavior under which conditions. They typically
+  should follow the template: 'Should [what's to be expected] when [under which circumstances]'.
+- A unit test should exercise one behaviour and only one. Do NOT cover multiple scenarios within the same unit test. Instead create it's own `test` section, clearly named and described and exercise that scenario.
+- Always write an initially FAILING test before adding code that implements/fixes some behavior!
+
+This concludes our introduction to unit testing.
+
+Please stayed tuned for the upcoming articles, continuing on the unit testing functions series with
+more advanced concepts!
+
+How did you find this article ? What was unclear, what we could have explained better ? Leave your thoughts below.
+
+**Update**: Checkout [Unit Testing Beginners Guide - Part 2 - Spying and fake timers]({{< relref "post/unit-testing-beginners-guide-spying-fake-timers.md" >}} )

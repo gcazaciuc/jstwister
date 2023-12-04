@@ -1,0 +1,209 @@
+---
+layout: layouts/post.njk
+hero: /images/posts/chromeextensions.png
+thumb: /images/posts/chromeextensions_tn.png
+date: 2020-04-07T12:03:52+03:00
+title: "Part 1 - React and the virtual DOM"
+tags: ["Learning React from inside out", "react series"]
+summary: "You'll be hearing a lot about DOM and Virtual DOM when talking about React. In this first part we figure out what these are and establish the first API and data structures we'll be coding against."
+---
+
+> > In case you've missed it, we will be building a fully fledged React clone library. The goal is to attain a very deep understanding of React mechanics, limitations and best practices all while having fun building it from scratch!
+
+#### Want to edit the code live and follow along with video ? Checkout my [Scrimba recording](https://scrimba.com/c/ckRGQLCD)!
+
+It's important to understand what we're building before jumping on the coding wagon. So let's see what **React** and our custom library are all about.
+
+**React is about creating and updating DOM elements in response to data changes.**
+
+### The mighty DOM
+
+A browser takes in a HTML document and tries it's best at displaying it.
+
+A HTML document is **nothing more that a string of text** , but with a meaning for the browser reading it.
+
+So the browser takes that string of text, parses it to figure out what the instructions in the HTML document are and shows the contents of the HTML document in a visual way.
+
+### Changing HTML documents after being displayed
+
+But what happens if you need to change the document after it has been displayed ?
+
+Like updating the UI with new data is received asynchrounously from the server, or styling elements dynamically and many others.
+
+This is where the concept of DOM kicks in: while parsing the HTML document the browser also constructs a hierarchical representation of the tags and attributes in the HTML document and offers an API to manipulate that data structure.
+
+But doing these updates manually is error prone and cumbersome...
+
+```js
+const div = document.createElement("div");
+div.classList.add("awesome");
+div.setAttribute("id", "column-1");
+document.querySelector(".abc").appendChild(div);
+```
+
+- How do you create large DOM structures using the above ?
+- How do you avoid thrasing the DOM while inserting all these elements ?
+- What if the element with the specified class name does not exist ?
+- What if the class is already added to the element in question ?
+
+And many others...
+
+### A different way of manipulating the DOM
+
+Around 2012-2013 a new idea came around. Instead of doing the updates to the DOM manually, like above, what if another piece of code was responsible for manipulating the DOM based on some instructions received from the programmer.
+
+So the basic idea is that the developer will provide to a library a description of **how it wants the DOM to be** and the library will take care of the nitty gritty details fo turning that description into REAL DOM nodes.
+
+The dom library would also need to know where to do these updates, basically what is the root node under which it would operate.
+
+Conceptually things look something like this:
+
+```js
+const domDescription = ....
+
+domLibrary.render(domDescription, whereTo)
+```
+
+So the `domDescription` above is what is affectionally known as **Virtual DOM**.
+
+It's just a data structure describing fully how the DOM needs to look.
+Then that data structure is handed off to the `domLibrary` to actually operate the changes on the real dom.
+
+### So we begin
+
+Instead of `domLibrary` let's call it `react-dom` and the `domDescription` let's call it a virtual DOM :).
+
+We will begin by first creating a file called `react-dom` that exports a `render` method.
+
+As discussed the purpose of render is to take in a dom description and a target container and make sure the real DOM in that target container exactly matches the dom description.
+
+_File: react-dom.js_
+
+```js
+export const render = (virtualDOM, node) => {};
+```
+
+And we will be using it like that:
+
+_File: index.js_
+
+```js
+import { render } from 'react-dom';
+
+const virtualDOM = ....
+
+render(virtualDOM, document.getElementById("app"));
+```
+
+Now that we have the basic stub for the DOM library in place we really need to define what the `virtualDOM` variable actually is.
+
+### Describing the real DOM using Virtual DOM
+
+Let's take a super simple HTML document:
+
+```html
+<div class="awesome" id="abc">
+  <div class="column" id="column-1">Hi</div>
+</div>
+```
+
+**How would we go about describing this HTML document using nothing more than Javascript ?**
+
+We need to describe a few things:
+
+1. what the tag name is of an element
+2. what the attributes are and their values
+3. what are the children of an element
+
+Being Javascript developers the data structure choice is obvious: just use an `object` for describing the pieces of information mentioned above.
+
+For the sake of terminology consistency we we'll be using the name `props` for referring to the attributes of a certain element.
+
+We could use something like this for describing, in Javascript, the top level `div` element above:
+
+```js
+const element = {
+  type: "div",
+  props: { id: "abc", class: "awesome" },
+  children: [
+    ....
+  ],
+};
+```
+
+So an object with 3 keys:
+
+1. `type` has a string value and represent the tag name of the element
+2. `props` is an object that acts like a bag of properties and values of the tag.
+3. `children` is an array of child elements. More details below.
+
+In that vein this is how the child `div` would be described:
+
+```js
+const secondDiv = {
+  type: "div",
+  props: { id: "column-1", class: "column" },
+  children: [
+    ....
+  ],
+};
+```
+
+### Expressing parent-child relationships in Virtual DOM
+
+A tags children can be of 2 types:
+
+1. **A plain text**. Eg 'Hi' is a child of the following div: `<div>Hi</div>`
+2. **Another tag(s)**: `<div><p>Hello</p></div>`
+
+So for plain text children we can just use the text as a child:
+
+```js
+const secondDiv = {
+  type: "div",
+  props: { id: "column-1", class: "column" },
+  children: ["Hi"],
+};
+```
+
+For children consisting of other tags we can just use the virtual DOM description object as a child:
+
+```js
+const element = {
+  type: "div",
+  props: { id: "abc", class: "awesome" },
+  children: [
+    {
+      // This is the secondDiv object from above
+      type: "div",
+      props: { id: "column-1", class: "column" },
+      children: ["Hi"],
+    },
+  ],
+};
+```
+
+So for our example above the virtual DOM is the following object:
+
+```js
+{
+  type: "div",
+  props: { id: "abc", class: "awesome" },
+  children: [
+    {
+      // This is the secondDiv object from above
+      type: "div",
+      props: { id: "column-1", class: "column" },
+      children: ["Hi"],
+    },
+  ],
+};
+```
+
+### What's next
+
+Start implementing the `render` method to take in the above object and a DOM node container and **create the full real DOM structure**.
+
+Head over to [React render - creating DOM elements](/post/implementing-react-render-method/) part.
+
+See ya soon!

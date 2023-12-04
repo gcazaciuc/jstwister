@@ -1,0 +1,274 @@
+---
+layout: layouts/post.njk
+hero: /images/posts/chromeextensions.png
+thumb: /images/posts/chromeextensions_tn.png
+date: 2020-04-08T17:03:52+03:00
+title: "Part 3 - ReactJS clone reconciliation"
+tags: ["Learning React from inside out", "react series"]
+summary: "Now it's time to step it up a little bit and add some intelligence to the rendering algoritm. Instead of blindly re-creating the DOM each time, it will become smarter and apply only the changes that are different"
+---
+
+If you wanna learn about ReactJS virtual DOM reconciliation there's probably no better way than actually building it yourself.
+
+**Please [follow me on Twitter](https://twitter.com/jstweetster) as I announce when new parts and videos are being published!**
+
+Before moving forward make sure you've read the [intro to the series](/post/learning-react-from-inside-out-course-intro) and the previous post on [ReactJS clone - Creating DOM elements](/post/implementing-react-render-method)
+
+### React virtual DOM re-conciliation
+
+**Reconciliation** in React is the process in which the real DOM is brought in line with the virtual DOM.
+
+By reconciliation React figures out only the needed changes(the difference) that needs to be applied to the current DOM structure to make it identical to the virtual DOM.
+
+### A small change to the virtual DOM object
+
+Before we begin with re-concilation algorithm there is a thing we need to change regarding our virtual DOM structure to bring it in line with React.
+
+As discussed in section [React and the Virtual DOM](/post/react-and-virtual-dom) the current virtual DOM structure we're working with is:
+
+```js
+const virtualDOM = {
+  type: "div",
+  props: { id: "id1", class: "abc" },
+  children: [
+    {
+      type: "div",
+      props: { class: "child" },
+      children: [],
+    },
+  ],
+};
+```
+
+We will be changing it so that the **children** key is part of the `props` object:
+
+```js
+const virtualDOM = {
+  type: "div",
+  props: {
+    id: "id1",
+    class: "abc",
+    children: [
+      {
+        type: "div",
+        props: { class: "child" },
+        children: [],
+      },
+    ],
+  },
+};
+```
+
+### This part goals
+
+In this part our end goal is to get the following code working properly without it having to fully re-create the real DOM each time:
+
+```js
+const virtualDOM = {
+  type: "div",
+  props: { id: "id1", class: "abc" },
+  children: [
+    {
+      type: "div",
+      props: { class: "child" },
+      children: [],
+    },
+  ],
+};
+const anotherVirtualDOM = {
+  type: "div",
+  props: { id: "id2", class: "xyz abc" },
+  children: [
+    {
+      type: "p",
+      props: { class: "child" },
+      children: [],
+    },
+  ],
+};
+render(virtualDOM, document.getElementById("app"));
+render(anotherVirtualDOM, document.getElementById("app"));
+```
+
+Notice how between the 2 renders, the root `div` changes it's id and gets an additional class added.
+
+Also the child `div` is transformed into a `p` tag.
+
+We need to create an algorithm capable of identifying what has changed between 2 virtual trees and output that information as a _list of changes_.
+
+That list of changes is then used by the `render` function in `react-dom.js` file to figure out how it should update the real DOM.
+
+Also `render` would need to know on which real DOM node the changes will need to be performed.
+
+### Refactoring the DOM elements creation
+
+Up until now we've added support for rendering, based on an VDOM object a real DOM node.
+
+Let's begin by refactoring the current code and start adding support to update the DOM based on a `change` object that contains the instructions on **how to update the DOM**.
+
+In `react-dom.js` start by adding a new, internal function, called `updateDOM` that looks somewhat like this:
+
+```js
+const updateDOM = (change) => {};
+```
+
+Also, the `render` method needs to change so that:
+
+1. It hands off the current virtual DOM and the next virtual DOM to a function capable of figuring out the differences between the 2 virtual DOMs
+2. For each change detected at step 1) it defers updating the DOM to the `updateDOM` function. This is needed so we can support multiple types of updates not just creating new DOM elements
+
+To do that we will be introducing a new variable that holds the current virtual DOM.
+
+At the top of the `react-dom.js` file add:
+
+```js
+// We will be mutating this variable. It starts out as null
+let currentVirtualDOM = null;
+```
+
+Then change the `render` method to look something like:
+
+```js
+const render = (nextVirtualDOM, node) => {
+  if (!currentVirtualDOM) {
+    // This is the first render ever, empty the node container before rendering
+    node.innnerHTML = null;
+  }
+  // Detect the changes between the 2 virtual DOM trees
+  const changes = virtualDOMDiff(currentVirtualDOM, nextVirtualDOM, node);
+  // For each change update the REAL DOM
+  changes.forEach(updateDOM);
+  // Make the next virtual DOM the current one
+  currentVirtualDOM = nextVirtualDOM;
+};
+```
+
+I believe the inline comments are pretty self-explanatory. Don't worry if it's not yet clear how `virtualDOMDiff` is implemented or how `updateDOM` works.
+
+### Types of DOM operations
+
+Let's identify first which are the DOM operations that we could perform.
+
+1. Add new DOM nodes
+
+When a certain node is missing from the old virtual DOM but it's present in the new one it should be created.
+
+The change should obviously specify the type, the virtual DOM object and the parent node into which the newly created node will be inserted(`domContextNode`)
+
+```js
+{ type: 'create-node', vdom: virtualDOMNode, domContextNode }
+```
+
+2. Remove node
+
+Whenever a node was present in the old virtual DOM but is nowhere to be found in the new virtual DOM, then it must be removed from the real DOM.
+
+The event should at the very minimum specify the type, the DOM node to be removed(`node` property) and the parent of the node to be removed(`domContextNode` property)
+
+```js
+{
+  type: "remove-node", node, domContextNode;
+}
+```
+
+3. Adding and updating props prop
+
+When a virtual DOM node contains a prop that is not present on the same node from the old virtual DOM.
+Or when the property value has changed between 2 renders.
+
+At minimum it would contain the `type`, the name of the prop added or updated(`prop`), the new value of the prop(`value`) and the node on which the property
+should be set or updated(`domContextNode`).
+
+```js
+{type: 'change-prop', prop: 'name', value: 'prop value', domContextNode }
+```
+
+3. Removing a prop
+
+When a prop does exist in an old virtual DOM but it does not exist on the new one
+the property needs to be removed from DOM.
+
+At a minimum the change should contain the `type`, the name of the property to be removed(`prop` field) and the DOM node from which the property should be removed(`domContextNode` field).
+
+```js
+{type: 'remove-prop', prop: 'name' domContextNode }
+```
+
+That pretty much covers it.
+
+### Processing changes
+
+Now that we have defined the possible type of DOM changes it's time to actually code a function that takes in a change and applies it to the real DOM.
+
+Just _assume_ that the change objects are generated already for now. We will be coding that part shortly.
+
+Let's code the `updateDOM` function to handle all these changes:
+
+```js
+const updateDOM = (change) => {
+  switch (change.type) {
+    case "create-node":
+      change.domContextNode.appendChild(createDOMElement(change.vdom));
+      break;
+    case "remove-node":
+      change.domContextNode.removeChild(change.node);
+      break;
+    case "change-prop":
+      change.domContextNode.setAttribute(change.prop, change.value);
+      break;
+    case "remove-prop":
+      change.domContextNode.removeAttribute(change.prop);
+      break;
+    default:
+      break;
+  }
+};
+```
+
+So for each type of change we apply the changes to the real DOM using the regular DOM API.
+
+### Figuring out changes between two virtual DOMs
+
+Now that we have a function capable of actually applying a change to the real DOM
+is time to actually generate the list of changes.
+
+We will delegate this responsability to a function named `virtualDOMDiff`.
+
+The `virtualDOMDiff` function will act as an aggregator of all of the detected changes.
+
+It's also probably a good time to put this re-conciliation logic into it's own file.
+
+So go ahead and create a `dom-reconciliation.js` file and put the definition of `virtualDOMDiff` in it:
+
+**File: dom-reconciliation.js**
+
+```js
+const virtualDOMDiff = (virtualDOM, anotherVirtualDOM) => {
+  const differences = [];
+  // In here goes the diffing between virtualDOM and anotherVirtualDOM
+  return differences;
+};
+```
+
+The function takes in the 2 virtual DOMs it needs to compare and outputs a list(an array) of changes between the 2 trees.
+
+A _change_ should be able to fully describe an operation that needs to be performed
+on a current DOM element so it is brought in line with the latest virtual DOM.
+
+There are 3 broad categories of things that can change between 2 virtual DOMs:
+
+1. Tag changes
+2. Detecting changed props
+3. Children changes
+
+In the spirit of **Single Responsibility Principle**, we will be creating a function to deal with each of these type of changes.
+
+### Conclusion and next steps
+
+We need to get smarted about hitting the real DOM each and every time the virtual DOM is updated.
+
+As such we've began creating a smarter algorithm capable of surgically applying DOM changes based on the differences in virtual DOMs.
+
+Next we will be implementing the part of the algorithm capable of detecting when a tag type has changed in any branch of the virtual DOM tree.
+
+See the post [ReactJS clone reconciliation algorithm - Detecting changed tags](/post/react-dom-reconciliation-detecting-tag-changes)!
