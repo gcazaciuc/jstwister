@@ -1,9 +1,7 @@
 ---
-layout: layouts/post.njk
-hero: /images/posts/chromeextensions.png
-thumb: /images/posts/chromeextensions_tn.png
+imageUrl: https://picsum.photos/500/300
 title: "Unit Testing Beginners Guide - Part 3 - Mock Http And Files access"
-date: 2017-07-06T12:03:52+03:00
+datePublished: "2017-07-06"
 tags: ["Jest", "mocking"]
 summary: "We've all encountered at some point code that needs to do some API calls or read from the file system. It's a super bad idea to actually let the code make the real http requests or read from the file system during unit test. Let's see why and how we can get around these kind of issues."
 ---
@@ -19,23 +17,23 @@ Let's suppose that we have a piece of code that use `XMLHttpRequest` to perform 
 ```js
 const API_ROOT = "http://jsonplaceholder.typicode.com";
 class API {
-  getPosts() {
-    return new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-      xhr.open("GET", `${API_ROOT}/posts`);
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-          const resp = JSON.parse(xhr.responseText);
-          if (resp.error) {
-            reject(resp.error);
-          } else {
-            resolve(resp);
-          }
-        }
-      };
-      xhr.send();
-    });
-  }
+    getPosts() {
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", `${API_ROOT}/posts`);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    const resp = JSON.parse(xhr.responseText);
+                    if (resp.error) {
+                        reject(resp.error);
+                    } else {
+                        resolve(resp);
+                    }
+                }
+            };
+            xhr.send();
+        });
+    }
 }
 
 export default new API();
@@ -53,12 +51,12 @@ What we want to avoid is actually making that API call in our tests.
 
 **Why ?**
 
-- because the resource called might not be available in the environment the test is run
-- because we have a third party dependency(the API endpoint) which makes the test prone to failure
-- because the tests will run much slower
-- because the endpoint call might have un-intended consequences(eg writing to DB) that requires cleanup
-- because you no longer have an _unit test_. Instead we would be going towards the functional tests area
-- and finally, because the resource being called might perform expensive operations in terms of time and complexity
+-   because the resource called might not be available in the environment the test is run
+-   because we have a third party dependency(the API endpoint) which makes the test prone to failure
+-   because the tests will run much slower
+-   because the endpoint call might have un-intended consequences(eg writing to DB) that requires cleanup
+-   because you no longer have an _unit test_. Instead we would be going towards the functional tests area
+-   and finally, because the resource being called might perform expensive operations in terms of time and complexity
 
 As you can see, there are plenty of reasons for which we want to avoid working directly in unit tests with actual network requests.
 
@@ -73,28 +71,28 @@ Let's have a naive attempt at creating the very first test( suppose we have an `
 ```js
 import API from "./API.js";
 const mockXHR = {
-  open: jest.fn(),
-  send: jest.fn(),
-  readyState: 4,
-  responseText: JSON.stringify([
-    { title: "test post" },
-    { tile: "second test post" }
-  ])
+    open: jest.fn(),
+    send: jest.fn(),
+    readyState: 4,
+    responseText: JSON.stringify([
+        { title: "test post" },
+        { tile: "second test post" },
+    ]),
 };
 const oldXMLHttpRequest = window.XMLHttpRequest;
 window.XMLHttpRequest = jest.fn(() => mockXHR);
 
-describe("API integration test suite", function() {
-  test("Should retrieve the list of posts from the server when calling getPosts method", function(done) {
-    const reqPromise = API.getPosts();
-    mockXHR.onreadystatechange();
-    reqPromise.then(posts => {
-      expect(posts.length).toBe(2);
-      expect(posts[0].title).toBe("test post");
-      expect(posts[1].title).toBe("second test post");
-      done();
+describe("API integration test suite", function () {
+    test("Should retrieve the list of posts from the server when calling getPosts method", function (done) {
+        const reqPromise = API.getPosts();
+        mockXHR.onreadystatechange();
+        reqPromise.then((posts) => {
+            expect(posts.length).toBe(2);
+            expect(posts[0].title).toBe("test post");
+            expect(posts[1].title).toBe("second test post");
+            done();
+        });
     });
-  });
 });
 ```
 
@@ -102,13 +100,13 @@ Let's understand what happens here, step by step:
 
 ```js
 const mockXHR = {
-  open: jest.fn(),
-  send: jest.fn(),
-  readyState: 4,
-  responseText: JSON.stringify([
-    { title: "test post" },
-    { tile: "second test post" }
-  ])
+    open: jest.fn(),
+    send: jest.fn(),
+    readyState: 4,
+    responseText: JSON.stringify([
+        { title: "test post" },
+        { tile: "second test post" },
+    ]),
 };
 ```
 
@@ -138,15 +136,15 @@ mockXHR.onreadystatechange();
 Basically just call the API and then simulate that the response arrived by calling `onreadystatechange`. When `onreadystatechange` is invoked we are actually invoking the state changed callback that is set within `Api.js`:
 
 ```js
-xhr.onreadystatechange = function() {
-  if (xhr.readyState === 4) {
-    const resp = JSON.parse(xhr.responseText);
-    if (resp.error) {
-      reject(resp.error);
-    } else {
-      resolve(resp);
+xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+        const resp = JSON.parse(xhr.responseText);
+        if (resp.error) {
+            reject(resp.error);
+        } else {
+            resolve(resp);
+        }
     }
-  }
 };
 ```
 
@@ -170,14 +168,14 @@ There are several improvements we can make to the approach, that will make it mo
 First of all, let's create a factory function for mock XHR objects that allows us to create new mock XHRs very easily and to, optionally, specify the response of the object.
 
 ```js
-const createMockXHR = responseJSON => {
-  const mockXHR = {
-    open: jest.fn(),
-    send: jest.fn(),
-    readyState: 4,
-    responseText: JSON.stringify(responseJSON || {})
-  };
-  return mockXHR;
+const createMockXHR = (responseJSON) => {
+    const mockXHR = {
+        open: jest.fn(),
+        send: jest.fn(),
+        readyState: 4,
+        responseText: JSON.stringify(responseJSON || {}),
+    };
+    return mockXHR;
 };
 ```
 
@@ -186,33 +184,33 @@ Next up, let's make a new XHR object for each unit test. When unit testing, the 
 The actual test suite will look like this:
 
 ```js
-describe("API integration test suite", function() {
-  const oldXMLHttpRequest = window.XMLHttpRequest;
-  let mockXHR = null;
+describe("API integration test suite", function () {
+    const oldXMLHttpRequest = window.XMLHttpRequest;
+    let mockXHR = null;
 
-  beforeEach(() => {
-    mockXHR = createMockXHR();
-    window.XMLHttpRequest = jest.fn(() => mockXHR);
-  });
-
-  afterEach(() => {
-    window.XMLHttpRequest = oldXMLHttpRequest;
-  });
-
-  test("Should retrieve the list of posts from the server when calling getPosts method", function(done) {
-    const reqPromise = API.getPosts();
-    mockXHR.responseText = JSON.stringify([
-      { title: "test post" },
-      { title: "second test post" }
-    ]);
-    mockXHR.onreadystatechange();
-    reqPromise.then(posts => {
-      expect(posts.length).toBe(2);
-      expect(posts[0].title).toBe("test post");
-      expect(posts[1].title).toBe("second test post");
-      done();
+    beforeEach(() => {
+        mockXHR = createMockXHR();
+        window.XMLHttpRequest = jest.fn(() => mockXHR);
     });
-  });
+
+    afterEach(() => {
+        window.XMLHttpRequest = oldXMLHttpRequest;
+    });
+
+    test("Should retrieve the list of posts from the server when calling getPosts method", function (done) {
+        const reqPromise = API.getPosts();
+        mockXHR.responseText = JSON.stringify([
+            { title: "test post" },
+            { title: "second test post" },
+        ]);
+        mockXHR.onreadystatechange();
+        reqPromise.then((posts) => {
+            expect(posts.length).toBe(2);
+            expect(posts[0].title).toBe("test post");
+            expect(posts[1].title).toBe("second test post");
+            done();
+        });
+    });
 });
 ```
 
@@ -220,12 +218,12 @@ Also, we are cleaning up after ourselves, after each test, by mocking the `XMLHt
 
 ```js
 beforeEach(() => {
-  mockXHR = createMockXHR();
-  window.XMLHttpRequest = jest.fn(() => mockXHR);
+    mockXHR = createMockXHR();
+    window.XMLHttpRequest = jest.fn(() => mockXHR);
 });
 
 afterEach(() => {
-  window.XMLHttpRequest = oldXMLHttpRequest;
+    window.XMLHttpRequest = oldXMLHttpRequest;
 });
 ```
 
@@ -233,16 +231,16 @@ Another benefit that we get is that we can test out different scenarios, very ea
 Let's suppose we want to add another test, simulating the API returning an error:
 
 ```js
-test("Should return a failed promise with the error message when the API returns an error", function(done) {
-  const reqPromise = API.getPosts();
-  mockXHR.responseText = JSON.stringify({
-    error: "Failed to GET posts"
-  });
-  mockXHR.onreadystatechange();
-  reqPromise.catch(err => {
-    expect(err).toBe("Failed to GET posts");
-    done();
-  });
+test("Should return a failed promise with the error message when the API returns an error", function (done) {
+    const reqPromise = API.getPosts();
+    mockXHR.responseText = JSON.stringify({
+        error: "Failed to GET posts",
+    });
+    mockXHR.onreadystatechange();
+    reqPromise.catch((err) => {
+        expect(err).toBe("Failed to GET posts");
+        done();
+    });
 });
 ```
 
@@ -258,10 +256,10 @@ Let's assume that we have a `FileSystem` component that has a method for reading
 ```js
 import fs from "fs";
 export default class FileSystem {
-  parseJSONFile(file) {
-    const content = String(fs.readFileSync(file));
-    return JSON.parse(content);
-  }
+    parseJSONFile(file) {
+        const content = String(fs.readFileSync(file));
+        return JSON.parse(content);
+    }
 }
 ```
 
@@ -271,20 +269,20 @@ Our test suite can look like this:
 
 ```js
 jest.mock("fs", () => ({
-  readFileSync: jest.fn()
+    readFileSync: jest.fn(),
 }));
 
 import FileSystem from "./FileSystem.js";
 import fs from "fs";
 
-describe("FileSystem test suite", function() {
-  test("Should return the parsed JSON from a file specified as param", function(done) {
-    const fileReader = new FileSystem();
-    fs.readFileSync.mockReturnValue('{ "test": 1 }');
-    const result = fileReader.parseJSONFile("test.json");
-    expect(result).toEqual({ test: 1 });
-    done();
-  });
+describe("FileSystem test suite", function () {
+    test("Should return the parsed JSON from a file specified as param", function (done) {
+        const fileReader = new FileSystem();
+        fs.readFileSync.mockReturnValue('{ "test": 1 }');
+        const result = fileReader.parseJSONFile("test.json");
+        expect(result).toEqual({ test: 1 });
+        done();
+    });
 });
 ```
 
@@ -292,7 +290,7 @@ Let's go throught this step by step:
 
 ```js
 jest.mock("fs", () => ({
-  readFileSync: jest.fn()
+    readFileSync: jest.fn(),
 }));
 ```
 
@@ -302,7 +300,7 @@ In our case whenever we have `const fs = require('fs');` or `import fs from 'fs'
 
 ```js
 {
-  readFileSync: jest.fn();
+    readFileSync: jest.fn();
 }
 ```
 

@@ -1,8 +1,6 @@
 ---
-layout: layouts/post.njk
-hero: /images/posts/chromeextensions.png
-thumb: /images/posts/chromeextensions_tn.png
-date: 2020-04-08T17:03:52+03:00
+imageUrl: https://picsum.photos/500/300
+datePublished: "2020-04-08"
 title: "Part 3 - ReactJS clone reconciliation"
 tags: ["Learning React from inside out", "react series"]
 summary: "Now it's time to step it up a little bit and add some intelligence to the rendering algoritm. Instead of blindly re-creating the DOM each time, it will become smarter and apply only the changes that are different"
@@ -28,15 +26,15 @@ As discussed in section [React and the Virtual DOM](/post/react-and-virtual-dom)
 
 ```js
 const virtualDOM = {
-  type: "div",
-  props: { id: "id1", class: "abc" },
-  children: [
-    {
-      type: "div",
-      props: { class: "child" },
-      children: [],
-    },
-  ],
+    type: "div",
+    props: { id: "id1", class: "abc" },
+    children: [
+        {
+            type: "div",
+            props: { class: "child" },
+            children: [],
+        },
+    ],
 };
 ```
 
@@ -44,18 +42,18 @@ We will be changing it so that the **children** key is part of the `props` objec
 
 ```js
 const virtualDOM = {
-  type: "div",
-  props: {
-    id: "id1",
-    class: "abc",
-    children: [
-      {
-        type: "div",
-        props: { class: "child" },
-        children: [],
-      },
-    ],
-  },
+    type: "div",
+    props: {
+        id: "id1",
+        class: "abc",
+        children: [
+            {
+                type: "div",
+                props: { class: "child" },
+                children: [],
+            },
+        ],
+    },
 };
 ```
 
@@ -65,26 +63,26 @@ In this part our end goal is to get the following code working properly without 
 
 ```js
 const virtualDOM = {
-  type: "div",
-  props: { id: "id1", class: "abc" },
-  children: [
-    {
-      type: "div",
-      props: { class: "child" },
-      children: [],
-    },
-  ],
+    type: "div",
+    props: { id: "id1", class: "abc" },
+    children: [
+        {
+            type: "div",
+            props: { class: "child" },
+            children: [],
+        },
+    ],
 };
 const anotherVirtualDOM = {
-  type: "div",
-  props: { id: "id2", class: "xyz abc" },
-  children: [
-    {
-      type: "p",
-      props: { class: "child" },
-      children: [],
-    },
-  ],
+    type: "div",
+    props: { id: "id2", class: "xyz abc" },
+    children: [
+        {
+            type: "p",
+            props: { class: "child" },
+            children: [],
+        },
+    ],
 };
 render(virtualDOM, document.getElementById("app"));
 render(anotherVirtualDOM, document.getElementById("app"));
@@ -130,16 +128,16 @@ Then change the `render` method to look something like:
 
 ```js
 const render = (nextVirtualDOM, node) => {
-  if (!currentVirtualDOM) {
-    // This is the first render ever, empty the node container before rendering
-    node.innnerHTML = null;
-  }
-  // Detect the changes between the 2 virtual DOM trees
-  const changes = virtualDOMDiff(currentVirtualDOM, nextVirtualDOM, node);
-  // For each change update the REAL DOM
-  changes.forEach(updateDOM);
-  // Make the next virtual DOM the current one
-  currentVirtualDOM = nextVirtualDOM;
+    if (!currentVirtualDOM) {
+        // This is the first render ever, empty the node container before rendering
+        node.innnerHTML = null;
+    }
+    // Detect the changes between the 2 virtual DOM trees
+    const changes = virtualDOMDiff(currentVirtualDOM, nextVirtualDOM, node);
+    // For each change update the REAL DOM
+    changes.forEach(updateDOM);
+    // Make the next virtual DOM the current one
+    currentVirtualDOM = nextVirtualDOM;
 };
 ```
 
@@ -167,7 +165,7 @@ The event should at the very minimum specify the type, the DOM node to be remove
 
 ```js
 {
-  type: "remove-node", node, domContextNode;
+    type: "remove-node", node, domContextNode;
 }
 ```
 
@@ -206,22 +204,22 @@ Let's code the `updateDOM` function to handle all these changes:
 
 ```js
 const updateDOM = (change) => {
-  switch (change.type) {
-    case "create-node":
-      change.domContextNode.appendChild(createDOMElement(change.vdom));
-      break;
-    case "remove-node":
-      change.domContextNode.removeChild(change.node);
-      break;
-    case "change-prop":
-      change.domContextNode.setAttribute(change.prop, change.value);
-      break;
-    case "remove-prop":
-      change.domContextNode.removeAttribute(change.prop);
-      break;
-    default:
-      break;
-  }
+    switch (change.type) {
+        case "create-node":
+            change.domContextNode.appendChild(createDOMElement(change.vdom));
+            break;
+        case "remove-node":
+            change.domContextNode.removeChild(change.node);
+            break;
+        case "change-prop":
+            change.domContextNode.setAttribute(change.prop, change.value);
+            break;
+        case "remove-prop":
+            change.domContextNode.removeAttribute(change.prop);
+            break;
+        default:
+            break;
+    }
 };
 ```
 
@@ -244,9 +242,9 @@ So go ahead and create a `dom-reconciliation.js` file and put the definition of 
 
 ```js
 const virtualDOMDiff = (virtualDOM, anotherVirtualDOM) => {
-  const differences = [];
-  // In here goes the diffing between virtualDOM and anotherVirtualDOM
-  return differences;
+    const differences = [];
+    // In here goes the diffing between virtualDOM and anotherVirtualDOM
+    return differences;
 };
 ```
 

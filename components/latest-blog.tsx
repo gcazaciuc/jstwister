@@ -1,6 +1,5 @@
 import React from "react";
 import {
-    Box,
     SimpleGrid,
     Heading,
     Text,
@@ -8,13 +7,9 @@ import {
     Image,
     Flex,
     Stack,
-    Icon,
-    useColorModeValue,
 } from "@chakra-ui/react";
-import fs from "fs";
-import path from "path";
-import matter from "gray-matter";
 
+import { fetchBlogItems } from "@/repositories/blog-repository";
 import Link from "next/link";
 // import { FaRegClock, FaRegCalendarAlt } from "react-icons/fa";
 
@@ -32,77 +27,51 @@ const BlogItemCard: React.FC<BlogItemProps> = ({
     datePublished,
     readTime,
     title,
+    slug,
     summary: description,
 }) => {
     return (
-        <VStack
-            bg="white"
-            rounded="md"
-            boxShadow="md"
-            p={3}
-            spacing={3}
-            align="start"
-            border={"5px solid white"}
-        >
-            <Image
-                src={imageUrl}
-                alt={title}
-                borderRadius="lg"
-                m={2}
-                width="full"
-                objectFit="cover"
-                maxH={'200px'}
-            />
-            <Stack
-                direction="row"
-                alignItems="center"
-                fontSize="sm"
-                spacing={1}
+        <Link href={"/blog/" + slug} passHref key={slug}>
+            <VStack
+                bg="white"
+                rounded="md"
+                boxShadow="md"
+                spacing={3}
+                align="start"
+                border={"5px solid white"}
+                height="400px"
             >
-                {/* <Icon as={FaRegCalendarAlt} /> */}
-                <Text>{datePublished}</Text>
-                {/* <Icon as={FaRegClock} /> */}
-                <Text>{readTime}</Text>
-            </Stack>
-            <Heading size="md" fontWeight="bold">
-                {title}
-            </Heading>
-            <Text fontSize="sm" noOfLines={2}>
-                {description}
-            </Text>
-        </VStack>
+                <Image
+                    src={imageUrl}
+                    alt={title}
+                    borderRadius="lg"
+                    mb={2}
+                    width="full"
+                    objectFit="cover"
+                    maxH={"200px"}
+                />
+                <Stack
+                    direction="row"
+                    alignItems="center"
+                    fontSize="sm"
+                    spacing={1}
+                >
+                    {/* <Icon as={FaRegCalendarAlt} /> */}
+                    <Text>{datePublished}</Text>
+                    {/* <Icon as={FaRegClock} /> */}
+                    <Text>{readTime}</Text>
+                </Stack>
+                <Heading size="md" fontWeight="bold">
+                    {title}
+                </Heading>
+                <Text fontSize="sm" noOfLines={2}>
+                    {description}
+                </Text>
+            </VStack>
+        </Link>
     );
 };
 
-const fetchBlogItems = async (): Promise<BlogItemProps[]> => {
-    const blogDir = "posts/";
-
-    // 2) Find all files in the blog directory
-    const files = fs.readdirSync(path.join(blogDir));
-
-    // 3) For each blog found
-    const blogs = files
-        .map((filename) => {
-            // 4) Read the content of that blog
-            const fileContent = fs.readFileSync(
-                path.join(blogDir, filename),
-                "utf-8"
-            );
-
-            // 5) Extract the metadata from the blog's content
-            const { data: frontMatter } = matter(fileContent);
-            // 6) Return the metadata and page slug
-            return {
-                ...frontMatter,
-                imageUrl:
-                    frontMatter.imageUrl || "https://picsum.photos/200/300",
-                slug: filename.replace(".mdx", ""),
-            } as BlogItemProps;
-        })
-        .slice(0, 3);
-
-    return blogs;
-};
 const LatestFromBlog: React.FC = async () => {
     const blogItems: BlogItemProps[] = await fetchBlogItems();
 
@@ -121,7 +90,7 @@ const LatestFromBlog: React.FC = async () => {
                 left: 0,
                 right: 0,
                 bottom: 0,
-                bg: "#FBF1EF",
+                bg: "#DBE3ED",
             }}
         >
             <VStack

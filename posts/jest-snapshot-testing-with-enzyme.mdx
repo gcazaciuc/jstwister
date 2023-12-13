@@ -1,9 +1,7 @@
 ---
-layout: layouts/post.njk
-hero: /images/posts/chromeextensions.png
-thumb: /images/posts/chromeextensions_tn.png
+imageUrl: https://picsum.photos/500/300
 title: "Jest - Snapshot testing React components with Enzyme"
-date: 2017-06-26T18:39:35+03:00
+datePublished: "2017-06-26"
 tags: ["Jest", "Snapshot tests", "Enzyme"]
 summary: "Most people who use snapshot testing believe it is somehow incompatible with Enzyme. This post will show you that it's not Snapshots vs Enzyme but Snapshots & Enzyme"
 ---
@@ -30,8 +28,8 @@ import * as renderer from "react-test-renderer";
 import { CountDown } from "./CountDown";
 
 test("should render correctly", () => {
-  const tree = renderer.create(<CountDown startTime={30} />).toJSON();
-  expect(tree).toMatchSnapshot();
+    const tree = renderer.create(<CountDown startTime={30} />).toJSON();
+    expect(tree).toMatchSnapshot();
 });
 ```
 
@@ -58,8 +56,8 @@ import toJson from "enzyme-to-json";
 import { CountDown } from "./CountDown";
 
 test("should render correctly", () => {
-  const wrapper = shallow(<CountDown startTime={30} />).toJSON();
-  expect(toJson(wrapper)).toMatchSnapshot();
+    const wrapper = shallow(<CountDown startTime={30} />).toJSON();
+    expect(toJson(wrapper)).toMatchSnapshot();
 });
 ```
 

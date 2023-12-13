@@ -1,0 +1,6 @@
+pre:has(.hljs),
+.hljs {
+/* pre { */
+    color: #c9d1d9;
+    background: #282c34;
+}

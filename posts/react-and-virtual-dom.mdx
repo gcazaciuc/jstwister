@@ -1,8 +1,6 @@
 ---
-layout: layouts/post.njk
-hero: /images/posts/chromeextensions.png
-thumb: /images/posts/chromeextensions_tn.png
-date: 2020-04-07T12:03:52+03:00
+imageUrl: https://picsum.photos/500/300
+datePublished: "2020-04-07"
 title: "Part 1 - React and the virtual DOM"
 tags: ["Learning React from inside out", "react series"]
 summary: "You'll be hearing a lot about DOM and Virtual DOM when talking about React. In this first part we figure out what these are and establish the first API and data structures we'll be coding against."
@@ -41,10 +39,10 @@ div.setAttribute("id", "column-1");
 document.querySelector(".abc").appendChild(div);
 ```
 
-- How do you create large DOM structures using the above ?
-- How do you avoid thrasing the DOM while inserting all these elements ?
-- What if the element with the specified class name does not exist ?
-- What if the class is already added to the element in question ?
+-   How do you create large DOM structures using the above ?
+-   How do you avoid thrasing the DOM while inserting all these elements ?
+-   What if the element with the specified class name does not exist ?
+-   What if the class is already added to the element in question ?
 
 And many others...
 
@@ -103,7 +101,7 @@ Let's take a super simple HTML document:
 
 ```html
 <div class="awesome" id="abc">
-  <div class="column" id="column-1">Hi</div>
+    <div class="column" id="column-1">Hi</div>
 </div>
 ```
 
@@ -160,9 +158,9 @@ So for plain text children we can just use the text as a child:
 
 ```js
 const secondDiv = {
-  type: "div",
-  props: { id: "column-1", class: "column" },
-  children: ["Hi"],
+    type: "div",
+    props: { id: "column-1", class: "column" },
+    children: ["Hi"],
 };
 ```
 
@@ -170,16 +168,16 @@ For children consisting of other tags we can just use the virtual DOM descriptio
 
 ```js
 const element = {
-  type: "div",
-  props: { id: "abc", class: "awesome" },
-  children: [
-    {
-      // This is the secondDiv object from above
-      type: "div",
-      props: { id: "column-1", class: "column" },
-      children: ["Hi"],
-    },
-  ],
+    type: "div",
+    props: { id: "abc", class: "awesome" },
+    children: [
+        {
+            // This is the secondDiv object from above
+            type: "div",
+            props: { id: "column-1", class: "column" },
+            children: ["Hi"],
+        },
+    ],
 };
 ```
 

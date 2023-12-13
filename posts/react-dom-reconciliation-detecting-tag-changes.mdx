@@ -1,8 +1,6 @@
 ---
-layout: layouts/post.njk
-hero: /images/posts/chromeextensions.png
-thumb: /images/posts/chromeextensions_tn.png
-date: 2020-04-09T12:03:52+03:00
+imageUrl: https://picsum.photos/500/300
+datePublished: "2020-04-09"
 title: "Part 4 - ReactJS clone reconciliation - Detecting changed tags"
 tags: ["Learning React from inside out", "react series"]
 summary: "Now it's time to step it up a little bit and add some intelligence to the rendering algoritm. Instead of blindly re-creating the DOM each time, it will become smarter and apply only the changes that are different"
@@ -27,55 +25,55 @@ Let's define a function dedicated to figuring out tag changes.
 
 ```js
 const detectTagChanges = (
-  currentVirtualDOM,
-  nextVirtualDOM,
-  node,
-  childIdx = 0
+    currentVirtualDOM,
+    nextVirtualDOM,
+    node,
+    childIdx = 0
 ) => {
-  const differences = [];
-  // CASE 1 - If a new node was added, ie it was not present in the
-  // old virtual DOM but is specified in the new one
-  if (!currentVirtualDOM && nextVirtualDOM) {
-    differences.push({
-      type: "create-node",
-      vdom: nextVirtualDOM,
-      domContextNode: node,
-    });
-  }
-  // CASE 2 - If the node was removed in the new virtual DOM but //  was present in the old one
-  if (!nextVirtualDOM && currentVirtualDOM) {
-    differences.push({
-      type: "remove-node",
-      vdom: nextVirtualDOM,
-      domContextNode: node.childNodes[childIdx],
-    });
-  }
-
-  // If both nodes are present but the tag has changed or the text node
-  // contents has changed
-  if (currentVirtualDOM && nextVirtualDOM) {
-    // CASE 3 - Tag type changed
-    const areDifferentTypes =
-      typeof currentVirtualDOM === "object" &&
-      typeof nextVirtualDOM === "object" &&
-      currentVirtualDOM.type !== nextVirtualDOM.type;
-
-    // CASE 4 - text node strings changed
-    const areDifferentStrings =
-      typeof currentVirtualDOM === "string" &&
-      typeof nextVirtualDOM === "string" &&
-      currentVirtualDOM !== nextVirtualDOM;
-
-    if (areDifferentTypes || areDifferentStrings) {
-      differences.push({
-        type: "replace-node",
-        domContextNode: node.childNodes[childIdx],
-        vdom: nextVirtualDOM,
-      });
+    const differences = [];
+    // CASE 1 - If a new node was added, ie it was not present in the
+    // old virtual DOM but is specified in the new one
+    if (!currentVirtualDOM && nextVirtualDOM) {
+        differences.push({
+            type: "create-node",
+            vdom: nextVirtualDOM,
+            domContextNode: node,
+        });
     }
-  }
+    // CASE 2 - If the node was removed in the new virtual DOM but //  was present in the old one
+    if (!nextVirtualDOM && currentVirtualDOM) {
+        differences.push({
+            type: "remove-node",
+            vdom: nextVirtualDOM,
+            domContextNode: node.childNodes[childIdx],
+        });
+    }
 
-  return differences;
+    // If both nodes are present but the tag has changed or the text node
+    // contents has changed
+    if (currentVirtualDOM && nextVirtualDOM) {
+        // CASE 3 - Tag type changed
+        const areDifferentTypes =
+            typeof currentVirtualDOM === "object" &&
+            typeof nextVirtualDOM === "object" &&
+            currentVirtualDOM.type !== nextVirtualDOM.type;
+
+        // CASE 4 - text node strings changed
+        const areDifferentStrings =
+            typeof currentVirtualDOM === "string" &&
+            typeof nextVirtualDOM === "string" &&
+            currentVirtualDOM !== nextVirtualDOM;
+
+        if (areDifferentTypes || areDifferentStrings) {
+            differences.push({
+                type: "replace-node",
+                domContextNode: node.childNodes[childIdx],
+                vdom: nextVirtualDOM,
+            });
+        }
+    }
+
+    return differences;
 };
 ```
 
@@ -83,18 +81,18 @@ With that in place it's time to update our `virtualDOMDiff` method:
 
 ```js
 export const virtualDOMDiff = (
-  currentVirtualDOM,
-  nextVirtualDOM,
-  node,
-  childIdx
+    currentVirtualDOM,
+    nextVirtualDOM,
+    node,
+    childIdx
 ) => {
-  const differences = [];
+    const differences = [];
 
-  differences.push(
-    ...detectTagChanges(currentVirtualDOM, nextVirtualDOM, node, childIdx)
-  );
+    differences.push(
+        ...detectTagChanges(currentVirtualDOM, nextVirtualDOM, node, childIdx)
+    );
 
-  return differences;
+    return differences;
 };
 ```
 

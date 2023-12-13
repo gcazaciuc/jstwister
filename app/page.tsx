@@ -1,7 +1,9 @@
 // Import necessary components from Chakra UI
+import BenefitsSection from "@/components/benefits";
 import FAQSection from "@/components/faq";
 import Footer from "@/components/footer";
 import Hero from "@/components/hero";
+import HowItWorks from "@/components/how-it-works";
 import LatestFromBlog from "@/components/latest-blog";
 import Navbar from "@/components/nav";
 import PlansSection from "@/components/plans";
@@ -41,6 +43,8 @@ const App = () => (
     <Box as="main">
         <Navbar />
         <Hero />
+        <HowItWorks />
+        <BenefitsSection />
         <TechnologiesWeUse />
         <PlansSection />
         <RecentWorkSection />

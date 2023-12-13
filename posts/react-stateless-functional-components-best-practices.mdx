@@ -1,9 +1,7 @@
 ---
-layout: layouts/post.njk
-hero: /images/posts/chromeextensions.png
-thumb: /images/posts/chromeextensions_tn.png
+imageUrl: https://picsum.photos/500/300
 title: "React Stateless Functional Components - Best Practices"
-date: 2017-07-04T12:25:20+03:00
+datePublished: "2017-07-04"
 tags: ["React"]
 summary: "React provides 3 major APIs for creating re-usable components. In this article
 we show you why you should prefer stateless functional components over the other ones and some best practices around using them efficiently"
@@ -15,9 +13,9 @@ I would say that, these days, you should limit yourself, to either `Stateless fu
 
 ### When to use ES6 classes ?
 
-- You need to have `state` within a component: holding the value within an input, holding the open/close state of something etc
-- You need lifecycle methods( eg when manipulating the DOM in an imperative way, using JQuery etc )
-- You need to assign `refs` for the component
+-   You need to have `state` within a component: holding the value within an input, holding the open/close state of something etc
+-   You need lifecycle methods( eg when manipulating the DOM in an imperative way, using JQuery etc )
+-   You need to assign `refs` for the component
 
 ### When to use SFCs and why ?
 
@@ -27,7 +25,7 @@ A SFC is just that, a function:
 
 ```js
 function Hello(props) {
-  return <div>{props.greeting}</div>;
+    return <div>{props.greeting}</div>;
 }
 ```
 
@@ -64,24 +62,25 @@ import memoize from "lodash.memoize";
 import logo from "./logo.svg";
 
 const Heading = memoize(
-  props => {
-    console.log("Rendering heading...");
+    (props) => {
+        console.log("Rendering heading...");
 
-    return (
-      <div className="heading">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>{props.title}</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
-    );
-  },
-  props => {
-    return props.title;
-  }
+        return (
+            <div className="heading">
+                <div className="App-header">
+                    <img src={logo} className="App-logo" alt="logo" />
+                    <h2>{props.title}</h2>
+                </div>
+                <p className="App-intro">
+                    To get started, edit <code>src/App.js</code> and save to
+                    reload.
+                </p>
+            </div>
+        );
+    },
+    (props) => {
+        return props.title;
+    }
 );
 
 export default Heading;
@@ -96,27 +95,27 @@ import Heading from "./Heading.js";
 import "./App.css";
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      counter: 0
-    };
-  }
-  componentWillMount() {
-    setInterval(() => {
-      this.setState({
-        counter: this.state.counter + 1
-      });
-    }, 1000);
-  }
-  render() {
-    return (
-      <div className="App">
-        <Heading title="Welcome to React" />
-        Counter: {this.state.counter}
-      </div>
-    );
-  }
+    constructor(props) {
+        super(props);
+        this.state = {
+            counter: 0,
+        };
+    }
+    componentWillMount() {
+        setInterval(() => {
+            this.setState({
+                counter: this.state.counter + 1,
+            });
+        }, 1000);
+    }
+    render() {
+        return (
+            <div className="App">
+                <Heading title="Welcome to React" />
+                Counter: {this.state.counter}
+            </div>
+        );
+    }
 }
 
 export default App;
@@ -150,10 +149,10 @@ import Heading from "./Heading.js";
 import curry from "lodash.curry";
 
 const HeadingWithDefaultTitle = curry(
-  Heading,
-  2
+    Heading,
+    2
 )({
-  title: "Default title"
+    title: "Default title",
 });
 export default HeadingWithDefaultTitle;
 ```

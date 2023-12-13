@@ -1,8 +1,6 @@
 ---
-layout: layouts/post.njk
-hero: /images/posts/chromeextensions.png
-thumb: /images/posts/chromeextensions_tn.png
-date: 2020-04-08T12:03:52+03:00
+imageUrl: https://picsum.photos/500/300
+datePublished: "2020-04-08"
 title: "Part 2 - ReactJS clone - Creating DOM elements"
 tags: ["Learning React from inside out", "react series"]
 summary: "It's time to start implementing the React render method"
@@ -26,7 +24,7 @@ Let's see how we would alter the contents of the `node`:
 
 ```js
 export const render = (virtualDOM, node) => {
-  node.innerHTML = "Hello world";
+    node.innerHTML = "Hello world";
 };
 ```
 
@@ -36,16 +34,16 @@ As a reminder this is how the `virtualDOM` looks like so far:
 
 ```js
 const element = {
-  type: "div",
-  props: { id: "abc", class: "awesome" },
-  children: [
-    {
-      // This is the secondDiv object from above
-      type: "div",
-      props: { id: "column-1", class: "column" },
-      children: ["Hi"],
-    },
-  ],
+    type: "div",
+    props: { id: "abc", class: "awesome" },
+    children: [
+        {
+            // This is the secondDiv object from above
+            type: "div",
+            props: { id: "column-1", class: "column" },
+            children: ["Hi"],
+        },
+    ],
 };
 ```
 
@@ -69,7 +67,7 @@ So this is what we'll currently have in `react-dom.js` file.
 const createDOMElement = (virtualDOMElement) => {};
 
 export const render = (virtualDOM, node) => {
-  node.appendChild(createDOMElement(virtualDOM));
+    node.appendChild(createDOMElement(virtualDOM));
 };
 ```
 
@@ -92,9 +90,9 @@ It turns out there is a handy DOM method for creating elements programatically, 
 
 ```js
 const createDOMElement = (virtualDOMElement) => {
-  const element = document.createElement(virtualDOMElement.type);
+    const element = document.createElement(virtualDOMElement.type);
 
-  return element;
+    return element;
 };
 ```
 
@@ -104,12 +102,12 @@ Surprinsingly, there is another DOM API for that `element.setAttribute(name, val
 
 ```js
 const createDOMElement = (virtualDOMElement) => {
-  const element = document.createElement(virtualDOMElement.type);
-  Object.keys(virtualDOMElement.props).forEach((attrName) => {
-    element.setAttribute(attrName, virtualDOMElement.props[attrName]);
-  });
+    const element = document.createElement(virtualDOMElement.type);
+    Object.keys(virtualDOMElement.props).forEach((attrName) => {
+        element.setAttribute(attrName, virtualDOMElement.props[attrName]);
+    });
 
-  return element;
+    return element;
 };
 ```
 
@@ -123,14 +121,14 @@ This is how it looks like:
 
 ```js
 const createDOMElement = (virtualDOMElement) => {
-  const element = document.createElement(virtualDOMElement.type);
-  Object.keys(virtualDOMElement.props).forEach((attrName) => {
-    element.setAttribute(attrName, virtualDOMElement.props[attrName]);
-  });
-  virtualDOMElement.children.forEach((virtualDOMElem) => {
-    element.appendChild(createDOMElement(virtualDOMElem));
-  });
-  return element;
+    const element = document.createElement(virtualDOMElement.type);
+    Object.keys(virtualDOMElement.props).forEach((attrName) => {
+        element.setAttribute(attrName, virtualDOMElement.props[attrName]);
+    });
+    virtualDOMElement.children.forEach((virtualDOMElem) => {
+        element.appendChild(createDOMElement(virtualDOMElem));
+    });
+    return element;
 };
 ```
 
@@ -140,15 +138,15 @@ The above code is fine but it has a glitch. Given our initial virtual DOM:
 
 ```js
 const virtualDOM = {
-  type: "div",
-  props: { id: "abc", class: "awesome" },
-  children: [
-    {
-      type: "div",
-      props: { id: "abc", class: "awesome" },
-      children: ["Hi"],
-    },
-  ],
+    type: "div",
+    props: { id: "abc", class: "awesome" },
+    children: [
+        {
+            type: "div",
+            props: { id: "abc", class: "awesome" },
+            children: ["Hi"],
+        },
+    ],
 };
 ```
 
@@ -160,7 +158,7 @@ And we get there because of the way we are building the child nodes:
 
 ```js
 virtualDOMElement.children.forEach((virtualDOMElem) => {
-  element.appendChild(createDOMElement(virtualDOMElem));
+    element.appendChild(createDOMElement(virtualDOMElem));
 });
 ```
 
@@ -172,17 +170,17 @@ This is the revised code:
 
 ```js
 const createDOMElement = (virtualDOMElement) => {
-  if (typeof virtualDOMElement === "string") {
-    return document.createTextNode(virtualDOMElement);
-  }
-  const element = document.createElement(virtualDOMElement.type);
-  Object.keys(virtualDOMElement.props).forEach((attrName) => {
-    element.setAttribute(attrName, virtualDOMElement.props[attrName]);
-  });
-  virtualDOMElement.children.forEach((virtualDOMElem) => {
-    element.appendChild(createDOMElement(virtualDOMElem));
-  });
-  return element;
+    if (typeof virtualDOMElement === "string") {
+        return document.createTextNode(virtualDOMElement);
+    }
+    const element = document.createElement(virtualDOMElement.type);
+    Object.keys(virtualDOMElement.props).forEach((attrName) => {
+        element.setAttribute(attrName, virtualDOMElement.props[attrName]);
+    });
+    virtualDOMElement.children.forEach((virtualDOMElem) => {
+        element.appendChild(createDOMElement(virtualDOMElem));
+    });
+    return element;
 };
 ```
 
@@ -196,21 +194,21 @@ In `react-dom.js` you should have the following:
 
 ```js
 const createDOMElement = (virtualDOMElement) => {
-  if (typeof virtualDOMElement === "string") {
-    return document.createTextNode(virtualDOMElement);
-  }
-  const element = document.createElement(virtualDOMElement.type);
-  Object.keys(virtualDOMElement.props).forEach((attrName) => {
-    element.setAttribute(attrName, virtualDOMElement.props[attrName]);
-  });
-  virtualDOMElement.children.forEach((virtualDOMElem) => {
-    element.appendChild(createDOMElement(virtualDOMElem));
-  });
-  return element;
+    if (typeof virtualDOMElement === "string") {
+        return document.createTextNode(virtualDOMElement);
+    }
+    const element = document.createElement(virtualDOMElement.type);
+    Object.keys(virtualDOMElement.props).forEach((attrName) => {
+        element.setAttribute(attrName, virtualDOMElement.props[attrName]);
+    });
+    virtualDOMElement.children.forEach((virtualDOMElem) => {
+        element.appendChild(createDOMElement(virtualDOMElem));
+    });
+    return element;
 };
 
 export const render = (virtualDOM, node) => {
-  node.appendChild(createDOMElement(virtualDOM));
+    node.appendChild(createDOMElement(virtualDOM));
 };
 ```
 
@@ -219,15 +217,15 @@ In `index.js` , where we actually kick things off, let's say we have the followi
 ```js
 import { render } from "./react-dom";
 const virtualDOM = {
-  type: "div",
-  props: { id: "abc", class: "awesome" },
-  children: [
-    {
-      type: "div",
-      props: { id: "abc", class: "awesome" },
-      children: ["Hi"],
-    },
-  ],
+    type: "div",
+    props: { id: "abc", class: "awesome" },
+    children: [
+        {
+            type: "div",
+            props: { id: "abc", class: "awesome" },
+            children: ["Hi"],
+        },
+    ],
 };
 
 render(virtualDOM, document.getElementById("app"));

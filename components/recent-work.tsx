@@ -58,7 +58,7 @@ const RecentWorkSection: React.FC = () => {
     ];
 
     return (
-        <Box py={10}>
+        <Box py={10} bg="white">
             <Container maxW="container.xl">
                 <VStack spacing={6}>
                     <Heading as="h2" size="xl" textAlign="center">

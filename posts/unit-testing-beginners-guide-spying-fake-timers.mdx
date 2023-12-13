@@ -1,9 +1,7 @@
 ---
-layout: layouts/post.njk
-hero: /images/posts/chromeextensions.png
-thumb: /images/posts/chromeextensions_tn.png
+imageUrl: https://picsum.photos/500/300
 title: "Unit Testing Beginners Guide - Part 2 - Spying and fake timers"
-date: 2017-07-03T14:18:13+03:00
+datePublished: "2017-07-03"
 tags: [ "Jest", "fake timers", "mocking" ]
 summary: "This articles continues the unit testing for beginners series by diving into some
 of the more advanced concepts when testing functions. You will learn what mocking and stubbing is, how to test functions involving timers and network calls"
@@ -32,14 +30,14 @@ Add the following code in it:
 
 ```js
 function countdown(time, progressCallback, doneCallback) {
-  progressCallback(time);
-  setTimeout(function() {
-    if (time > 1) {
-      countdown(time - 1, progressCallback, doneCallback);
-    } else {
-      doneCallback();
-    }
-  }, 1000);
+    progressCallback(time);
+    setTimeout(function () {
+        if (time > 1) {
+            countdown(time - 1, progressCallback, doneCallback);
+        } else {
+            doneCallback();
+        }
+    }, 1000);
 }
 
 module.exports = countdown;
@@ -52,18 +50,20 @@ Create the spec file `touch timer.spec.js` and add the following content in it:
 ```js
 const countdown = require("./timer.js");
 
-describe("timer suite", function() {
-  test("Should call the done callback when the timer has finished counting", function() {
-    countdown(
-      1,
-      function(currentTime) {
-        console.log("Progress callback invoked with time " + currentTime);
-      },
-      function() {
-        console.log("Done callback invoked");
-      }
-    );
-  });
+describe("timer suite", function () {
+    test("Should call the done callback when the timer has finished counting", function () {
+        countdown(
+            1,
+            function (currentTime) {
+                console.log(
+                    "Progress callback invoked with time " + currentTime
+                );
+            },
+            function () {
+                console.log("Done callback invoked");
+            }
+        );
+    });
 });
 ```
 
@@ -84,8 +84,8 @@ PASS  ./timer.spec.js
 
 Well, if you take a closer look, notice 2 things:
 
-- We didn't performed any assertions
-- The done callback was not called(nothing logged) even tough we gave it only 1 second time to count.
+-   We didn't performed any assertions
+-   The done callback was not called(nothing logged) even tough we gave it only 1 second time to count.
 
 What it actually did happen is that, since no assertions were present in the test, there isn't anything to verify the function behavior and throw errors in case it's incorrect.
 Since no error was thrown, Jest assumes the test is _successful_.
@@ -94,14 +94,14 @@ Which is not necessarily the case... Modify the code in `timer.js` to read like:
 
 ```js
 function countdown(time, progressCallback, doneCallback) {
-  progressCallback(time);
-  setTimeout(function() {
-    if (time > 1) {
-      // countdown(time-1, progressCallback, doneCallback); <- We've commented out this part!
-    } else {
-      // doneCallback(); <- And this part also!!
-    }
-  }, 1000);
+    progressCallback(time);
+    setTimeout(function () {
+        if (time > 1) {
+            // countdown(time-1, progressCallback, doneCallback); <- We've commented out this part!
+        } else {
+            // doneCallback(); <- And this part also!!
+        }
+    }, 1000);
 }
 
 module.exports = countdown;
@@ -127,8 +127,8 @@ Now, revert back the commented code and let's start with a basic question:
 
 The description of the countdown function says it all:
 
-- progress callback should be called at each 1 second step
-- done callback should be called at the very end
+-   progress callback should be called at each 1 second step
+-   done callback should be called at the very end
 
 With that out of the way how do we assert that ?
 
@@ -149,13 +149,13 @@ Let's put the "spy" to work by changing the code in `timer.spec.js` to read as:
 ```js
 const countdown = require("./timer.js");
 
-describe("timer suite", function() {
-  test("Should call the done callback when the timer has finished counting", function() {
-    const progressCallbackSpy = jest.fn();
-    const doneCallbackSpy = jest.fn();
+describe("timer suite", function () {
+    test("Should call the done callback when the timer has finished counting", function () {
+        const progressCallbackSpy = jest.fn();
+        const doneCallbackSpy = jest.fn();
 
-    countdown(1, progressCallbackSpy, doneCallbackSpy);
-  });
+        countdown(1, progressCallbackSpy, doneCallbackSpy);
+    });
 });
 ```
 
@@ -173,13 +173,13 @@ Modify the `timer.spec.js` to read as:
 ```js
 const countdown = require("./timer.js");
 
-describe("timer suite", function() {
-  test("Should call the done callback when the timer has finished counting", function(done) {
-    const progressCallbackSpy = jest.fn();
-    const doneCallbackSpy = jest.fn();
+describe("timer suite", function () {
+    test("Should call the done callback when the timer has finished counting", function (done) {
+        const progressCallbackSpy = jest.fn();
+        const doneCallbackSpy = jest.fn();
 
-    countdown(1, progressCallbackSpy, doneCallbackSpy);
-  });
+        countdown(1, progressCallbackSpy, doneCallbackSpy);
+    });
 });
 ```
 
@@ -206,9 +206,9 @@ async callback it means the `done` callback declared as part of the test `functi
 
 **So what's up with this `done` param ?**
 
-- `done` it's a _function_
-- It's injected by Jest into each an every test
-- When it's declared as part of the test function( as we did) it signals to Jest that the test is asynchronous. In this case Jest expects the programmer to _call_ this function to signal the end of the test.
+-   `done` it's a _function_
+-   It's injected by Jest into each an every test
+-   When it's declared as part of the test function( as we did) it signals to Jest that the test is asynchronous. In this case Jest expects the programmer to _call_ this function to signal the end of the test.
 
 **That said, how can we make the tests pass again ?**
 
@@ -217,14 +217,14 @@ Just add a call to `done` and we're... done
 ```js
 const countdown = require("./timer.js");
 
-describe("timer suite", function() {
-  test("Should call the done callback when the timer has finished counting", function(done) {
-    const progressCallbackSpy = jest.fn();
-    const doneCallbackSpy = jest.fn();
+describe("timer suite", function () {
+    test("Should call the done callback when the timer has finished counting", function (done) {
+        const progressCallbackSpy = jest.fn();
+        const doneCallbackSpy = jest.fn();
 
-    countdown(1, progressCallbackSpy, doneCallbackSpy);
-    done(); // <- When this is called, we tell Jest the test is over!
-  });
+        countdown(1, progressCallbackSpy, doneCallbackSpy);
+        done(); // <- When this is called, we tell Jest the test is over!
+    });
 });
 ```
 
@@ -244,25 +244,25 @@ Change again `timer.spec.js` to read as
 ```js
 const countdown = require("./timer.js");
 
-describe("timer suite", function() {
-  test("Should call the done callback when the timer has finished counting", function(done) {
-    const progressCallbackSpy = jest.fn();
-    const doneCallbackSpy = jest.fn(function() {
-      console.log("Done spy invoked");
-      done();
-    });
+describe("timer suite", function () {
+    test("Should call the done callback when the timer has finished counting", function (done) {
+        const progressCallbackSpy = jest.fn();
+        const doneCallbackSpy = jest.fn(function () {
+            console.log("Done spy invoked");
+            done();
+        });
 
-    countdown(1, progressCallbackSpy, doneCallbackSpy);
-  });
+        countdown(1, progressCallbackSpy, doneCallbackSpy);
+    });
 });
 ```
 
 Let's laser focus on
 
 ```js
-const doneCallbackSpy = jest.fn(function() {
-  console.log("Done spy invoked");
-  done();
+const doneCallbackSpy = jest.fn(function () {
+    console.log("Done spy invoked");
+    done();
 });
 ```
 
@@ -280,9 +280,9 @@ Check we are not fooling ourselves, by modifying the code in `timer.js` and comm
 
 ```js
 if (time > 1) {
-  countdown(time - 1, progressCallback, doneCallback);
+    countdown(time - 1, progressCallback, doneCallback);
 } else {
-  // doneCallback();
+    // doneCallback();
 }
 ```
 
@@ -297,19 +297,19 @@ For this, we can put another assertion within the countdown done callback and ve
 ```js
 const countdown = require("./timer.js");
 
-describe("timer suite", function() {
-  test("Should call the done callback when the timer has finished counting", function(done) {
-    const progressCallbackSpy = jest.fn();
-    const doneCallbackSpy = jest.fn(function() {
-      expect(progressCallbackSpy.mock.calls.length).toBe(1); // <= How many times it was called
-      const firstCall = progressCallbackSpy.mock.calls[0];
-      const firstCallArg = firstCall[0];
-      expect(firstCallArg).toBe(1); // <= first param, of the first call,  is number 1
-      done();
-    });
+describe("timer suite", function () {
+    test("Should call the done callback when the timer has finished counting", function (done) {
+        const progressCallbackSpy = jest.fn();
+        const doneCallbackSpy = jest.fn(function () {
+            expect(progressCallbackSpy.mock.calls.length).toBe(1); // <= How many times it was called
+            const firstCall = progressCallbackSpy.mock.calls[0];
+            const firstCallArg = firstCall[0];
+            expect(firstCallArg).toBe(1); // <= first param, of the first call,  is number 1
+            done();
+        });
 
-    countdown(1, progressCallbackSpy, doneCallbackSpy);
-  });
+        countdown(1, progressCallbackSpy, doneCallbackSpy);
+    });
 });
 ```
 
@@ -327,14 +327,14 @@ All seems good. Let's add a second unit test.
 Add this to `timer.spec.js`
 
 ```js
-test("Should call the done callback when the timer has finished counting and the countdown is 4 secs", function(done) {
-  const progressCallbackSpy = jest.fn();
-  const doneCallbackSpy = jest.fn(function() {
-    expect(progressCallbackSpy.mock.calls.length).toBe(4);
-    done();
-  });
+test("Should call the done callback when the timer has finished counting and the countdown is 4 secs", function (done) {
+    const progressCallbackSpy = jest.fn();
+    const doneCallbackSpy = jest.fn(function () {
+        expect(progressCallbackSpy.mock.calls.length).toBe(4);
+        done();
+    });
 
-  countdown(4, progressCallbackSpy, doneCallbackSpy);
+    countdown(4, progressCallbackSpy, doneCallbackSpy);
 });
 ```
 
@@ -369,37 +369,37 @@ jest.useFakeTimers(); // <= This mocks out any call to setTimeout, setInterval w
 Next, let's modify the tests and 'fast-forward' time , using `jest.runTimersToTime(msToRun)`(https://facebook.github.io/jest/docs/en/jest-object.html#jestruntimerstotimemstorun):
 
 ```js
-test("Should call the done callback when the timer has finished counting", function() {
-  const progressCallbackSpy = jest.fn();
-  const doneCallbackSpy = jest.fn();
-  countdown(1, progressCallbackSpy, doneCallbackSpy);
+test("Should call the done callback when the timer has finished counting", function () {
+    const progressCallbackSpy = jest.fn();
+    const doneCallbackSpy = jest.fn();
+    countdown(1, progressCallbackSpy, doneCallbackSpy);
 
-  jest.runTimersToTime(1000); // <= Move the time ahead with 1 second
+    jest.runTimersToTime(1000); // <= Move the time ahead with 1 second
 
-  expect(progressCallbackSpy.mock.calls.length).toBe(1);
-  const firstCall = progressCallbackSpy.mock.calls[0];
-  const firstCallArg = firstCall[0];
-  expect(firstCallArg).toBe(1);
+    expect(progressCallbackSpy.mock.calls.length).toBe(1);
+    const firstCall = progressCallbackSpy.mock.calls[0];
+    const firstCallArg = firstCall[0];
+    expect(firstCallArg).toBe(1);
 });
 
-test("Should call the done callback when the timer has finished counting and the countdown is 4 secs", function() {
-  const progressCallbackSpy = jest.fn();
-  const doneCallbackSpy = jest.fn();
+test("Should call the done callback when the timer has finished counting and the countdown is 4 secs", function () {
+    const progressCallbackSpy = jest.fn();
+    const doneCallbackSpy = jest.fn();
 
-  countdown(4, progressCallbackSpy, doneCallbackSpy);
+    countdown(4, progressCallbackSpy, doneCallbackSpy);
 
-  jest.runTimersToTime(4000); // <= Move the time ahead with 4 seconds
+    jest.runTimersToTime(4000); // <= Move the time ahead with 4 seconds
 
-  expect(progressCallbackSpy.mock.calls.length).toBe(4);
+    expect(progressCallbackSpy.mock.calls.length).toBe(4);
 });
 ```
 
 A few comments:
 
-- We removed the `done` callback as the test is no longer async( we mocked `setTimeout` with `jest.useFakeTimers()` call)
-- We made the done spy a function that doesn't do anything `const doneCallbackSpy = jest.fn();`
-- We are invoking the `countdown` function and 'fast-forward' the time with 1 second/4 seconds `jest.runTimersToTime(1000);`
-- We are making the assertions right after that since we don't need to wait anymore for the time to pass before being able to assert
+-   We removed the `done` callback as the test is no longer async( we mocked `setTimeout` with `jest.useFakeTimers()` call)
+-   We made the done spy a function that doesn't do anything `const doneCallbackSpy = jest.fn();`
+-   We are invoking the `countdown` function and 'fast-forward' the time with 1 second/4 seconds `jest.runTimersToTime(1000);`
+-   We are making the assertions right after that since we don't need to wait anymore for the time to pass before being able to assert
 
 Now the tests run much faster and they're also more reliable!
 

@@ -1,9 +1,7 @@
 ---
-layout: layouts/post.njk
-hero: /images/posts/chromeextensions.png
-thumb: /images/posts/chromeextensions_tn.png
+imageUrl: https://picsum.photos/500/300
 title: "Debugging Jest With Vscode"
-date: 2017-06-26T13:12:47+03:00
+datePublished: "2017-06-26"
 tags: ["Jest"]
 summary: "Sometimes tests fail. And sometimes you don't have any clue as to why they do... 
 Follow along to see how you can setup VSCode debugging together with Jest to get breakpoints,
@@ -12,10 +10,10 @@ step through and all the other goodies you would expect when debugging a piece o
 
 Lately I've been using a lot [Jest](http://facebook.github.io/jest/) as a unit testing runner. It's great because it allows me to do:
 
-- snapshot testing which makes updating unit tests a breeze
-- runs tests in parallel so it's super fast
-- has a nice command line app allowing me to filter the tests i want to run
-- built-in code coverage reports
+-   snapshot testing which makes updating unit tests a breeze
+-   runs tests in parallel so it's super fast
+-   has a nice command line app allowing me to filter the tests i want to run
+-   built-in code coverage reports
 
 In general i can manage debugging failing tests using just the built in test report
 in Jest and occasionaly sprinkle some `console.log` statements for the expressions I want to inspect.
@@ -25,10 +23,11 @@ out what happens with my Jest tests.
 
 If you are a fan of VSCode , like I'm, you can set it up very simple:
 
-- Open up `launch.json` file ( CTRL + SHIFT+P -> type `launch.json` )
-- Create a new configuration
+-   Open up `launch.json` file ( CTRL + SHIFT+P -> type `launch.json` )
+-   Create a new configuration
 
-```js
+```tsx
+// launch.json
 "configurations": [
         {
             "name": "Jest", // This is the configuration name you will see in debug sidebar
