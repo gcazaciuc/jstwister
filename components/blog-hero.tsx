@@ -14,21 +14,26 @@ import {
 
 interface HeroSectionProps {
     title: string;
-    slug: string;
+    slug?: string;
 }
 
 const HeroSection = ({ title, slug }: HeroSectionProps) => (
-    <Box bg="#DBE3ED" p={4}>
+    <Box bg="#DBE3ED" p={10} mt={"50px"}>
         <Center>
             <Breadcrumb>
                 <BreadcrumbItem>
                     <BreadcrumbLink href="/">Home</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbItem>
-                    <BreadcrumbLink href={`/blog/${slug}`}>
-                        {title}
-                    </BreadcrumbLink>
+                    <BreadcrumbLink href="/blog">Blog</BreadcrumbLink>
                 </BreadcrumbItem>
+                {slug ? (
+                    <BreadcrumbItem>
+                        <BreadcrumbLink href={`/post/${slug}`}>
+                            {title}
+                        </BreadcrumbLink>
+                    </BreadcrumbItem>
+                ) : null}
                 {/* Add more BreadcrumbItems if needed */}
             </Breadcrumb>
         </Center>
@@ -64,7 +69,7 @@ const BlogPostMeta = ({ tags, publishDate }: BlogPostMetaProps) => {
         <Flex justifyContent="space-between" my={4}>
             <Box>
                 {tags.map((tag) => (
-                    <Tag key={tag} m={1}>
+                    <Tag key={tag} m={1} size={"lg"}>
                         #{tag}
                     </Tag>
                 ))}

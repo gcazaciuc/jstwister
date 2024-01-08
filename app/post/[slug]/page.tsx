@@ -18,9 +18,9 @@ const options = {
 export default function Post({ params }: any) {
     const props = getPost(params);
     return (
-        <Stack direction="column">
+        <Stack direction="column" spacing={0}>
             <HeroSection title={props.title} slug={props.slug} />
-            <Box as="div" p="5" bg="white">
+            <Box as="div" p={10} bg="white">
                 <BlogPostImage imageUrl={props.imageUrl} />
                 <BlogPostMeta
                     tags={props.tags}

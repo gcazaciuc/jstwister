@@ -29,25 +29,22 @@ export const fetchBlogItems = async (): Promise<BlogItem[]> => {
     const files = fs.readdirSync(path.join(BLOG_DIR));
 
     // 3) For each blog found
-    const blogs = files
-        .map((filename) => {
-            // 4) Read the content of that blog
-            const fileContent = fs.readFileSync(
-                path.join(BLOG_DIR, filename),
-                "utf-8"
-            );
+    const blogs = files.map((filename) => {
+        // 4) Read the content of that blog
+        const fileContent = fs.readFileSync(
+            path.join(BLOG_DIR, filename),
+            "utf-8"
+        );
 
-            // 5) Extract the metadata from the blog's content
-            const { data: frontMatter } = matter(fileContent);
-            // 6) Return the metadata and page slug
-            return {
-                ...frontMatter,
-                imageUrl:
-                    frontMatter.imageUrl || "https://picsum.photos/200/300",
-                slug: filename.replace(".mdx", ""),
-            } as BlogItem;
-        })
-        .slice(0, 3);
+        // 5) Extract the metadata from the blog's content
+        const { data: frontMatter } = matter(fileContent);
+        // 6) Return the metadata and page slug
+        return {
+            ...frontMatter,
+            imageUrl: frontMatter.imageUrl || "https://picsum.photos/200/300",
+            slug: filename.replace(".mdx", ""),
+        } as BlogItem;
+    });
 
     return blogs;
 };

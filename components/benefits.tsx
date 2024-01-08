@@ -14,7 +14,7 @@ const benefits = [
         icon: MdSettings,
         title: "No upfront costs",
         description:
-            "Rent apps & websites, custom built just for you, for a flat monthly fee. No upfront development costs, full service included.",
+            "Rent your apps or website, custom built to your specifications, for a flat monthly fee. No upfront development costs, full service included.",
     },
     {
         icon: MdSettings,
@@ -44,27 +44,42 @@ const benefits = [
         icon: MdSettings,
         title: "We go above & beyond",
         description:
-            "We put our money where our mouth is: we go above & beyond to provide top quality solutions for your business because we only get paid if you continue to use our service.",
+            "We put our money where our mouth is: we provide top quality solutions for your business because we only get paid if you continue to use our service.",
     },
     // ... other benefits
 ];
 
 export const BenefitsSection = () => {
     return (
-        <Center bg="#DBE3ED" p={10}>
+        <Center bg="#f1f5f9" p={10} id="#benefits">
             <VStack>
-                <Heading as="h2" size="xl" textAlign="center" mb={1}>
-                    Membership Benefits
+                <Heading
+                    as="h2"
+                    size="xl"
+                    textAlign="center"
+                    mb={1}
+                    color="darkBlue"
+                    textTransform={"uppercase"}
+                >
+                    Why subscribe ?
                 </Heading>
-                <Text fontSize="lg">Explore the benefits you get</Text>
+                <Text fontSize="lg" color="lightGrey">
+                    Explore the benefits you get
+                </Text>
                 <SimpleGrid columns={{ sm: 2, md: 3 }} spacing={10} mt={10}>
                     {benefits.map((benefit, index) => (
                         <Box key={index}>
                             {/* <Icon as={MdSettings} /> */}
-                            <Text fontSize="xl" fontWeight="bold">
+                            <Text
+                                fontSize="xl"
+                                fontWeight="bold"
+                                color="darkBlue"
+                            >
                                 {benefit.title}
                             </Text>
-                            <Text>{benefit.description}</Text>
+                            <Text color={"lightGrey"}>
+                                {benefit.description}
+                            </Text>
                         </Box>
                     ))}
                 </SimpleGrid>

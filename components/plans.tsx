@@ -14,58 +14,147 @@ import {
     useColorModeValue,
     UnorderedList,
     ListItem,
+    Tooltip,
+    Icon,
 } from "@chakra-ui/react";
+import { InfoOutlineIcon } from "@chakra-ui/icons";
 
 const plans: PricingPlanProps[] = [
     {
         title: "Micro",
-        description: "Perfect for Presentation/Portfolio/Landing page websites",
-        price: "149 EUR/month",
+        description: "Perfect for 1-5 pages websites, small internal tools",
+        price: "49 EUR/month",
+        priceId: "price_1OVDX6IUzRJ2Go2AXsYE3Fbl",
         benefits: [
-            "Up to 50 free hours of initial development",
-            "3h of maintenance/support/development per month",
-            "Free web design or bring your own",
-            "Free critical bugfixes",
-            "Hosting/infrastructure included",
-            "Buy it anytime starting from 1 EUR",
+            {
+                label: "Up to 20 free hours of initial app development & setup included( worth 1K EUR)",
+                tooltip:
+                    "You get up to 20 hours of free development time to build your web app.",
+            },
+            {
+                label: "Only monthly security and regular tech updates included",
+                tooltip:
+                    "On the Micro plan you get only security and regular tech updates. No new features or bugfixes are included.",
+            },
+            {
+                label: "Template based graphic design",
+                tooltip:
+                    "An original graphic design is not included. We use a template and customize it to your needs(colors, fonts etc ).",
+            },
+            {
+                label: "Free security & critical fixes",
+                tooltip: "Any major bugs are fixed free of charge",
+            },
+            {
+                label: "World class hosting included",
+                tooltip: "We host your website. All in the same monthly price",
+            },
+            {
+                label: "Permanent security, performance and uptime monitoring",
+                tooltip: "We permantently monitor your website for any issues",
+            },
+            {
+                label: "Buy it anytime",
+                tooltip:
+                    "Want to host it somewhere else ? You can buy it anytime",
+            },
         ],
     },
     {
-        title: "Small",
-        description: "Small SASS apps, E-commerce apps",
-        price: "499 EUR/month",
-        benefits: [
-            "Up to 250 free hours of initial development",
-            "8h of maintenance/support/development per month",
-            "Free web design or bring your own",
-            "Free critical bugfixes",
-            "Hosting/infrastructure costs included",
-            "Buy it anytime starting from 1 EUR",
-        ],
-    },
-    {
-        title: "Standard",
-        description: "Medium sized SAAS apps, E-commerce apps, Social networks",
+        title: "Medium",
+        description: "1-10 pages websites, small internal tools",
+        price: "119 EUR/month",
+        priceId: "price_1OVDYTIUzRJ2Go2A3q8YATrY",
         isPopular: true,
-        price: "999 EUR/month",
         benefits: [
-            "Up to 500 free hours of initial development",
-            "16h of maintenance/support/development per month",
-            "Free web design or bring your own",
-            "Free critical bugfixes",
-            "Hosting/infrastructure costs included",
-            "Buy it anytime starting from 1 EUR",
+            {
+                label: "Up to 40 free hours of initial app development( worth 2K EUR )",
+                tooltip:
+                    "You get up to 40 hours of free development time to build your web app.",
+            },
+            {
+                label: "1h of development/fixes per month",
+                tooltip:
+                    "Every month you get 1 hours of free development time to use for bugfixes, upgrades or any other features you need added.",
+            },
+            {
+                label: "Free PREMIUM graphic design or bring your own",
+                tooltip:
+                    "Provide your own design(Figma) or we can create one for you(at no additional cost).",
+            },
+            {
+                label: "Free security & critical bugfixes",
+                tooltip: "Any major bugs are fixed free of charge",
+            },
+            {
+                label: "World class hosting included",
+                tooltip: "We host your website. All in the same monthly price",
+            },
+            {
+                label: "Permanent security, performance and uptime monitoring",
+                tooltip: "We permantently monitor your website for any issues",
+            },
+            {
+                label: "Buy it anytime",
+                tooltip:
+                    "Want to host it somewhere else ? You can buy it anytime",
+            },
+        ],
+    },
+    {
+        title: "Large",
+        description: "Complex presentation websites, E-commerce stores",
+        price: "299 EUR/month",
+        disabled: true,
+        ctaText: "Coming soon",
+        benefits: [
+            {
+                label: "Up to 160 free hours of initial app development(worth 8K EUR)",
+                tooltip:
+                    "You get up to 160 hours of free development time to build your web app(worth 8K euro).",
+            },
+            {
+                label: "4h of maintenance/support/development per month",
+                tooltip:
+                    "Every month you get 4 hours of free development time to use for bugfixes, upgrades or any other features you need added.",
+            },
+            {
+                label: "Free PREMIUM graphic design or bring your own",
+                tooltip:
+                    "Provide your own design(Figma) or we can create one for you(at no additional cost).",
+            },
+            {
+                label: "Free critical bugfixes",
+                tooltip: "Any major bugs are fixed free of charge",
+            },
+            {
+                label: "World class hosting included",
+                tooltip: "We host your website. All in the same monthly price",
+            },
+            {
+                label: "Permanent security, performance and uptime monitoring",
+                tooltip: "We permantently monitor your website for any issues",
+            },
+            {
+                label: "Buy it anytime",
+                tooltip:
+                    "Want to host it somewhere else ? You can buy it anytime",
+            },
         ],
     },
     {
         title: "Custom",
-        description: "Large app or any other special requirements ? No problem.",
+        description:
+            "Large app or any other special requirements ? No problem.",
         price: "Get a quote",
         benefits: [
-            "Any complexity apps",
-            "Hosting/infrastructure costs included",
-            "Buy it anytime",
-            "Up time monitoring included",
+            { label: "Any complexity apps", tooltip: "Tooltip 1" },
+            { label: "Host it yourself", tooltip: "Tooltip 2" },
+            {
+                label: "Custom terms for maintenance/support/development",
+                tooltip: "Tooltip 3",
+            },
+            { label: "Starting from 50 EUR/hour", tooltip: "Tooltip 4" },
         ],
     },
 ];
@@ -74,9 +163,47 @@ interface PricingPlanProps {
     title: string;
     description: string;
     price: string;
+    priceId?: string;
     isPopular?: boolean;
-    benefits: string[];
+    disabled?: boolean;
+    ctaText?: string;
+    benefits: { label: string; tooltip: string }[];
 }
+const handleCheckout = (priceId?: string) =>
+    async function () {
+        if (!priceId) {
+            return;
+        }
+
+        try {
+            const response = await fetch("/api/checkout", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    lookup_key: priceId,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+
+            const data = await response.json();
+
+            if (data.url) {
+                window.location.href = data.url;
+            } else {
+                console.error("URL not found in response");
+            }
+        } catch (error) {
+            console.error(
+                "There was a problem with the fetch operation:",
+                error
+            );
+        }
+    };
 
 const PricingPlanCard: React.FC<PricingPlanProps> = ({
     title,
@@ -84,6 +211,9 @@ const PricingPlanCard: React.FC<PricingPlanProps> = ({
     price,
     isPopular,
     benefits,
+    disabled,
+    priceId,
+    ctaText = "Get started",
 }) => {
     const bg = useColorModeValue("white", "gray.700");
     const textColor = useColorModeValue("gray.700", "white");
@@ -105,7 +235,7 @@ const PricingPlanCard: React.FC<PricingPlanProps> = ({
                     top={3}
                     left={3}
                     textTransform={"uppercase"}
-                    bg={"red.400"}
+                    bg={"purple.600"}
                     rounded={"xl"}
                     px={2}
                     py={1}
@@ -125,6 +255,8 @@ const PricingPlanCard: React.FC<PricingPlanProps> = ({
                 {price}
             </Text>
             <Button
+                isDisabled={disabled}
+                onClick={handleCheckout(priceId)}
                 mt={8}
                 mb={2}
                 bg={"black"}
@@ -132,10 +264,14 @@ const PricingPlanCard: React.FC<PricingPlanProps> = ({
                 rounded={"full"}
                 _hover={{ bg: "gray.900" }}
             >
-                Get started
+                {ctaText}
             </Button>
             <Box>
-                <Link color={"black"} borderBottom={"1px dotted black"}>
+                <Link
+                    color={"black"}
+                    borderBottom={"1px dotted black"}
+                    textDecoration={"none"}
+                >
                     Book a call
                 </Link>
             </Box>
@@ -145,7 +281,18 @@ const PricingPlanCard: React.FC<PricingPlanProps> = ({
                 </Text>
                 <UnorderedList spacing={2} textAlign={"left"}>
                     {benefits.map((benefit, index) => (
-                        <ListItem key={index}>{benefit}</ListItem>
+                        <React.Fragment key={benefit.label}>
+                            <ListItem key={index}>
+                                {benefit.label}{" "}
+                                <Tooltip
+                                    key={index}
+                                    label={benefit.tooltip}
+                                    aria-label={benefit.tooltip}
+                                >
+                                    <Icon as={InfoOutlineIcon} ml={2} />
+                                </Tooltip>
+                            </ListItem>
+                        </React.Fragment>
                     ))}
                 </UnorderedList>
             </Box>
@@ -155,7 +302,7 @@ const PricingPlanCard: React.FC<PricingPlanProps> = ({
 
 const PricingPlansSection: React.FC = () => {
     return (
-        <Box p={12} bgColor={"#DBE3ED"}>
+        <Box p={12} bgColor={"#f1f5f9"} id="#plans">
             <Heading as="h2" mb={10} textAlign="center">
                 Plans
             </Heading>

@@ -8,7 +8,14 @@ import { Prose, withProse } from "@nikolovlazar/chakra-ui-prose";
 
 const theme = extendTheme(
     {
-        // your own theme
+        colors: {
+            darkBlue: "#0e1c2f",
+            lightGrey: "#334155",
+        },
+        gradients: {
+            blueToPurple: "linear-gradient(88deg, #7557ff 0,#fe97dc 100%)",
+            // Add as many custom gradients as you like
+        },
     },
     withProse()
 );
