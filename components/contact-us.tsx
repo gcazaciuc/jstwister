@@ -46,8 +46,8 @@ const ContactSection = () => {
                     </HStack>
                 </VStack>
             </Flex>
-            <Flex flex={1} justifyContent={"center"}>
-                <VStack alignItems="start" spacing={4} mr={10}>
+            <Flex flex={1} justifyContent={"flex-start"}>
+                <VStack alignItems="start" spacing={4} mr={10} width={"80%"}>
                     <Input placeholder="Your Name" bg={inputBg} />
                     <Input placeholder="Email Address" bg={inputBg} />
                     <Textarea

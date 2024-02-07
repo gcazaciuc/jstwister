@@ -6,17 +6,15 @@ import {
     Flex,
     IconButton,
     Stack,
-    useDisclosure,
-    Container,
-    Center,
+    useDisclosure, Center,
     Link,
     useBreakpointValue,
     Text,
     HStack,
+    Button
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
-import { useRouter } from "next/router";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 // Define the navigation links
 const defaultNavLinks = [
@@ -35,6 +33,7 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ navLinks = defaultNavLinks }) => {
     const { isOpen, onToggle } = useDisclosure();
     const pathname = usePathname();
+    const router = useRouter();
     // Determine if the current breakpoint is desktop or mobile
     const isMobile = useBreakpointValue({ base: false, sm: true, md: false });
     useEffect(() => {
@@ -149,6 +148,17 @@ const Navbar: React.FC<NavbarProps> = ({ navLinks = defaultNavLinks }) => {
                             )}
                         </Stack>
                     </Flex>
+
+                    <Button
+                        bg="white"
+                        color="black"
+                        _hover={{ bg: "gray.300" }}
+                        size="lg"
+                        mt={4}
+                        onClick={() => router.push("/auth/signup")}
+                    >
+                        Login
+                    </Button>
                 </HStack>
             </Center>
         </Box>

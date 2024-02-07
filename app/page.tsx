@@ -3,7 +3,7 @@ import BenefitsSection from "@/components/benefits";
 import ContactSection from "@/components/contact-us";
 import FAQSection from "@/components/faq";
 import Footer from "@/components/footer";
-import Hero from "@/components/hero";
+import Hero from "@/components/hero-v2";
 import HowItWorks from "@/components/how-it-works";
 import LatestFromBlog from "@/components/latest-blog";
 import Navbar from "@/components/nav";
@@ -53,7 +53,7 @@ const App = () => (
             badgeText="Cost control"
             title="Optimize your expenses"
             description="Why pay thousands upfront to some unknown agency or freelancer ? With us you pay only a small monthly fee and we build your site exactly as you wanted! Seriosuly, it's the real deal: hand crafted, custom coded & custom designed website for your business."
-            imageUrl="/optimize-cost.png"
+            imageUrl="/optimize-cost.svg"
         />
         <TechnologiesWeUse />
         <ValueProposition
@@ -65,7 +65,7 @@ const App = () => (
                 "Need more development hours? No problem, we can provide them at a very attractive rate.",
                 "No more chasing around expensive, un-reliable freelancers to maintain your website.",
             ]}
-            imageUrl="/maintainance.png"
+            imageUrl="/maintainance.svg"
         />
         <PlansSection />
         {/* <RecentWorkSection /> */}

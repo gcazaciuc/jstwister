@@ -18,6 +18,7 @@ import {
     Icon,
 } from "@chakra-ui/react";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
+import { useRouter } from "next/navigation";
 
 const plans: PricingPlanProps[] = [
     {
@@ -143,18 +144,22 @@ const plans: PricingPlanProps[] = [
         ],
     },
     {
-        title: "Custom",
+        title: "Custom development",
         description:
             "Large app or any other special requirements ? No problem.",
-        price: "Get a quote",
+        price: "7K EUR/month",
         benefits: [
+            { label: "Unlimited requests", tooltip: "You can request" },
+            {
+                label: "3-4 business days delivery time on average",
+                tooltip: "Tooltip 1",
+            },
             { label: "Any complexity apps", tooltip: "Tooltip 1" },
             { label: "Host it yourself", tooltip: "Tooltip 2" },
             {
                 label: "Custom terms for maintenance/support/development",
                 tooltip: "Tooltip 3",
             },
-            { label: "Starting from 50 EUR/hour", tooltip: "Tooltip 4" },
         ],
     },
 ];
@@ -169,7 +174,7 @@ interface PricingPlanProps {
     ctaText?: string;
     benefits: { label: string; tooltip: string }[];
 }
-const handleCheckout = (priceId?: string) =>
+const gotoCheckout = (priceId?: string) =>
     async function () {
         if (!priceId) {
             return;
@@ -217,6 +222,7 @@ const PricingPlanCard: React.FC<PricingPlanProps> = ({
 }) => {
     const bg = useColorModeValue("white", "gray.700");
     const textColor = useColorModeValue("gray.700", "white");
+    const router = useRouter();
 
     return (
         <Box
@@ -256,7 +262,7 @@ const PricingPlanCard: React.FC<PricingPlanProps> = ({
             </Text>
             <Button
                 isDisabled={disabled}
-                onClick={handleCheckout(priceId)}
+                onClick={() => router.push(`/auth/signup`)}
                 mt={8}
                 mb={2}
                 bg={"black"}
