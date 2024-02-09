@@ -1,6 +1,5 @@
 // components/ServicesSection.tsx
 import React from "react";
-import HeartSVG from "../public/icons/heart.svg";
 import {
     Box,
     Heading,
@@ -32,28 +31,30 @@ const servicesList: ServiceItem[] = [
     {
         id: 1,
         icon: <SlTag />,
-        title: "Presentation websites",
+        title: "Website creation",
         description:
             "We're experts in putting your business online. We hand craft crazy fast websites and we maintain them for you",
     },
     {
         id: 2,
         icon: <SlBasketLoaded />,
-        title: "E-commerce websites",
+        title: "SEO",
         description:
-            "Want to start selling with a highly customizable platform? We're here to help.",
+            "For a small flat monthly fee we continously improve the on-page and off-page SEO of your website.",
     },
     {
         id: 3,
         icon: <SlSupport />,
-        title: "Internal tools",
-        description: "Got a business process that needs to be automated?",
+        title: "Marketing",
+        description:
+            "We offer an addon subscription for all websites hosted with us: PPC and Social Media Marketing for a flat fee",
     },
     {
         id: 4,
         icon: <SlCloudUpload />,
-        title: "SASS apps",
-        description: "Got an idea for the next Unicorn app ? Get in touch",
+        title: "Copywriting",
+        description:
+            "Need monthly blog posts ? Or maybe you need a revamp of the texts on your home page to better connect with customers ? We got you covered.",
     },
     // ... other services
 ];
@@ -61,7 +62,7 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({
     services = servicesList,
 }) => {
     return (
-        <Box as="section" p={5} bg="white" pt={100} pb={200}>
+        <Box as="section" p={5} bg="white" pt={100} pb={100}>
             <Container maxW="container.xl">
                 <Stack direction="column" alignItems={"center"} spacing={4}>
                     <Badge colorScheme="purple">Services</Badge>
@@ -81,7 +82,11 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({
                     </Text>
                 </Stack>
                 <Stack
+                    bg="black"
+                    color="white"
+                    p={5}
                     spacing={4}
+                    borderRadius="lg"
                     justify="center"
                     mt="10"
                     direction={"row"}

@@ -14,7 +14,7 @@ const benefits = [
         icon: MdSettings,
         title: "No upfront costs",
         description:
-            "Rent your apps or website, custom built to your specifications, for a flat monthly fee. No upfront development costs, full service included.",
+            "Rent your website, custom built to your specifications, for a flat monthly fee. No upfront development costs, full service included.",
     },
     {
         icon: MdSettings,
@@ -24,15 +24,15 @@ const benefits = [
     },
     {
         icon: MdSettings,
-        title: "Predictable & Risk-free",
+        title: "Start now with no risks",
         description:
-            "Start your project immediately: no unreliable freelancers, no interviews, no hiring. Cancel anytime if unsatisfied.",
+            "Start your project immediately: no unreliable freelancers, no interviews, no hiring, no proposals, no unforeseen costs. Cancel anytime if unsatisfied.",
     },
     {
         icon: MdSettings,
-        title: "Top-notch technology",
+        title: "Top performance. Top SEO.",
         description:
-            "Future-proof your business with the latest tech. We use React, Next.js, Node.js, GraphQL, AWS, and more.",
+            "We use latest tech. Not unsecure plugins. Not bloated themes. Not slow page builders. We hand code your website for top performance and SEO.",
     },
     {
         icon: MdSettings,
@@ -42,9 +42,9 @@ const benefits = [
     },
     {
         icon: MdSettings,
-        title: "We go above & beyond",
+        title: "Exceptional service",
         description:
-            "We put our money where our mouth is: we provide top quality solutions for your business because we only get paid if you continue to use our service.",
+            "Instead of talking all day about quality, we put our money where our mouth is: we provide top quality solutions for your business because we only get paid if you continue to use our service.",
     },
     // ... other benefits
 ];

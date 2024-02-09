@@ -49,12 +49,14 @@ const App = () => (
         <HowItWorks />
         <ServicesSection />
         <BenefitsSection />
+
         <ValueProposition
             badgeText="Cost control"
             title="Optimize your expenses"
             description="Why pay thousands upfront to some unknown agency or freelancer ? With us you pay only a small monthly fee and we build your site exactly as you wanted! Seriosuly, it's the real deal: hand crafted, custom coded & custom designed website for your business."
             imageUrl="/optimize-cost.svg"
         />
+
         <TechnologiesWeUse />
         <ValueProposition
             badgeText="Maintainance"
@@ -67,6 +69,7 @@ const App = () => (
             ]}
             imageUrl="/maintainance.svg"
         />
+
         <PlansSection />
         {/* <RecentWorkSection /> */}
         <LatestFromBlog />

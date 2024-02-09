@@ -56,6 +56,7 @@ const SignupForm = () => {
                                 render={({ field }) => (
                                     <Input
                                         {...field}
+                                        borderColor={"black"}
                                         type="text"
                                         id="firstName"
                                     />
@@ -79,6 +80,7 @@ const SignupForm = () => {
                                 render={({ field }) => (
                                     <Input
                                         {...field}
+                                        borderColor={"black"}
                                         type="text"
                                         id="lastName"
                                     />
@@ -107,7 +109,12 @@ const SignupForm = () => {
                             },
                         }}
                         render={({ field }) => (
-                            <Input {...field} type="email" id="email" />
+                            <Input
+                                {...field}
+                                borderColor={"black"}
+                                type="email"
+                                id="email"
+                            />
                         )}
                     />
                     {errors.email && (
@@ -125,7 +132,12 @@ const SignupForm = () => {
                         defaultValue=""
                         rules={{ required: "Phone number is required" }}
                         render={({ field }) => (
-                            <Input {...field} type="tel" id="phone" />
+                            <Input
+                                {...field}
+                                borderColor={"black"}
+                                type="tel"
+                                id="phone"
+                            />
                         )}
                     />
                     {errors.phone && (
@@ -143,7 +155,12 @@ const SignupForm = () => {
                         defaultValue=""
                         rules={{ required: "Company name is required" }}
                         render={({ field }) => (
-                            <Input {...field} type="text" id="company" />
+                            <Input
+                                {...field}
+                                borderColor={"black"}
+                                type="text"
+                                id="company"
+                            />
                         )}
                     />
                     {errors.company && (
@@ -153,6 +170,10 @@ const SignupForm = () => {
                     )}
                 </FormControl>
                 <Box textAlign={"right"}>
+                    <Button variant={"link"} color={"black"} px={6}>
+                        Already have an account? Login
+                    </Button>
+
                     <Button
                         type="submit"
                         bg="black"

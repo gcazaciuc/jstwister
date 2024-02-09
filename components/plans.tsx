@@ -16,26 +16,25 @@ import {
     ListItem,
     Tooltip,
     Icon,
+    ListIcon,
+    List,
 } from "@chakra-ui/react";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
 import { useRouter } from "next/navigation";
+import { SlCheck } from "react-icons/sl";
 
 const plans: PricingPlanProps[] = [
     {
-        title: "Micro",
-        description: "Perfect for 1-5 pages websites, small internal tools",
-        price: "49 EUR/month",
+        title: "Presentation",
+        description: "Perfect for 1-10 pages presentation websites",
+        price: "49",
         priceId: "price_1OVDX6IUzRJ2Go2AXsYE3Fbl",
+        isPopular: true,
         benefits: [
             {
-                label: "Up to 20 free hours of initial app development & setup included( worth 1K EUR)",
+                label: "Monthly security & critical fixes included",
                 tooltip:
-                    "You get up to 20 hours of free development time to build your web app.",
-            },
-            {
-                label: "Only monthly security and regular tech updates included",
-                tooltip:
-                    "On the Micro plan you get only security and regular tech updates. No new features or bugfixes are included.",
+                    "On the Presentation plan you get only security and regular tech updates. No new features or bugfixes are included, however you can order custom development.",
             },
             {
                 label: "Template based graphic design",
@@ -43,10 +42,6 @@ const plans: PricingPlanProps[] = [
                     "An original graphic design is not included. We use a template and customize it to your needs(colors, fonts etc ).",
             },
             {
-                label: "Free security & critical fixes",
-                tooltip: "Any major bugs are fixed free of charge",
-            },
-            {
                 label: "World class hosting included",
                 tooltip: "We host your website. All in the same monthly price",
             },
@@ -61,104 +56,120 @@ const plans: PricingPlanProps[] = [
             },
         ],
     },
-    {
-        title: "Medium",
-        description: "1-10 pages websites, small internal tools",
-        price: "119 EUR/month",
-        priceId: "price_1OVDYTIUzRJ2Go2A3q8YATrY",
-        isPopular: true,
-        benefits: [
-            {
-                label: "Up to 40 free hours of initial app development( worth 2K EUR )",
-                tooltip:
-                    "You get up to 40 hours of free development time to build your web app.",
-            },
-            {
-                label: "1h of development/fixes per month",
-                tooltip:
-                    "Every month you get 1 hours of free development time to use for bugfixes, upgrades or any other features you need added.",
-            },
-            {
-                label: "Free PREMIUM graphic design or bring your own",
-                tooltip:
-                    "Provide your own design(Figma) or we can create one for you(at no additional cost).",
-            },
-            {
-                label: "Free security & critical bugfixes",
-                tooltip: "Any major bugs are fixed free of charge",
-            },
-            {
-                label: "World class hosting included",
-                tooltip: "We host your website. All in the same monthly price",
-            },
-            {
-                label: "Permanent security, performance and uptime monitoring",
-                tooltip: "We permantently monitor your website for any issues",
-            },
-            {
-                label: "Buy it anytime",
-                tooltip:
-                    "Want to host it somewhere else ? You can buy it anytime",
-            },
-        ],
-    },
-    {
-        title: "Large",
-        description: "Complex presentation websites, E-commerce stores",
-        price: "299 EUR/month",
-        disabled: true,
-        ctaText: "Coming soon",
-        benefits: [
-            {
-                label: "Up to 160 free hours of initial app development(worth 8K EUR)",
-                tooltip:
-                    "You get up to 160 hours of free development time to build your web app(worth 8K euro).",
-            },
-            {
-                label: "4h of maintenance/support/development per month",
-                tooltip:
-                    "Every month you get 4 hours of free development time to use for bugfixes, upgrades or any other features you need added.",
-            },
-            {
-                label: "Free PREMIUM graphic design or bring your own",
-                tooltip:
-                    "Provide your own design(Figma) or we can create one for you(at no additional cost).",
-            },
-            {
-                label: "Free critical bugfixes",
-                tooltip: "Any major bugs are fixed free of charge",
-            },
-            {
-                label: "World class hosting included",
-                tooltip: "We host your website. All in the same monthly price",
-            },
-            {
-                label: "Permanent security, performance and uptime monitoring",
-                tooltip: "We permantently monitor your website for any issues",
-            },
-            {
-                label: "Buy it anytime",
-                tooltip:
-                    "Want to host it somewhere else ? You can buy it anytime",
-            },
-        ],
-    },
+    // {
+    //     title: "Medium",
+    //     description: "1-10 pages websites, small internal tools",
+    //     price: "119",
+    //     priceId: "price_1OVDYTIUzRJ2Go2A3q8YATrY",
+    //     isPopular: true,
+    //     benefits: [
+    //         {
+    //             label: "Up to 40 free hours of initial app development( worth 2K EUR )",
+    //             tooltip:
+    //                 "You get up to 40 hours of free development time to build your web app.",
+    //         },
+    //         {
+    //             label: "1h of development/fixes per month",
+    //             tooltip:
+    //                 "Every month you get 1 hours of free development time to use for bugfixes, upgrades or any other features you need added.",
+    //         },
+    //         {
+    //             label: "Free PREMIUM graphic design or bring your own",
+    //             tooltip:
+    //                 "Provide your own design(Figma) or we can create one for you(at no additional cost).",
+    //         },
+    //         {
+    //             label: "Free security & critical bugfixes",
+    //             tooltip: "Any major bugs are fixed free of charge",
+    //         },
+    //         {
+    //             label: "World class hosting included",
+    //             tooltip: "We host your website. All in the same monthly price",
+    //         },
+    //         {
+    //             label: "Permanent security, performance and uptime monitoring",
+    //             tooltip: "We permantently monitor your website for any issues",
+    //         },
+    //         {
+    //             label: "Buy it anytime",
+    //             tooltip:
+    //                 "Want to host it somewhere else ? You can buy it anytime",
+    //         },
+    //     ],
+    // },
+    // {
+    //     title: "Large",
+    //     description: "Complex presentation websites, E-commerce stores",
+    //     price: "299",
+    //     disabled: true,
+    //     ctaText: "Coming soon",
+    //     benefits: [
+    //         {
+    //             label: "Up to 160 free hours of initial app development(worth 8K EUR)",
+    //             tooltip:
+    //                 "You get up to 160 hours of free development time to build your web app(worth 8K euro).",
+    //         },
+    //         {
+    //             label: "4h of maintenance/support/development per month",
+    //             tooltip:
+    //                 "Every month you get 4 hours of free development time to use for bugfixes, upgrades or any other features you need added.",
+    //         },
+    //         {
+    //             label: "Free PREMIUM graphic design or bring your own",
+    //             tooltip:
+    //                 "Provide your own design(Figma) or we can create one for you(at no additional cost).",
+    //         },
+    //         {
+    //             label: "Free critical bugfixes",
+    //             tooltip: "Any major bugs are fixed free of charge",
+    //         },
+    //         {
+    //             label: "World class hosting included",
+    //             tooltip: "We host your website. All in the same monthly price",
+    //         },
+    //         {
+    //             label: "Permanent security, performance and uptime monitoring",
+    //             tooltip: "We permantently monitor your website for any issues",
+    //         },
+    //         {
+    //             label: "Buy it anytime",
+    //             tooltip:
+    //                 "Want to host it somewhere else ? You can buy it anytime",
+    //         },
+    //     ],
+    // },
     {
         title: "Custom development",
+        disabled: true,
+        ctaText: "Fully booked",
         description:
             "Large app or any other special requirements ? No problem.",
-        price: "7K EUR/month",
+        price: "7K",
         benefits: [
-            { label: "Unlimited requests", tooltip: "You can request" },
+            {
+                label: "Unlimited requests",
+                tooltip:
+                    "You can request unlimited tasks and they will be completed one at a time",
+            },
+            {
+                label: "Fullstack development, architecture, system design",
+                tooltip:
+                    "We do full-stack development in Typescript, Node.js, React, Next.js, GraphQL, Prisma, PostgreSQL, MongoDB, Redis, AWS, Docker, Kubernetes. We emphasize testing, documentation and system architecture.",
+            },
             {
                 label: "3-4 business days delivery time on average",
-                tooltip: "Tooltip 1",
+                tooltip:
+                    "Depending on the complexity of the request, it can take anywhere from same day delivery to 7 days. However, on average, we fullfill your request in aboput 3-4 days",
             },
-            { label: "Any complexity apps", tooltip: "Tooltip 1" },
-            { label: "Host it yourself", tooltip: "Tooltip 2" },
+            {
+                label: "Pause subscription anytime",
+                tooltip:
+                    "If you don't have work to give us, just pause your subscription. You will not loose the remaining days of the month. You can then resume when you have work.",
+            },
             {
                 label: "Custom terms for maintenance/support/development",
-                tooltip: "Tooltip 3",
+                tooltip:
+                    "Need support and maintainance after development stage ? We have you covered.",
             },
         ],
     },
@@ -229,11 +240,12 @@ const PricingPlanCard: React.FC<PricingPlanProps> = ({
             bg={bg}
             boxShadow={"xl"}
             rounded={"md"}
-            // overflow={"hidden"}
+            border={"1px solid black"}
             p={6}
             textAlign={"center"}
             position={"relative"}
             width={"100%"}
+            maxW={"500px"}
         >
             {isPopular && (
                 <Badge
@@ -251,19 +263,40 @@ const PricingPlanCard: React.FC<PricingPlanProps> = ({
                     Most popular
                 </Badge>
             )}
-            <Heading size={"lg"} fontWeight={"bold"} color={textColor}>
+            <Heading
+                size={"medium"}
+                fontWeight={"bold"}
+                color={textColor}
+                pt={4}
+            >
                 {title}
             </Heading>
             <Text mt={2} fontSize={"sm"} color={"gray.500"}>
                 {description}
             </Text>
             <Text mt={4} fontSize={"5xl"} fontWeight={"bold"} color={textColor}>
+                <Text
+                    as={"span"}
+                    fontSize={"xl"}
+                    lineHeight={"3rem"}
+                    verticalAlign={"top"}
+                >
+                    &euro;
+                </Text>
                 {price}
+                <Text
+                    as={"span"}
+                    fontSize={"xl"}
+                    lineHeight={"3rem"}
+                    verticalAlign={"top"}
+                >
+                    /m
+                </Text>
             </Text>
             <Button
                 isDisabled={disabled}
                 onClick={() => router.push(`/auth/signup`)}
-                mt={8}
+                mt={2}
                 mb={2}
                 bg={"black"}
                 color={"white"}
@@ -282,14 +315,19 @@ const PricingPlanCard: React.FC<PricingPlanProps> = ({
                 </Link>
             </Box>
             <Box mt={8}>
-                <Text fontSize={"xl"} mb={2}>
+                <Text fontSize={"medium"} mb={2}>
                     What is included
                 </Text>
-                <UnorderedList spacing={2} textAlign={"left"}>
+                <List spacing={2} textAlign={"left"}>
                     {benefits.map((benefit, index) => (
                         <React.Fragment key={benefit.label}>
-                            <ListItem key={index}>
-                                {benefit.label}{" "}
+                            <ListItem
+                                key={index}
+                                fontSize={"small"}
+                                color="black"
+                            >
+                                <ListIcon as={SlCheck} color="green.500" />
+                                {benefit.label}
                                 <Tooltip
                                     key={index}
                                     label={benefit.tooltip}
@@ -300,7 +338,7 @@ const PricingPlanCard: React.FC<PricingPlanProps> = ({
                             </ListItem>
                         </React.Fragment>
                     ))}
-                </UnorderedList>
+                </List>
             </Box>
         </Box>
     );
@@ -319,7 +357,7 @@ const PricingPlansSection: React.FC = () => {
             <Text mb={5} textAlign="center">
                 Start right away — cancel anytime, no contract, no risk.
             </Text>
-            <Stack spacing={4} direction={["row"]}>
+            <Stack spacing={4} direction={["row"]} justifyContent={"center"}>
                 {plans.map((plan, index) => (
                     <PricingPlanCard key={index} {...plan} />
                 ))}

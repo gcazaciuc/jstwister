@@ -36,7 +36,8 @@ const TechnologyCard: React.FC<TechnologyCardProps> = ({ logoUrl, label }) => {
 
     return (
         <VStack
-            bg={cardBg}
+            bg={"white"}
+            border={"1px solid black"}
             rounded="md"
             boxShadow="sm"
             p={4}
@@ -69,7 +70,24 @@ const TechnologiesWeUse: React.FC = () => {
     ];
 
     return (
-        <Box bg="white" py={10} id="#technology">
+        <Box
+            bg="white"
+            py={10}
+            id="#technology"
+            zIndex={2}
+            position={"relative"}
+        >
+            <Image
+                src={"gradient-noise-purple.png"}
+                alt="gradient"
+                position={"absolute"}
+                left={"40%"}
+                top={"-10%"}
+                width="400px"
+                height="400px"
+                opacity={0.4}
+                zIndex={-1}
+            />
             <Container maxW="container.xl">
                 <InView triggerOnce={true} threshold={0.5}>
                     {({ inView, ref }) => (

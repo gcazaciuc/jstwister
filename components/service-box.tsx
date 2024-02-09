@@ -16,30 +16,33 @@ interface ServiceBoxProps {
 const ServiceBox: React.FC<ServiceBoxProps> = ({ service }) => {
     return (
         <Box
-            p={4}
+            py={4}
+            px={4}
             flex={1}
-            bg={"gray.100"}
-            borderRadius="lg"
-            boxShadow="md"
             role="group"
             _hover={{
                 transform: "scale(1.05)",
                 boxShadow: "md",
-                border: "1px solid transparent",
             }}
             transition="transform 0.2s, border 0.2s"
         >
             <VStack spacing={2}>
                 <Box
                     as="span"
-                    fontSize="2xl"
+                    fontSize="4xl"
                     transition="transform 0.5s"
+                    mb={6}
+                    color="purple.500"
                     _groupHover={{ transform: "rotate(360deg)" }}
                 >
                     {service.icon}
                 </Box>
-                <Text fontWeight="bold">{service.title}</Text>
-                <Text color="gray.500">{service.description}</Text>
+                <Text fontWeight="bold" fontSize="xl">
+                    {service.title}
+                </Text>
+                <Text color="white" textAlign={"center"}>
+                    {service.description}
+                </Text>
             </VStack>
         </Box>
     );

@@ -20,24 +20,21 @@ interface FAQItem {
 // Mock data for the FAQ items
 const faqData: FAQItem[] = [
     {
-        question: "What tech stack do you use for your projects?",
-        answer: "We use mainly React, Next.js, and Chakra UI for our projects. We skillfully use other technologies as needed.",
+        question: "What kind of website can I have in the small plan ?",
+        answer: "Any presentation website between 1-10 pages will do. We can also build e-commerce websites, blogs, and more on larger plans.",
     },
     {
-        question: "What tech stack do you use for your projects?",
-        answer: "We use mainly React, Next.js, and Chakra UI for our projects. We skillfully use other technologies as needed.",
+        question: "How much will my website cost ?",
+        answer: "You only pay a small monthly fee, depending on yopur chosen plan and you get initial website development, hosting and maintainance included in the monthly plan. No upfront costs. No hidden fees. No surprises.",
     },
     {
-        question: "What tech stack do you use for your projects?",
-        answer: "We use mainly React, Next.js, and Chakra UI for our projects. We skillfully use other technologies as needed.",
+        question:
+            "Why not I should just use a website builder (like Wix etc) ?",
+        answer: "The website you get is hand coded and custom designed to fit your business. It's not a template. It's not a drag and drop builder. It's a custom website, built for you, by us. As such you get much better security, performance and SEO optimizations.",
     },
     {
-        question: "What tech stack do you use for your projects?",
-        answer: "We use mainly React, Next.js, and Chakra UI for our projects. We skillfully use other technologies as needed.",
-    },
-    {
-        question: "What tech stack do you use for your projects?",
-        answer: "We use mainly React, Next.js, and Chakra UI for our projects. We skillfully use other technologies as needed.",
+        question: "How can you help me get more business ?",
+        answer: "First, the websites we build our fast, secure and SEO optimized. Second, we can help you with additional features like contact forms, newsletter signups, and more. Third, we can help you with online marketing and SEO optimizations. We can also help you with social media integrations and more.",
     },
     // ...add other FAQ items here
 ];
