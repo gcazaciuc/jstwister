@@ -111,6 +111,7 @@ const SignupForm = () => {
                         render={({ field }) => (
                             <Input
                                 {...field}
+                                autoComplete="off"
                                 borderColor={"black"}
                                 type="email"
                                 id="email"
@@ -120,6 +121,30 @@ const SignupForm = () => {
                     {errors.email && (
                         <Box color="red.500">
                             {errors.email.message as string}
+                        </Box>
+                    )}
+                </FormControl>
+
+                <FormControl mt={4}>
+                    <FormLabel htmlFor="password">Password</FormLabel>
+                    <Controller
+                        name="password"
+                        control={control}
+                        defaultValue=""
+                        rules={{ required: "Password is required" }}
+                        render={({ field }) => (
+                            <Input
+                                {...field}
+                                autoComplete="off"
+                                borderColor={"black"}
+                                type="password"
+                                id="password"
+                            />
+                        )}
+                    />
+                    {errors.password && (
+                        <Box color="red.500">
+                            {errors.password.message as string}
                         </Box>
                     )}
                 </FormControl>
@@ -170,7 +195,12 @@ const SignupForm = () => {
                     )}
                 </FormControl>
                 <Box textAlign={"right"}>
-                    <Button variant={"link"} color={"black"} px={6}>
+                    <Button
+                        variant={"link"}
+                        color={"black"}
+                        px={6}
+                        onClick={() => router.push("/auth/signin")}
+                    >
                         Already have an account? Login
                     </Button>
 

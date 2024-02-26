@@ -6,12 +6,13 @@ import {
     Flex,
     IconButton,
     Stack,
-    useDisclosure, Center,
+    useDisclosure,
+    Center,
     Link,
     useBreakpointValue,
     Text,
     HStack,
-    Button
+    Button,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { usePathname, useRouter } from "next/navigation";
@@ -155,7 +156,7 @@ const Navbar: React.FC<NavbarProps> = ({ navLinks = defaultNavLinks }) => {
                         _hover={{ bg: "gray.300" }}
                         size="lg"
                         mt={4}
-                        onClick={() => router.push("/auth/signup")}
+                        onClick={() => router.push("/auth/signin")}
                     >
                         Login
                     </Button>

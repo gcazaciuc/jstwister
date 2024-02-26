@@ -31,9 +31,9 @@ const servicesList: ServiceItem[] = [
     {
         id: 1,
         icon: <SlTag />,
-        title: "Website creation",
+        title: "Website development",
         description:
-            "We're experts in putting your business online. We hand craft crazy fast websites and we maintain them for you",
+            "We're experts in putting your business online. We hand craft perfectly optimized websites and we maintain them for you",
     },
     {
         id: 2,

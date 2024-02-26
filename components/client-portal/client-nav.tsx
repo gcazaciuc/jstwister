@@ -1,6 +1,5 @@
 "use client";
 import {
-    Box,
     Flex,
     Text,
     Avatar,
@@ -9,11 +8,20 @@ import {
     MenuItem,
     MenuList,
 } from "@chakra-ui/react";
+import { SlUser } from "react-icons/sl";
 import { useRouter } from "next/navigation";
 import { useSupabase } from "../providers/supabase-provider";
 import { useEffect, useState } from "react";
 import { User } from "@supabase/supabase-js";
-
+const UserMenuButton = (props: any) => (
+    <Avatar
+        {...props}
+        size="md"
+        bgColor="purple.500"
+        name={`${props.userData?.firstName}-${props.userData?.lastName}`}
+        icon={<SlUser color="red" />}
+    />
+);
 const Nav = () => {
     const router = useRouter();
     const [user, setUser] = useState<User | null>(null);
@@ -30,25 +38,27 @@ const Nav = () => {
         if (currentUser) {
             // Assuming the user's first name and last name are stored in the metadata
             // If not, adjust according to your user data structure
-            setUser(user);
+            setUser(currentUser);
         }
     };
     useEffect(() => {
         fetchUser();
     }, []);
     const userData = user?.user_metadata;
-    console.log("User data", userData);
+    // console.log(userData);
     return (
         <Flex justify="space-between" align="center" bg="gray.100" p={4}>
             <Text fontSize="xl" fontWeight="bold" color="black">
-                Netcraft
+                Netcraft - Client Portal
             </Text>
-            <Menu>
-                <MenuButton as={Avatar} name="User Initials" />
-                <MenuList>
-                    <MenuItem onClick={handleLogout}>Log Out</MenuItem>
-                </MenuList>
-            </Menu>
+            {user ? (
+                <Menu>
+                    <MenuButton as={UserMenuButton} />
+                    <MenuList>
+                        <MenuItem onClick={handleLogout}>Log Out</MenuItem>
+                    </MenuList>
+                </Menu>
+            ) : null}
         </Flex>
     );
 };

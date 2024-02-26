@@ -1,41 +1,23 @@
-"use client";
-import { useState } from "react";
-import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
+import { Box, Stack, VStack } from "@chakra-ui/react";
 import Nav from "../../components/client-portal/client-nav";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
+import { createClient } from "@/supabase/server";
+import Tabbar from "@/components/client-portal/tabbar";
 
-const HomePage = () => {
-    const router = useRouter();
-    const [tabIndex, setTabIndex] = useState(0);
+const PortalPage = async () => {
+    const supabase = createClient();
 
-    const handleTabsChange = (index: number) => {
-        setTabIndex(index);
-        if (index === 0) {
-            router.push("/dashboard");
-        } else {
-            router.push("/settings");
-        }
-    };
+    const { data, error } = await supabase.auth.getUser();
+    if (error || !data?.user) {
+        redirect("/");
+    }
 
     return (
-        <Box bg="white">
+        <Stack bg="white" height={"100vh"} spacing={4}>
             <Nav />
-            <Tabs index={tabIndex} onChange={handleTabsChange}>
-                <TabList>
-                    <Tab>Dashboard</Tab>
-                    <Tab>Settings</Tab>
-                </TabList>
-                <TabPanels>
-                    <TabPanel>
-                        <p>Dashboard Content</p>
-                    </TabPanel>
-                    <TabPanel>
-                        <p>Settings Content</p>
-                    </TabPanel>
-                </TabPanels>
-            </Tabs>
-        </Box>
+            <Tabbar />
+        </Stack>
     );
 };
 
-export default HomePage;
+export default PortalPage;
