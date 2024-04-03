@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { useForm, Controller } from "react-hook-form";
 import { useSupabase } from "../providers/supabase-provider";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const SignupForm = () => {
     const {
@@ -22,12 +22,15 @@ const SignupForm = () => {
         formState: { errors },
     } = useForm();
     const { supabase } = useSupabase();
+    const searchParams = useSearchParams();
+    const subscribeTo = searchParams.get("subscribe_to");
+
     const router = useRouter();
 
     const onSubmit = async (data: any) => {
         const { data: user, error } = await supabase.auth.signUp({
             email: data.email,
-            password: "ABC1234",
+            password: data.password,
             options: {
                 data,
             },
@@ -199,7 +202,11 @@ const SignupForm = () => {
                         variant={"link"}
                         color={"black"}
                         px={6}
-                        onClick={() => router.push("/auth/signin")}
+                        onClick={() =>
+                            router.push(
+                                `/auth/signin?subscribe_to=${subscribeTo}`
+                            )
+                        }
                     >
                         Already have an account? Login
                     </Button>

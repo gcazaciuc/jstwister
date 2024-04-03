@@ -185,41 +185,6 @@ interface PricingPlanProps {
     ctaText?: string;
     benefits: { label: string; tooltip: string }[];
 }
-const gotoCheckout = (priceId?: string) =>
-    async function () {
-        if (!priceId) {
-            return;
-        }
-
-        try {
-            const response = await fetch("/api/checkout", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    lookup_key: priceId,
-                }),
-            });
-
-            if (!response.ok) {
-                throw new Error("Network response was not ok");
-            }
-
-            const data = await response.json();
-
-            if (data.url) {
-                window.location.href = data.url;
-            } else {
-                console.error("URL not found in response");
-            }
-        } catch (error) {
-            console.error(
-                "There was a problem with the fetch operation:",
-                error
-            );
-        }
-    };
 
 const PricingPlanCard: React.FC<PricingPlanProps> = ({
     title,
@@ -295,7 +260,9 @@ const PricingPlanCard: React.FC<PricingPlanProps> = ({
             </Text>
             <Button
                 isDisabled={disabled}
-                onClick={() => router.push(`/auth/signup`)}
+                onClick={() =>
+                    router.push(`/auth/signup?subscribe_to=${priceId}`)
+                }
                 mt={2}
                 mb={2}
                 bg={"black"}

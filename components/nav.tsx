@@ -1,6 +1,7 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link as ScrollLink, scroller } from "react-scroll";
+import NextLink from "next/link";
 import {
     Box,
     Flex,
@@ -16,6 +17,8 @@ import {
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { usePathname, useRouter } from "next/navigation";
+import { useSupabase } from "./providers/supabase-provider";
+import { User } from "@supabase/supabase-js";
 
 // Define the navigation links
 const defaultNavLinks = [
@@ -35,8 +38,18 @@ const Navbar: React.FC<NavbarProps> = ({ navLinks = defaultNavLinks }) => {
     const { isOpen, onToggle } = useDisclosure();
     const pathname = usePathname();
     const router = useRouter();
+    const [user, setUser] = useState<User | undefined | null>(undefined);
+    const { supabase } = useSupabase();
     // Determine if the current breakpoint is desktop or mobile
     const isMobile = useBreakpointValue({ base: false, sm: true, md: false });
+    const fetchUser = async () => {
+        const {
+            data: { user: currentUser },
+        } = await supabase.auth.getUser();
+
+        setUser(currentUser);
+    };
+
     useEffect(() => {
         const hash = window.location.hash; // Remove the '#' character from the hash
         if (hash) {
@@ -46,7 +59,9 @@ const Navbar: React.FC<NavbarProps> = ({ navLinks = defaultNavLinks }) => {
                 offset: -50,
             });
         }
+        fetchUser();
     }, []);
+
     return (
         <Box
             as="nav"
@@ -150,16 +165,20 @@ const Navbar: React.FC<NavbarProps> = ({ navLinks = defaultNavLinks }) => {
                         </Stack>
                     </Flex>
 
-                    <Button
-                        bg="white"
-                        color="black"
-                        _hover={{ bg: "gray.300" }}
-                        size="lg"
-                        mt={4}
-                        onClick={() => router.push("/auth/signin")}
-                    >
-                        Login
-                    </Button>
+                    {user === null ? (
+                        <Button
+                            bg="white"
+                            color="black"
+                            _hover={{ bg: "gray.300" }}
+                            size="lg"
+                            mt={4}
+                            onClick={() => router.push("/auth/signin")}
+                        >
+                            Login
+                        </Button>
+                    ) : user !== undefined ? (
+                        <NextLink href="/portal">Client Portal</NextLink>
+                    ) : null}
                 </HStack>
             </Center>
         </Box>

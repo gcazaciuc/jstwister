@@ -2,13 +2,12 @@
 import Nav from "@/components/client-portal/client-nav";
 import { ProjectBriefing } from "@/components/client-portal/project-briefing";
 import Sidebar from "@/components/client-portal/sidebar";
-import Tabbar from "@/components/client-portal/tabbar";
 import useBriefing from "@/hooks/use-briefing";
 import useProjects from "@/hooks/use-projects";
 import { Stack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-const PortalMainPage = () => {
+const BriefingLayout = ({ children }: { children: React.ReactNode }) => {
     const [projectId, setSelectedProject] = useState<string>("");
     const projects = useProjects();
     const briefing = useBriefing(projectId);
@@ -24,11 +23,9 @@ const PortalMainPage = () => {
         <Stack color="black" minHeight={"100vh"} spacing={0}>
             <Nav onProjectChange={onProjectChange} projects={projects} />
             <Sidebar />
-            <Stack ml={250}>
-                <ProjectBriefing projectId={projectId} briefing={briefing} />
-            </Stack>
+            <Stack ml={250}>{children}</Stack>
         </Stack>
     );
 };
 
-export default PortalMainPage;
+export default BriefingLayout;

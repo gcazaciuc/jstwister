@@ -5,7 +5,7 @@ import SupabaseProvider from "@/components/providers/supabase-provider";
 import { CacheProvider } from "@chakra-ui/next-js";
 import { ChakraProvider } from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
-import { Prose, withProse } from "@nikolovlazar/chakra-ui-prose";
+import { withProse } from "@nikolovlazar/chakra-ui-prose";
 
 const theme = extendTheme(
     {

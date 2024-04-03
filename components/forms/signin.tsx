@@ -6,14 +6,47 @@ import {
     FormLabel,
     Input,
     Button,
-    Grid,
-    GridItem,
-    Container,
+    Text,
     Heading,
+    Flex,
 } from "@chakra-ui/react";
 import { useForm, Controller } from "react-hook-form";
 import { useSupabase } from "../providers/supabase-provider";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
+
+const gotoCheckout = async function (priceId?: string, userId?: string) {
+    if (!priceId) {
+        return;
+    }
+
+    try {
+        const response = await fetch("/api/checkout", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                lookup_key: priceId,
+                customer_id: userId,
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+
+        const data = await response.json();
+
+        if (data.url) {
+            window.location.href = data.url;
+        } else {
+            console.error("URL not found in response");
+        }
+    } catch (error) {
+        console.error("There was a problem with the fetch operation:", error);
+    }
+};
 
 const SigninForm = () => {
     const {
@@ -22,16 +55,31 @@ const SigninForm = () => {
         formState: { errors },
     } = useForm();
     const { supabase } = useSupabase();
+    const [loginError, setLoginError] = useState<boolean | null>(null);
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const subscribeTo = searchParams.get("subscribe_to");
 
     const onSubmit = async (data: any) => {
         const {
             data: { user, session, weakPassword },
+            error,
         } = await supabase.auth.signInWithPassword({
             email: data.email,
             password: data.password,
         });
-        if (user && session) {
+        const isSuccesfullyLoggedIn = !error && user && session;
+        if (error) {
+            setLoginError(true);
+        }
+
+        if (subscribeTo && isSuccesfullyLoggedIn) {
+            console.log("Subscribing to", subscribeTo);
+            await gotoCheckout(subscribeTo, user?.id);
+            return;
+        }
+
+        if (isSuccesfullyLoggedIn) {
             // If the user is succesfully logged in, redirect to the portal
             router.push("/portal");
         }
@@ -42,6 +90,9 @@ const SigninForm = () => {
             <Heading as="h1" fontSize="4xl" py={10}>
                 Login
             </Heading>
+            {loginError && (
+                <Text color="red.500">Invalid email or password!</Text>
+            )}
             <form onSubmit={handleSubmit(onSubmit)}>
                 <FormControl mt={4}>
                     <FormLabel htmlFor="email">Email</FormLabel>
@@ -95,11 +146,11 @@ const SigninForm = () => {
                     )}
                 </FormControl>
 
-                <Box textAlign={"right"}>
+                <Flex direction="row" justifyItems="space-between" mt={4}>
                     <Button
                         variant={"link"}
                         color={"black"}
-                        px={6}
+                        pr={10}
                         onClick={() => router.push("/auth/signup")}
                     >
                         Dont have an account? Please sign up
@@ -115,7 +166,7 @@ const SigninForm = () => {
                     >
                         Login
                     </Button>
-                </Box>
+                </Flex>
             </form>
         </>
     );

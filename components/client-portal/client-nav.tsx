@@ -7,58 +7,81 @@ import {
     MenuButton,
     MenuItem,
     MenuList,
+    forwardRef,
+    Stack,
+    Select,
+    Box,
 } from "@chakra-ui/react";
-import { SlUser } from "react-icons/sl";
 import { useRouter } from "next/navigation";
-import { useSupabase } from "../providers/supabase-provider";
-import { useEffect, useState } from "react";
-import { User } from "@supabase/supabase-js";
-const UserMenuButton = (props: any) => (
+import useUser from "@/hooks/use-user";
+import { SlLogout } from "react-icons/sl";
+import Link from "next/link";
+
+const UserMenuButton = forwardRef((props: any, ref) => (
     <Avatar
         {...props}
         size="md"
-        bgColor="purple.500"
-        name={`${props.userData?.firstName}-${props.userData?.lastName}`}
-        icon={<SlUser color="red" />}
+        ref={ref}
+        bgColor="#020024"
+        // name={`${props.userData?.firstName}-${props.userData?.lastName}`}
     />
-);
-const Nav = () => {
+));
+interface NavProps {
+    onProjectChange: (projectId: string) => void;
+    projects?: any[] | null;
+}
+
+const Nav = ({ onProjectChange, projects }: NavProps) => {
     const router = useRouter();
-    const [user, setUser] = useState<User | null>(null);
-    const { supabase } = useSupabase();
+    const { user, logout } = useUser();
+
     const handleLogout = async () => {
-        await supabase.auth.signOut();
+        await logout();
         router.push("/");
     };
-    const fetchUser = async () => {
-        const {
-            data: { user: currentUser },
-        } = await supabase.auth.getUser();
-
-        if (currentUser) {
-            // Assuming the user's first name and last name are stored in the metadata
-            // If not, adjust according to your user data structure
-            setUser(currentUser);
-        }
-    };
-    useEffect(() => {
-        fetchUser();
-    }, []);
     const userData = user?.user_metadata;
     // console.log(userData);
     return (
-        <Flex justify="space-between" align="center" bg="gray.100" p={4}>
-            <Text fontSize="xl" fontWeight="bold" color="black">
-                Netcraft - Client Portal
-            </Text>
-            {user ? (
-                <Menu>
-                    <MenuButton as={UserMenuButton} />
-                    <MenuList>
-                        <MenuItem onClick={handleLogout}>Log Out</MenuItem>
-                    </MenuList>
-                </Menu>
-            ) : null}
+        <Flex
+            justify="space-between"
+            align="center"
+            bgGradient="linear(to-r,rgba(2,0,36,1) 0%, rgba(121,40,202,1) 85%, rgba(255,0,128,0.5) 100%)"
+            p={4}
+        >
+            <Box w={180} borderRight="1px solid gray.500">
+                <Text fontSize="xl" fontWeight="bold" color="white">
+                    <Link href="/">Netcraft</Link>
+                </Text>
+            </Box>
+            <Stack direction="row" spacing={4}>
+                <Select
+                    size="md"
+                    color="white"
+                    onChange={(ev) => onProjectChange(ev.currentTarget.value)}
+                >
+                    {projects?.map((project) => (
+                        <option key={project.name} value={project.id} selected>
+                            {project.name}
+                        </option>
+                    ))}
+                </Select>
+                {user ? (
+                    <Menu>
+                        <MenuButton as={UserMenuButton} />
+                        <MenuList>
+                            <MenuItem
+                                onClick={handleLogout}
+                                icon={<SlLogout />}
+                                p={4}
+                                _hover={{ bg: "gray.100" }}
+                                _focus={{ bg: "gray.300" }}
+                            >
+                                Log Out
+                            </MenuItem>
+                        </MenuList>
+                    </Menu>
+                ) : null}
+            </Stack>
         </Flex>
     );
 };
