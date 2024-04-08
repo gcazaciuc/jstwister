@@ -19,6 +19,7 @@ import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { usePathname, useRouter } from "next/navigation";
 import { useSupabase } from "./providers/supabase-provider";
 import { User } from "@supabase/supabase-js";
+import { SlArrowRight } from "react-icons/sl";
 
 // Define the navigation links
 const defaultNavLinks = [
@@ -42,6 +43,32 @@ const Navbar: React.FC<NavbarProps> = ({ navLinks = defaultNavLinks }) => {
     const { supabase } = useSupabase();
     // Determine if the current breakpoint is desktop or mobile
     const isMobile = useBreakpointValue({ base: false, sm: true, md: false });
+    const PortalUser =
+        user === null ? (
+            <Button
+                bg="white"
+                color="black"
+                _hover={{ bg: "gray.300" }}
+                size="lg"
+                mt={4}
+                onClick={() => router.push("/auth/signin")}
+            >
+                Login
+            </Button>
+        ) : user !== undefined ? (
+            <Button
+                bg="white"
+                color="black"
+                _hover={{ bg: "gray.300" }}
+                size="lg"
+                variant={"ghost"}
+                rightIcon={<SlArrowRight />}
+                mt={4}
+                onClick={() => router.push("/portal")}
+            >
+                Client portal
+            </Button>
+        ) : null;
     const fetchUser = async () => {
         const {
             data: { user: currentUser },
@@ -77,7 +104,7 @@ const Navbar: React.FC<NavbarProps> = ({ navLinks = defaultNavLinks }) => {
             mx="auto"
             width="full"
         >
-            <Center>
+            <Flex justifyContent={"space-between"} p={2}>
                 <HStack p={2} spacing={10}>
                     <Text
                         sx={{
@@ -141,7 +168,9 @@ const Navbar: React.FC<NavbarProps> = ({ navLinks = defaultNavLinks }) => {
                                             p={2}
                                             href={link.href}
                                             borderRadius="md"
-                                            _hover={{ bg: "whiteAlpha.300" }}
+                                            _hover={{
+                                                bg: "whiteAlpha.300",
+                                            }}
                                         >
                                             {link.label}
                                         </Link>
@@ -164,23 +193,9 @@ const Navbar: React.FC<NavbarProps> = ({ navLinks = defaultNavLinks }) => {
                             )}
                         </Stack>
                     </Flex>
-
-                    {user === null ? (
-                        <Button
-                            bg="white"
-                            color="black"
-                            _hover={{ bg: "gray.300" }}
-                            size="lg"
-                            mt={4}
-                            onClick={() => router.push("/auth/signin")}
-                        >
-                            Login
-                        </Button>
-                    ) : user !== undefined ? (
-                        <NextLink href="/portal">Client Portal</NextLink>
-                    ) : null}
                 </HStack>
-            </Center>
+                {PortalUser}
+            </Flex>
         </Box>
     );
 };

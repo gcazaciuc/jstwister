@@ -14,6 +14,7 @@ import {
 import { useForm, Controller } from "react-hook-form";
 import { useSupabase } from "../providers/supabase-provider";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 
 const SignupForm = () => {
     const {
@@ -26,6 +27,13 @@ const SignupForm = () => {
     const subscribeTo = searchParams.get("subscribe_to");
 
     const router = useRouter();
+    useEffect(() => {
+        supabase.auth.getUser().then(({ data: { user } }) => {
+            if (user) {
+                router.push("/portal");
+            }
+        });
+    }, []);
 
     const onSubmit = async (data: any) => {
         const { data: user, error } = await supabase.auth.signUp({

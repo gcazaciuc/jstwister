@@ -35,8 +35,10 @@
         "react-icons": "^4.12.0",
         "react-intersection-observer": "^9.5.3",
         "react-scroll": "^1.9.0",
+        "react-spinners": "^0.13.8",
         "rehype-highlight": "^7.0.0",
         "remark-gfm": "^4.0.0",
+        "resend": "^3.2.0",
         "stripe": "^14.10.0",
         "swiper": "^11.0.5"
     },

@@ -74,10 +74,11 @@ export const BenefitsSection = () => {
                                 fontSize="xl"
                                 fontWeight="bold"
                                 color="darkBlue"
+                                mb={4}
                             >
                                 {benefit.title}
                             </Text>
-                            <Text color={"lightGrey"}>
+                            <Text color={"lightGrey"} lineHeight={1.7}>
                                 {benefit.description}
                             </Text>
                         </Box>

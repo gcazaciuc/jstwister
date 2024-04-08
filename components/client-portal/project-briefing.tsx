@@ -59,7 +59,6 @@ const WebsiteBriefingForm: React.FC<WebsiteBriefingProps> = ({
         handleSubmit,
         formState: { errors },
     } = useForm<FormValues>({ values: briefing });
-    const toast = useToast();
     const router = useRouter();
     const { supabase } = useSupabase();
 
@@ -97,6 +96,11 @@ const WebsiteBriefingForm: React.FC<WebsiteBriefingProps> = ({
                             placeholder="Describe your business, objectives, challenges and what you're hoping to achieve with a new website..."
                             {...register("websiteObjectives")}
                         />
+                        <FormHelperText>
+                            Let us know what you do, what are your main
+                            challenges, why do you need a new website and what
+                            are your main objectives with it.
+                        </FormHelperText>
                     </FormControl>
 
                     <FormControl as="fieldset" isRequired mt={4}>
@@ -144,8 +148,8 @@ const WebsiteBriefingForm: React.FC<WebsiteBriefingProps> = ({
                             {...register("competitorWebsites")}
                         />
                         <FormHelperText>
-                            Provide links to your main competitors so we can
-                            better understand your business.
+                            Provide a few links to your main competitors so we
+                            can better understand your field of business.
                         </FormHelperText>
                     </FormControl>
 
@@ -173,11 +177,15 @@ const WebsiteBriefingForm: React.FC<WebsiteBriefingProps> = ({
                             placeholder="Any design preferences like colors, specific fonts that you would like etc..."
                             {...register("designObservations")}
                         />
+                        <FormHelperText>
+                            The initial design will be based on your preferences
+                            described here.
+                        </FormHelperText>
                     </FormControl>
 
                     <FormControl as="fieldset" isRequired mt={4}>
                         <FormLabel as="legend">
-                            Do you have already have a logo ?
+                            Do you need a logo created ?
                         </FormLabel>
                         <RadioGroup defaultValue="no">
                             <Stack spacing={5} direction="row">
@@ -189,6 +197,11 @@ const WebsiteBriefingForm: React.FC<WebsiteBriefingProps> = ({
                                 </Radio>
                             </Stack>
                         </RadioGroup>
+                        <FormHelperText>
+                            Logo creation is not included in the website design
+                            package. If you need one we will reach out to you
+                            with a quote.
+                        </FormHelperText>
                     </FormControl>
 
                     <Flex direction={"row"} justifyContent={"center"}>
