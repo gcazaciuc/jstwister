@@ -11,6 +11,7 @@ import {
     Text,
     Center,
 } from "@chakra-ui/react";
+import { Trans } from "@lingui/macro";
 
 interface HeroSectionProps {
     title: string;
@@ -22,7 +23,9 @@ const HeroSection = ({ title, slug }: HeroSectionProps) => (
         <Center>
             <Breadcrumb>
                 <BreadcrumbItem>
-                    <BreadcrumbLink href="/">Home</BreadcrumbLink>
+                    <BreadcrumbLink href="/">
+                        <Trans>Home</Trans>
+                    </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbItem>
                     <BreadcrumbLink href="/blog">Blog</BreadcrumbLink>

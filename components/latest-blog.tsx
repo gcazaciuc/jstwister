@@ -3,6 +3,7 @@ import { SimpleGrid, Heading, Text, VStack, Flex } from "@chakra-ui/react";
 
 import { fetchBlogItems } from "@/repositories/blog-repository";
 import { BlogItemCard, BlogItemProps } from "./blog-item-card";
+import { Trans } from "@lingui/macro";
 // import { FaRegClock, FaRegCalendarAlt } from "react-icons/fa";
 
 const LatestFromBlog: React.FC = async () => {
@@ -34,9 +35,11 @@ const LatestFromBlog: React.FC = async () => {
                 p={10}
                 position={"relative"}
             >
-                <Heading as="h2">Latest from the blog</Heading>
+                <Heading as="h2">
+                    <Trans>Latest from the blog</Trans>
+                </Heading>
                 <Text fontSize="lg" mt={2}>
-                    Read more about engineering and design
+                    <Trans>Read more about engineering and design</Trans>
                 </Text>
             </VStack>
             <VStack w="full" justify="center" align="center" p={10} zIndex={1}>

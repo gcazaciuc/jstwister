@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { MotionBox } from "./motion-box";
 import { InView } from "react-intersection-observer";
+import { Trans } from "@lingui/macro";
 
 interface ValuePropositionProps {
     badgeText: string;
@@ -77,7 +78,7 @@ const ValueProposition: React.FC<ValuePropositionProps> = ({
                         {readMoreLink && (
                             <Link href={readMoreLink} isExternal>
                                 <Button mt="4" colorScheme="blue">
-                                    Read More
+                                    <Trans>Read More</Trans>
                                 </Button>
                             </Link>
                         )}

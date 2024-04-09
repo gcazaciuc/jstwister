@@ -12,6 +12,7 @@ import {
     useColorModeValue,
 } from "@chakra-ui/react";
 import { MotionBox } from "./motion-box";
+import { Trans } from "@lingui/macro";
 
 const variants = {
     hidden: { opacity: 0, y: -50, x: 10 },
@@ -105,7 +106,7 @@ const TechnologiesWeUse: React.FC = () => {
                                     mb={6}
                                     color="darkBlue"
                                 >
-                                    Technologies We Use
+                                    <Trans>Technologies We Use</Trans>
                                 </Heading>
                                 <Text
                                     textAlign={"center"}
@@ -114,13 +115,14 @@ const TechnologiesWeUse: React.FC = () => {
                                     color="lightGrey"
                                     ref={ref}
                                 >
-                                    We future proof your business. Forget about
-                                    <b>
-                                        {" "}
-                                        low performance, security flawed
-                                    </b>{" "}
-                                    site creators or Wordpress sites: with us
-                                    you get hand crafted cutting edge tech.
+                                    <Trans>
+                                        We future proof your business. Forget
+                                        about{" "}
+                                        <b>low performance, security flawed</b>{" "}
+                                        site creators or Wordpress sites: with
+                                        us you get hand crafted cutting edge
+                                        tech.
+                                    </Trans>
                                 </Text>
                             </MotionBox>
                             <MotionBox

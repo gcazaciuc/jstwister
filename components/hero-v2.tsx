@@ -14,6 +14,7 @@ import EmText from "./EmText";
 import { MotionBox } from "./motion-box";
 import { scroller } from "react-scroll";
 import Image from "next/image";
+import { Trans, t } from "@lingui/macro";
 // import { FaHeart } from "@chakra-ui/icons";
 
 const Hero: React.FC = () => {
@@ -68,11 +69,12 @@ const Hero: React.FC = () => {
                         }}
                     />
                     <Heading fontSize="xxx-large" mt={4}>
-                        Hand crafted <EmText text="web sites & apps"></EmText>.
+                        <Trans>Hand crafted</Trans>{" "}
+                        <EmText text={t`web sites & apps`}></EmText>.
                     </Heading>
                     <Text fontSize="2xl" mt={4}>
-                        Starting from 49 EUR/m,{" "}
-                        <EmText text="0 down-payment"></EmText>.
+                        <Trans>Starting from 49 EUR/m</Trans>,{" "}
+                        <EmText text={t`0 down-payment`}></EmText>.
                     </Text>
                     <Button
                         bg="black"
@@ -88,7 +90,7 @@ const Hero: React.FC = () => {
                             })
                         }
                     >
-                        See plans
+                        <Trans>See plans</Trans>
                     </Button>
                 </Box>
                 <Box position={"relative"}>

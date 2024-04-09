@@ -1,0 +1,414 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2024-04-08 14:25+0300\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: en\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#: components/hero-v2.tsx:77
+msgid "0 down-payment"
+msgstr "0 down-payment"
+
+#: components/how-it-works.tsx:20
+msgid "After you subscribe you'll fill a design briefing so we can understand how would you like your website to look and function. We'll build your website in 7-14 days after this step."
+msgstr "After you subscribe you'll fill a design briefing so we can understand how would you like your website to look and function. We'll build your website in 7-14 days after this step."
+
+#: components/contact-us.tsx:73
+#: components/contact-us.tsx:82
+msgid "An error occurred."
+msgstr "An error occurred."
+
+#: components/plans.tsx:41
+msgid "An original graphic design is not included. We use a template and customize it to your needs(colors, fonts etc )."
+msgstr "An original graphic design is not included. We use a template and customize it to your needs(colors, fonts etc )."
+
+#: components/faq.tsx:25
+msgid "Any presentation website between 1-10 pages will do. We can also build e-commerce websites, blogs, and more on larger plans."
+msgstr "Any presentation website between 1-10 pages will do. We can also build e-commerce websites, blogs, and more on larger plans."
+
+#: components/nav.tsx:29
+msgid "Benefits"
+msgstr "Benefits"
+
+#: components/nav.tsx:32
+msgid "Blog"
+msgstr "Blog"
+
+#: components/plans.tsx:197
+msgid "Book a call"
+msgstr "Book a call"
+
+#: components/how-it-works.tsx:19
+msgid "Build"
+msgstr "Build"
+
+#: components/benefits.tsx:21
+#: components/plans.tsx:52
+msgid "Buy it anytime"
+msgstr "Buy it anytime"
+
+#: components/nav.tsx:70
+msgid "Client portal"
+msgstr "Client portal"
+
+#: components/contact-us.tsx:195
+msgid "Contact us"
+msgstr "Contact us"
+
+#: components/services.tsx:53
+msgid "Copywriting"
+msgstr "Copywriting"
+
+#: app/page.tsx:45
+msgid "Cost control"
+msgstr "Cost control"
+
+#: components/contact-us.tsx:154
+msgid "Email Address"
+msgstr "Email Address"
+
+#: components/plans.tsx:29
+msgid "Essential"
+msgstr "Essential"
+
+#: components/benefits.tsx:41
+msgid "Exceptional service"
+msgstr "Exceptional service"
+
+#: components/benefits.tsx:62
+msgid "Explore the benefits you get"
+msgstr "Explore the benefits you get"
+
+#: components/faq.tsx:38
+msgid "First, the websites we build our fast, secure and SEO optimized. Second, we can help you with additional features like contact forms, newsletter signups, and more. Third, we can help you with online marketing and SEO optimizations. We can also help you with social media integrations and more."
+msgstr "First, the websites we build our fast, secure and SEO optimized. Second, we can help you with additional features like contact forms, newsletter signups, and more. Third, we can help you with online marketing and SEO optimizations. We can also help you with social media integrations and more."
+
+#: components/services.tsx:42
+msgid "For a small flat monthly fee we continously improve the on-page and off-page SEO of your website."
+msgstr "For a small flat monthly fee we continously improve the on-page and off-page SEO of your website."
+
+#: components/faq.tsx:48
+msgid "Frequently Asked Questions"
+msgstr "Frequently Asked Questions"
+
+#: components/benefits.tsx:36
+msgid "Full service"
+msgstr "Full service"
+
+#: components/benefits.tsx:37
+msgid "Get everything: initial design & development per your specifications and monthtly hosting, maintenance, support, and more. All included in the monthly fee."
+msgstr "Get everything: initial design & development per your specifications and monthtly hosting, maintenance, support, and more. All included in the monthly fee."
+
+#: components/how-it-works.tsx:40
+msgid "Get your custom website created by us in a few easy steps"
+msgstr "Get your custom website created by us in a few easy steps"
+
+#: app/page.tsx:57
+msgid "Got a bug or need a new feature? We got you covered. We provide a number of monthly development hours included in each plan."
+msgstr "Got a bug or need a new feature? We got you covered. We provide a number of monthly development hours included in each plan."
+
+#: components/hero-v2.tsx:72
+msgid "Hand crafted"
+msgstr "Hand crafted"
+
+#: components/contact-us.tsx:107
+msgid "Have something in mind ?"
+msgstr ""
+
+#: components/blog-hero.tsx:27
+#: components/nav.tsx:27
+msgid "Home"
+msgstr "Home"
+
+#: components/contact-us.tsx:165
+msgid "How can help you?"
+msgstr "How can help you?"
+
+#: components/faq.tsx:37
+msgid "How can you help me get more business ?"
+msgstr "How can you help me get more business ?"
+
+#: components/how-it-works.tsx:37
+#: components/nav.tsx:28
+msgid "How it works"
+msgstr "How it works"
+
+#: components/faq.tsx:28
+msgid "How much will my website cost ?"
+msgstr "How much will my website cost ?"
+
+#: components/benefits.tsx:42
+msgid "Instead of talking all day about quality, we put our money where our mouth is: we provide top quality solutions for your business because we only get paid if you continue to use our service."
+msgstr "Instead of talking all day about quality, we put our money where our mouth is: we provide top quality solutions for your business because we only get paid if you continue to use our service."
+
+#: components/latest-blog.tsx:39
+msgid "Latest from the blog"
+msgstr "Latest from the blog"
+
+#: components/how-it-works.tsx:23
+msgid "Launch"
+msgstr "Launch"
+
+#: components/contact-us.tsx:110
+msgid "Let's have a chat..."
+msgstr ""
+
+#: components/nav.tsx:57
+msgid "Login"
+msgstr "Login"
+
+#: components/contact-us.tsx:119
+msgid "Mail us 24/7 hello@netcraft.digital"
+msgstr ""
+
+#: components/how-it-works.tsx:27
+msgid "Maintain"
+msgstr "Maintain"
+
+#: app/page.tsx:53
+msgid "Maintainance"
+msgstr "Maintainance"
+
+#: app/page.tsx:54
+msgid "Maintainance & support included"
+msgstr "Maintainance & support included"
+
+#: components/services.tsx:47
+msgid "Marketing"
+msgstr "Marketing"
+
+#: components/contact-us.tsx:64
+msgid "Message sent!"
+msgstr "Message sent!"
+
+#: components/plans.tsx:36
+msgid "Monthly security & critical fixes included"
+msgstr "Monthly security & critical fixes included"
+
+#: components/plans.tsx:144
+msgid "Most popular"
+msgstr "Most popular"
+
+#: components/services.tsx:54
+msgid "Need monthly blog posts ? Or maybe you need a revamp of the texts on your home page to better connect with customers ? We got you covered."
+msgstr "Need monthly blog posts ? Or maybe you need a revamp of the texts on your home page to better connect with customers ? We got you covered."
+
+#: app/page.tsx:58
+msgid "Need more development hours? No problem, we can provide them at a very attractive rate."
+msgstr "Need more development hours? No problem, we can provide them at a very attractive rate."
+
+#: app/page.tsx:59
+msgid "No more chasing around expensive, un-reliable freelancers to maintain your website."
+msgstr "No more chasing around expensive, un-reliable freelancers to maintain your website."
+
+#: components/benefits.tsx:16
+msgid "No upfront costs"
+msgstr "No upfront costs"
+
+#: components/plans.tsx:37
+msgid "On the Presentation plan you get only security and regular tech updates. No new features or bugfixes are included, however you can order custom development."
+msgstr "On the Presentation plan you get only security and regular tech updates. No new features or bugfixes are included, however you can order custom development."
+
+#: app/page.tsx:46
+msgid "Optimize your expenses"
+msgstr "Optimize your expenses"
+
+#: app/blog/[page]/page.tsx:17
+msgid "Our blog"
+msgstr "Our blog"
+
+#: components/plans.tsx:30
+msgid "Perfect for 1-10 pages presentation websites"
+msgstr "Perfect for 1-10 pages presentation websites"
+
+#: components/plans.tsx:48
+msgid "Permanent security, performance and uptime monitoring"
+msgstr "Permanent security, performance and uptime monitoring"
+
+#: components/nav.tsx:31
+#: components/plans.tsx:234
+msgid "Plans"
+msgstr "Plans"
+
+#: components/value-proposition.tsx:81
+msgid "Read More"
+msgstr "Read More"
+
+#: components/latest-blog.tsx:42
+msgid "Read more about engineering and design"
+msgstr "Read more about engineering and design"
+
+#: components/benefits.tsx:17
+msgid "Rent your website, custom built to your specifications, for a flat monthly fee. No upfront development costs, full service included."
+msgstr "Rent your website, custom built to your specifications, for a flat monthly fee. No upfront development costs, full service included."
+
+#: components/hero-v2.tsx:93
+msgid "See plans"
+msgstr "See plans"
+
+#: components/services.tsx:41
+msgid "SEO"
+msgstr "SEO"
+
+#: components/services.tsx:67
+msgid "Services We Provide On Subscription"
+msgstr "Services We Provide On Subscription"
+
+#: components/plans.tsx:238
+msgid "Simple pricing with no hidden fees."
+msgstr "Simple pricing with no hidden fees."
+
+#: components/contact-us.tsx:74
+#: components/contact-us.tsx:83
+msgid "Sorry for the incovenience. Please try again shortly."
+msgstr "Sorry for the incovenience. Please try again shortly."
+
+#: components/benefits.tsx:26
+msgid "Start now with no risks"
+msgstr "Start now with no risks"
+
+#: components/plans.tsx:241
+msgid "Start right away — cancel anytime, no contract, no risk."
+msgstr "Start right away — cancel anytime, no contract, no risk."
+
+#: components/benefits.tsx:27
+msgid "Start your project immediately: no unreliable freelancers, no interviews, no hiring, no proposals, no unforeseen costs. Cancel anytime if unsatisfied."
+msgstr "Start your project immediately: no unreliable freelancers, no interviews, no hiring, no proposals, no unforeseen costs. Cancel anytime if unsatisfied."
+
+#: components/hero-v2.tsx:76
+msgid "Starting from 49 EUR/m"
+msgstr "Starting from 49 EUR/m"
+
+#: components/how-it-works.tsx:15
+msgid "Subscribe"
+msgstr "Subscribe"
+
+#: components/how-it-works.tsx:16
+msgid "Subscribe to a plan. After that, we'll build your custom presentation website according to your specifications, FOR FREE. We only charge a flat monthly fee for support, maintainance and hosting, no strings attached."
+msgstr "Subscribe to a plan. After that, we'll build your custom presentation website according to your specifications, FOR FREE. We only charge a flat monthly fee for support, maintainance and hosting, no strings attached."
+
+#: components/technologies.tsx:109
+msgid "Technologies We Use"
+msgstr "Technologies We Use"
+
+#: components/nav.tsx:30
+msgid "Technology"
+msgstr "Technology"
+
+#: components/plans.tsx:40
+msgid "Template based graphic design"
+msgstr "Template based graphic design"
+
+#: components/contact-us.tsx:65
+msgid "Thank you for contacting us! We will be in touch shortly."
+msgstr "Thank you for contacting us! We will be in touch shortly."
+
+#: components/faq.tsx:34
+msgid "The website you get is hand coded and custom designed to fit your business. It's not a template. It's not a drag and drop builder. It's a custom website, built for you, by us. As such you get much better security, performance and SEO optimizations."
+msgstr "The website you get is hand coded and custom designed to fit your business. It's not a template. It's not a drag and drop builder. It's a custom website, built for you, by us. As such you get much better security, performance and SEO optimizations."
+
+#: components/contact-us.tsx:147
+#: components/contact-us.tsx:158
+#: components/contact-us.tsx:170
+msgid "This field is required"
+msgstr ""
+
+#: components/benefits.tsx:31
+msgid "Top performance. Top SEO."
+msgstr "Top performance. Top SEO."
+
+#: components/benefits.tsx:22
+msgid "Want to get full ownership of your app/website? Buy it anytime for a small fee. No questions asked"
+msgstr "Want to get full ownership of your app/website? Buy it anytime for a small fee. No questions asked"
+
+#: components/plans.tsx:53
+msgid "Want to host it somewhere else ? You can buy it anytime"
+msgstr "Want to host it somewhere else ? You can buy it anytime"
+
+#: components/services.tsx:70
+msgid "We <0/> small businesses and startups."
+msgstr "We <0/> small businesses and startups."
+
+#: components/technologies.tsx:118
+msgid "We future proof your business. Forget about <0>low performance, security flawed</0> site creators or Wordpress sites: with us you get hand crafted cutting edge tech."
+msgstr "We future proof your business. Forget about <0>low performance, security flawed</0> site creators or Wordpress sites: with us you get hand crafted cutting edge tech."
+
+#: components/how-it-works.tsx:24
+msgid "We host your website and we offer continous monitoring, maintainance and support all included  at no extra charge. However, you can buy the website for an attractive fee and host it yourself if you want."
+msgstr "We host your website and we offer continous monitoring, maintainance and support all included  at no extra charge. However, you can buy the website for an attractive fee and host it yourself if you want."
+
+#: components/plans.tsx:45
+msgid "We host your website. All in the same monthly price"
+msgstr "We host your website. All in the same monthly price"
+
+#: components/services.tsx:48
+msgid "We offer an addon subscription for all websites hosted with us: PPC and Social Media Marketing for a flat fee"
+msgstr "We offer an addon subscription for all websites hosted with us: PPC and Social Media Marketing for a flat fee"
+
+#: components/plans.tsx:49
+msgid "We permantently monitor your website for any issues"
+msgstr "We permantently monitor your website for any issues"
+
+#: app/page.tsx:56
+msgid "We take care of everything: hosting, maintenance, security, on page SEO optimizations, support, and more. All included in the monthly fee."
+msgstr "We take care of everything: hosting, maintenance, security, on page SEO optimizations, support, and more. All included in the monthly fee."
+
+#: components/how-it-works.tsx:28
+msgid "We take care of the monthly security updates, performance optimizations, tech stack upgrades and we make sure your website is always up and running. At no extra charge."
+msgstr "We take care of the monthly security updates, performance optimizations, tech stack upgrades and we make sure your website is always up and running. At no extra charge."
+
+#: components/benefits.tsx:32
+msgid "We use latest tech. Not unsecure plugins. Not bloated themes. Not slow page builders. We hand code your website for top performance and SEO."
+msgstr "We use latest tech. Not unsecure plugins. Not bloated themes. Not slow page builders. We hand code your website for top performance and SEO."
+
+#: components/services.tsx:36
+msgid "We're experts in putting your business online. We hand craft perfectly optimized websites and we maintain them for you"
+msgstr "We're experts in putting your business online. We hand craft perfectly optimized websites and we maintain them for you"
+
+#: components/hero-v2.tsx:73
+msgid "web sites & apps"
+msgstr "web sites & apps"
+
+#: components/services.tsx:35
+msgid "Website development"
+msgstr "Website development"
+
+#: components/plans.tsx:202
+msgid "What is included"
+msgstr "What is included"
+
+#: components/faq.tsx:24
+msgid "What kind of website can I have in the small plan ?"
+msgstr "What kind of website can I have in the small plan ?"
+
+#: components/faq.tsx:33
+msgid "Why not I should just use a website builder (like Wix etc) ?"
+msgstr "Why not I should just use a website builder (like Wix etc) ?"
+
+#: app/page.tsx:47
+msgid "Why pay thousands upfront to some unknown agency or freelancer ? With us you pay only a small monthly fee and we build your site exactly as you wanted! Seriosuly, it's the real deal: hand crafted, custom coded & custom designed website for your business."
+msgstr "Why pay thousands upfront to some unknown agency or freelancer ? With us you pay only a small monthly fee and we build your site exactly as you wanted! Seriosuly, it's the real deal: hand crafted, custom coded & custom designed website for your business."
+
+#: components/benefits.tsx:59
+msgid "Why subscribe ?"
+msgstr "Why subscribe ?"
+
+#: components/plans.tsx:44
+msgid "World class hosting included"
+msgstr "World class hosting included"
+
+#: components/faq.tsx:29
+msgid "You only pay a small monthly fee, depending on yopur chosen plan and you get initial website development, hosting and maintainance included in the monthly plan. No upfront costs. No hidden fees. No surprises."
+msgstr "You only pay a small monthly fee, depending on yopur chosen plan and you get initial website development, hosting and maintainance included in the monthly plan. No upfront costs. No hidden fees. No surprises."
+
+#: components/contact-us.tsx:143
+msgid "Your Name"
+msgstr "Your Name"

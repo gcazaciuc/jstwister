@@ -22,6 +22,7 @@ import {
     SlSupport,
     SlTag,
 } from "react-icons/sl";
+import { Trans, t } from "@lingui/macro";
 
 interface ServicesSectionProps {
     services?: ServiceItem[];
@@ -31,30 +32,26 @@ const servicesList: ServiceItem[] = [
     {
         id: 1,
         icon: <SlTag />,
-        title: "Website development",
-        description:
-            "We're experts in putting your business online. We hand craft perfectly optimized websites and we maintain them for you",
+        title: t`Website development`,
+        description: t`We're experts in putting your business online. We hand craft perfectly optimized websites and we maintain them for you`,
     },
     {
         id: 2,
         icon: <SlBasketLoaded />,
-        title: "SEO",
-        description:
-            "For a small flat monthly fee we continously improve the on-page and off-page SEO of your website.",
+        title: t`SEO`,
+        description: t`For a small flat monthly fee we continously improve the on-page and off-page SEO of your website.`,
     },
     {
         id: 3,
         icon: <SlSupport />,
-        title: "Marketing",
-        description:
-            "We offer an addon subscription for all websites hosted with us: PPC and Social Media Marketing for a flat fee",
+        title: t`Marketing`,
+        description: t`We offer an addon subscription for all websites hosted with us: PPC and Social Media Marketing for a flat fee`,
     },
     {
         id: 4,
         icon: <SlCloudUpload />,
-        title: "Copywriting",
-        description:
-            "Need monthly blog posts ? Or maybe you need a revamp of the texts on your home page to better connect with customers ? We got you covered.",
+        title: t`Copywriting`,
+        description: t`Need monthly blog posts ? Or maybe you need a revamp of the texts on your home page to better connect with customers ? We got you covered.`,
     },
     // ... other services
 ];
@@ -67,18 +64,20 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({
                 <Stack direction="column" alignItems={"center"} spacing={4}>
                     <Badge colorScheme="purple">Services</Badge>
                     <Heading my={2}>
-                        Services We Provide On Subscription
+                        <Trans>Services We Provide On Subscription</Trans>
                     </Heading>
                     <Text color="gray.500" mb={4}>
-                        We{" "}
-                        <Image
-                            src={"/icons/heart.svg"}
-                            alt="Heart"
-                            w={5}
-                            h={5}
-                            display={"inline"}
-                        />{" "}
-                        small businesses and startups.
+                        <Trans>
+                            We{" "}
+                            <Image
+                                src={"/icons/heart.svg"}
+                                alt="Heart"
+                                w={5}
+                                h={5}
+                                display={"inline"}
+                            />{" "}
+                            small businesses and startups.
+                        </Trans>
                     </Text>
                 </Stack>
                 <Stack

@@ -20,15 +20,16 @@ import { usePathname, useRouter } from "next/navigation";
 import { useSupabase } from "./providers/supabase-provider";
 import { User } from "@supabase/supabase-js";
 import { SlArrowRight } from "react-icons/sl";
+import { Trans, t } from "@lingui/macro";
 
 // Define the navigation links
 const defaultNavLinks = [
-    { label: "Home", href: "#hero" },
-    { label: "How it works", href: "#how-it-works" },
-    { label: "Benefits", href: "#benefits" },
-    { label: "Technology", href: "#technology" },
-    { label: "Plans", href: "#plans" },
-    { label: "Blog", href: "/blog/1" }, // Assuming this is a separate page
+    { label: t`Home`, href: "#hero" },
+    { label: t`How it works`, href: "#how-it-works" },
+    { label: t`Benefits`, href: "#benefits" },
+    { label: t`Technology`, href: "#technology" },
+    { label: t`Plans`, href: "#plans" },
+    { label: t`Blog`, href: "/blog/1" }, // Assuming this is a separate page
 ];
 
 interface NavbarProps {
@@ -53,7 +54,7 @@ const Navbar: React.FC<NavbarProps> = ({ navLinks = defaultNavLinks }) => {
                 mt={4}
                 onClick={() => router.push("/auth/signin")}
             >
-                Login
+                <Trans>Login</Trans>
             </Button>
         ) : user !== undefined ? (
             <Button
@@ -66,7 +67,7 @@ const Navbar: React.FC<NavbarProps> = ({ navLinks = defaultNavLinks }) => {
                 mt={4}
                 onClick={() => router.push("/portal")}
             >
-                Client portal
+                <Trans>Client portal</Trans>
             </Button>
         ) : null;
     const fetchUser = async () => {

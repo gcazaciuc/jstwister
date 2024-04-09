@@ -20,6 +20,7 @@ import { useState } from "react";
 import { Form, useForm } from "react-hook-form";
 import { MdPhone, MdEmail } from "react-icons/md";
 import SyncLoader from "react-spinners/SyncLoader";
+import { Trans, t } from "@lingui/macro";
 
 interface ContactForm {
     name: string;
@@ -60,9 +61,8 @@ const ContactSection = () => {
             const emailResponse = await res.json();
             if (!emailResponse.error) {
                 toast({
-                    title: "Message sent!",
-                    description:
-                        "Thank you for contacting us! We will be in touch shortly.",
+                    title: t`Message sent!`,
+                    description: t`Thank you for contacting us! We will be in touch shortly.`,
                     status: "success",
                     duration: 9000,
                     isClosable: true,
@@ -70,9 +70,8 @@ const ContactSection = () => {
                 reset();
             } else {
                 toast({
-                    title: "An error occurred.",
-                    description:
-                        "Sorry for the incovenience. Please try again shortly.",
+                    title: t`An error occurred.`,
+                    description: t`Sorry for the incovenience. Please try again shortly.`,
                     status: "error",
                     duration: 9000,
                     isClosable: true,
@@ -80,9 +79,8 @@ const ContactSection = () => {
             }
         } catch (error) {
             toast({
-                title: "An error occurred.",
-                description:
-                    "Sorry for the incovenience. Please try again shortly.",
+                title: t`An error occurred.`,
+                description: t`Sorry for the incovenience. Please try again shortly.`,
                 status: "error",
                 duration: 9000,
                 isClosable: true,
@@ -106,10 +104,10 @@ const ContactSection = () => {
                 <VStack alignItems="start" spacing={4} mr={10}>
                     <Badge colorScheme="purple">Get in touch</Badge>
                     <Heading as="h2" size="xl" mb="4" color="darkBlue">
-                        Have something in mind ?
+                        <Trans>Have something in mind ?</Trans>
                     </Heading>
                     <Text color="gray.600">
-                        Let's have a chat... {emojiString}
+                        <Trans>Let's have a chat...</Trans> {emojiString}
                     </Text>
                     <HStack>
                         <Icon
@@ -117,7 +115,9 @@ const ContactSection = () => {
                             color="purple.500"
                             boxSize={"1.5rem"}
                         />
-                        <Text>Mail us 24/7 hello@netcraft.digital</Text>
+                        <Text>
+                            <Trans>Mail us 24/7 hello@netcraft.digital</Trans>
+                        </Text>
                     </HStack>
                     <HStack>
                         <Icon
@@ -140,34 +140,34 @@ const ContactSection = () => {
                     <FormControl isRequired isInvalid={!!errors.name}>
                         <Input
                             {...register("name", { required: true })}
-                            placeholder="Your Name"
+                            placeholder={t`Your Name`}
                             bg={inputBg}
                         />
                         <FormErrorMessage>
-                            This field is required
+                            <Trans>This field is required</Trans>
                         </FormErrorMessage>
                     </FormControl>
 
                     <FormControl isRequired isInvalid={!!errors.email}>
                         <Input
                             {...register("email", { required: true })}
-                            placeholder="Email Address"
+                            placeholder={t`Email Address`}
                             bg={inputBg}
                         />
                         <FormErrorMessage>
-                            This field is required
+                            <Trans>This field is required</Trans>
                         </FormErrorMessage>
                     </FormControl>
 
                     <FormControl isRequired isInvalid={!!errors.name}>
                         <Textarea
                             {...register("message", { required: true })}
-                            placeholder="How can help you?"
+                            placeholder={t`How can help you?`}
                             bg={inputBg}
                             size="lg"
                         />
                         <FormErrorMessage>
-                            This field is required
+                            <Trans>This field is required</Trans>
                         </FormErrorMessage>
                     </FormControl>
                     <Button
@@ -192,7 +192,7 @@ const ContactSection = () => {
                             transform: "translateY(-2px)",
                         }}
                     >
-                        Contact us
+                        <Trans>Contact us</Trans>
                     </Button>
                 </VStack>
             </Flex>

@@ -7,28 +7,25 @@ import {
     Stack,
     Heading,
 } from "@chakra-ui/react";
+import { Trans, t } from "@lingui/macro";
 import { Fragment } from "react";
 import { SlArrowRightCircle } from "react-icons/sl";
 const steps = [
     {
-        title: "Subscribe",
-        description:
-            "Subscribe to a plan. After that, we'll build your custom presentation website according to your specifications, FOR FREE. We only charge a flat monthly fee for support, maintainance and hosting, no strings attached.",
+        title: t`Subscribe`,
+        description: t`Subscribe to a plan. After that, we'll build your custom presentation website according to your specifications, FOR FREE. We only charge a flat monthly fee for support, maintainance and hosting, no strings attached.`,
     },
     {
-        title: "Build",
-        description:
-            "After you subscribe you'll fill a design briefing so we can understand how would you like your website to look and function. We'll build your website in 7-14 days after this step.",
+        title: t`Build`,
+        description: t`After you subscribe you'll fill a design briefing so we can understand how would you like your website to look and function. We'll build your website in 7-14 days after this step.`,
     },
     {
-        title: "Launch",
-        description:
-            "We host your website and we offer continous monitoring, maintainance and support all included  at no extra charge. However, you can buy the website for an attractive fee and host it yourself if you want.",
+        title: t`Launch`,
+        description: t`We host your website and we offer continous monitoring, maintainance and support all included  at no extra charge. However, you can buy the website for an attractive fee and host it yourself if you want.`,
     },
     {
-        title: "Maintain",
-        description:
-            "We take care of the monthly security updates, performance optimizations, tech stack upgrades and we make sure your website is always up and running. At no extra charge.",
+        title: t`Maintain`,
+        description: t`We take care of the monthly security updates, performance optimizations, tech stack upgrades and we make sure your website is always up and running. At no extra charge.`,
     },
     // ... other steps
 ];
@@ -37,10 +34,12 @@ const HowItWorks = () => {
     return (
         <Box textAlign="left" bg="white" p={10} id="#how-it-works">
             <Heading as="h2" size="xl" textAlign="left" mb={5} color="darkBlue">
-                How it works
+                <Trans>How it works</Trans>
             </Heading>
             <Text fontSize="lg" color="lightGrey">
-                Get your custom website created by us in a few easy steps
+                <Trans>
+                    Get your custom website created by us in a few easy steps
+                </Trans>
             </Text>
 
             <Stack

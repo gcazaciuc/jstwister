@@ -7,7 +7,9 @@
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
-        "generate:types": "npx supabase gen types typescript --project-id abcdefghijklmnopqrst > db/database.types.ts"
+        "generate:types": "npx supabase gen types typescript --project-id abcdefghijklmnopqrst > db/database.types.ts",
+        "translations:extract": "lingui extract --clean",
+        "translations:compile": "lingui compile --typescript"
     },
     "dependencies": {
         "@chakra-ui/icons": "^2.1.1",
@@ -16,6 +18,7 @@
         "@editorjs/editorjs": "^2.29.0",
         "@emotion/react": "^11.11.1",
         "@emotion/styled": "^11.11.0",
+        "@lingui/react": "^4.8.0",
         "@mdx-js/loader": "^3.0.0",
         "@mdx-js/react": "^3.0.0",
         "@next/mdx": "^14.0.3",
@@ -43,6 +46,10 @@
         "swiper": "^11.0.5"
     },
     "devDependencies": {
+        "@lingui/cli": "^4.8.0",
+        "@lingui/loader": "^4.8.0",
+        "@lingui/macro": "^4.8.0",
+        "@lingui/swc-plugin": "^4.0.6",
         "@types/node": "^20",
         "@types/react": "^18",
         "@types/react-dom": "^18",

@@ -4,6 +4,7 @@ import { fetchBlogItems } from "@/repositories/blog-repository";
 import { BlogItemCard } from "@/components/blog-item-card";
 import Pagination from "@/components/pagination";
 import Navbar from "@/components/nav";
+import { t } from "@lingui/macro";
 const ITEMS_PER_PAGE = 3;
 export default async function Blog({ params }: any) {
     const items = await fetchBlogItems();
@@ -13,7 +14,7 @@ export default async function Blog({ params }: any) {
         <>
             <Navbar />
             <Stack direction="column" bg="white" minH={"100vh"} height="100%" justifyContent={'space-between'}>
-                <HeroSection title={"Our blog"} />
+                <HeroSection title={t`Our blog`} />
                 <Stack
                     p="5"
                     direction="column"
