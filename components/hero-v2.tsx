@@ -73,7 +73,7 @@ const Hero: React.FC = () => {
                         <EmText text={t`web sites & apps`}></EmText>.
                     </Heading>
                     <Text fontSize="2xl" mt={4}>
-                        <Trans>Starting from 49 EUR/m</Trans>,{" "}
+                        <Trans>Starting from 139 EUR/m</Trans>,{" "}
                         <EmText text={t`0 down-payment`}></EmText>.
                     </Text>
                     <Button

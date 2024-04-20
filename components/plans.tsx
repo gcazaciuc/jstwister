@@ -27,30 +27,88 @@ import { Trans, t } from "@lingui/macro";
 const plans: PricingPlanProps[] = [
     {
         title: t`Essential`,
-        description: t`Perfect for 1-10 pages presentation websites`,
-        price: "49",
+        description: t`Perfect for 1-5 pages presentation websites`,
+        price: "139",
         priceId: "price_1OVDX6IUzRJ2Go2AXsYE3Fbl",
-        isPopular: true,
+        isPopular: false,
         benefits: [
             {
-                label: t`Monthly security & critical fixes included`,
-                tooltip: t`On the Presentation plan you get only security and regular tech updates. No new features or bugfixes are included, however you can order custom development.`,
+                label: t`Unlimited edits`,
+                tooltip: t`Request as many edits as you want( texts ). We will complete them one at a time`,
             },
             {
-                label: t`Template based graphic design`,
-                tooltip: t`An original graphic design is not included. We use a template and customize it to your needs(colors, fonts etc ).`,
+                label: t`Free redesign after 24 months`,
+                tooltip: t`You get a free website redesign and technological update of your website after 24 months of subscription`,
+            },
+            {
+                label: t`Logo included`,
+                tooltip: t`Up to 2 revisions of your logo are included in the price`,
+            },
+            {
+                label: t`Graphic design included`,
+                tooltip: t`An original graphic design, according to your needs, along with up to 2 revisions is included in the price`,
             },
             {
                 label: t`World class hosting included`,
-                tooltip: t`We host your website. All in the same monthly price`,
+                tooltip: t`We host your website on world class, globally distributed infrastructure for maximum speed. All in the same monthly price`,
             },
+            // {
+            //     label: t`Permanent security, performance and uptime monitoring`,
+            //     tooltip: t`We permantently monitor your website for any issues`,
+            // },
+            // {
+            //     label: t`Monthly security & critical bug fixes included`,
+            //     tooltip: t`On the Essential plan you get only security and regular tech updates. No new features are included, however you can order custom development.`,
+            // },
             {
-                label: t`Permanent security, performance and uptime monitoring`,
-                tooltip: t`We permantently monitor your website for any issues`,
+                label: t`Extra custom support & development at 50 EUR/hour`,
+                tooltip: t`On the Essential plan you don't have any dev/design/support work included monthly. If you need new features and functional updates, you can order extra hours at a rate of 50 EUR/hour`,
             },
             {
                 label: t`Buy it anytime`,
                 tooltip: t`Want to host it somewhere else ? You can buy it anytime`,
+            },
+        ],
+    },
+    {
+        title: t`PRO`,
+        description: t`Includes everything in Essential plus `,
+        price: "159",
+        priceId: "price_1OVDX6IUzRJ2Go2AXsYE3Fbl",
+        isPopular: true,
+        benefits: [
+            {
+                label: t`1 hour/month of custom support & development`,
+                tooltip: t`On the PRO plan you get 1 hour each month of custom support and development. If not used it rolls over the next month. This can be used for new features, bug fixes, or any other custom development.`,
+            },
+            {
+                label: t`Extra custom support & development at 45 EUR/hour`,
+                tooltip: t`On the PRO plan you get 1 hour each month of custom support and development included each month. If you need more, you can order extra hours at a discounted rate of 45 EUR/hour`,
+            },
+            {
+                label: t`Monthly SEO report included`,
+                tooltip: t`Each month you get a detailed SEO report with insights and recommendations on how to improve your website's SEO performance`,
+            },
+        ],
+    },
+    {
+        title: t`MAX`,
+        description: t`Includes everything in PRO plus `,
+        price: "199",
+        priceId: "price_1OVDX6IUzRJ2Go2AXsYE3Fbl",
+        isPopular: false,
+        benefits: [
+            {
+                label: t`Premium graphic design included`,
+                tooltip: t`10 iterations/revisions of the graphic design are included as opposed to just 2 in the standard version.`,
+            },
+            {
+                label: t`2 hours/month of custom support & development`,
+                tooltip: t`On the MAX plan you get 2 hours each month of custom support and development. This can be used for new features, bug fixes, or any other custom development.`,
+            },
+            {
+                label: t`Extra custom support & development at 40 EUR/hour`,
+                tooltip: t`On the MAX plan you get 2 hours each month of custom support and development included. If you need more, you can order extra hours at our best rate ever,  of just 40 EUR/hour`,
             },
         ],
     },
@@ -110,7 +168,7 @@ const PricingPlanCard: React.FC<PricingPlanProps> = ({
     benefits,
     disabled,
     priceId,
-    ctaText = "Get started",
+    ctaText = t`Get started`,
 }) => {
     const bg = useColorModeValue("white", "gray.700");
     const textColor = useColorModeValue("gray.700", "white");
@@ -171,7 +229,7 @@ const PricingPlanCard: React.FC<PricingPlanProps> = ({
                     lineHeight={"3rem"}
                     verticalAlign={"top"}
                 >
-                    /m
+                    <Trans>/m</Trans>
                 </Text>
             </Text>
             <Button

@@ -2,6 +2,7 @@
 import BenefitsSection from "@/components/benefits";
 import ContactSection from "@/components/contact-us";
 import FAQSection from "@/components/faq";
+import FeaturesSection from "@/components/features";
 import Footer from "@/components/footer";
 import Hero from "@/components/hero-v2";
 import HowItWorks from "@/components/how-it-works";
@@ -38,6 +39,7 @@ const App = () => (
         <Navbar />
         <Hero />
         <HowItWorks />
+        <FeaturesSection />
         <ServicesSection />
         <BenefitsSection />
 

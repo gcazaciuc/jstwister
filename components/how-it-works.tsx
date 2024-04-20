@@ -13,19 +13,15 @@ import { SlArrowRightCircle } from "react-icons/sl";
 const steps = [
     {
         title: t`Subscribe`,
-        description: t`Subscribe to a plan. After that, we'll build your custom presentation website according to your specifications, FOR FREE. We only charge a flat monthly fee for support, maintainance and hosting, no strings attached.`,
-    },
-    {
-        title: t`Build`,
-        description: t`After you subscribe you'll fill a design briefing so we can understand how would you like your website to look and function. We'll build your website in 7-14 days after this step.`,
+        description: t`Subscribe to a plan and we'll built your website according to your specifications in 7-14 days on average.`,
     },
     {
         title: t`Launch`,
-        description: t`We host your website and we offer continous monitoring, maintainance and support all included  at no extra charge. However, you can buy the website for an attractive fee and host it yourself if you want.`,
+        description: t`You continue to pay monthly for the website, for 24 months, while benefiting from the perks included in the plan you subscribed to.`,
     },
     {
-        title: t`Maintain`,
-        description: t`We take care of the monthly security updates, performance optimizations, tech stack upgrades and we make sure your website is always up and running. At no extra charge.`,
+        title: t`Repeat ?`,
+        description: t`After 24 months you can continue using our service and get a FREE website redesign. Or you can cancel your subscription and do whatever you like with your website.`,
     },
     // ... other steps
 ];
@@ -38,7 +34,9 @@ const HowItWorks = () => {
             </Heading>
             <Text fontSize="lg" color="lightGrey">
                 <Trans>
-                    Get your custom website created by us in a few easy steps
+                    You pay for your website monthly over 24 months. When the 24
+                    months are up, if you want to stick with us, we'll{" "}
+                    <b>redesign</b> your website free of charge.
                 </Trans>
             </Text>
 

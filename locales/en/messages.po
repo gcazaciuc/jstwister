@@ -13,6 +13,10 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#: components/plans.tsx:174
+msgid "/m"
+msgstr "/m"
+
 #: components/hero-v2.tsx:77
 msgid "0 down-payment"
 msgstr "0 down-payment"
@@ -106,6 +110,10 @@ msgstr "Full service"
 #: components/benefits.tsx:37
 msgid "Get everything: initial design & development per your specifications and monthtly hosting, maintenance, support, and more. All included in the monthly fee."
 msgstr "Get everything: initial design & development per your specifications and monthtly hosting, maintenance, support, and more. All included in the monthly fee."
+
+#: components/plans.tsx:113
+msgid "Get started"
+msgstr "Get started"
 
 #: components/how-it-works.tsx:40
 msgid "Get your custom website created by us in a few easy steps"

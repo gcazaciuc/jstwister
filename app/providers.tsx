@@ -19,7 +19,7 @@ i18n.load({
     ro: roMessages,
 });
 
-i18n.activate("ro");
+i18n.activate("en");
 // }
 
 const theme = extendTheme(
